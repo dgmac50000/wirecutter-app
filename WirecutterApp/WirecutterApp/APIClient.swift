@@ -12,22 +12,117 @@ class APIClient {
 
     // MARK: - Public
 
+    /// Commerce feed for the prototype.
+    ///
+    /// Image strategy (source-agnostic ranking via `ProductImageRanking`):
+    /// 1. Prefer Next.js article `__NEXT_DATA__` (catalog callouts + chapter CDN heroes)
+    /// 2. Fall back to WP `content.rendered` HTML scrape
+    /// Long-term: add Minotaur / Phoenix providers that fill the same `ProductImageBundle`.
     func fetchCommerceFeed() async throws -> [CommerceItem] {
-        let reviews = try await fetchReviews(count: 10)
+        var reviews = try await fetchReviews(count: 8)
+
+        // Prototype: always include a known rich-media review so hi-res chapter
+        // images are easy to verify (article-page parser uses the URL, not WP HTML).
+        let seedLink = "https://www.nytimes.com/wirecutter/reviews/best-smartwatch-iphone/"
+        if !reviews.contains(where: { $0.link.contains("best-smartwatch-iphone") }) {
+            reviews.insert(
+                WPReview(
+                    id: 882,
+                    title: WPRendered(rendered: "The Apple Watch Is the Best Smartwatch for iPhone Owners"),
+                    link: seedLink,
+                    content: WPRendered(rendered: ""),
+                    featuredMedia: 0
+                ),
+                at: 0
+            )
+        }
+
         var allProducts: [CommerceItem] = []
+        var seenProductIds = Set<Int>()
 
         await withTaskGroup(of: [CommerceItem].self) { group in
             for review in reviews {
                 group.addTask { [self] in
-                    await self.extractProducts(from: review)
+                    await self.products(for: review)
                 }
             }
             for await products in group {
-                allProducts.append(contentsOf: products)
+                for product in products where seenProductIds.insert(product.productId).inserted {
+                    allProducts.append(product)
+                }
             }
         }
 
         return allProducts
+    }
+
+    // MARK: - Per-review resolution
+
+    private func products(for review: WPReview) async -> [CommerceItem] {
+        let articleTitle = cleanHTML(review.title.rendered)
+        guard let articleURL = URL(string: review.link) else { return [] }
+
+        // Prototype path: structured article page (has editorial hi-res in chapters).
+        if let parsed = try? await ArticlePageFeedParser.fetchArticle(from: articleURL),
+           !parsed.products.isEmpty {
+            return parsed.products.map { product in
+                commerceItem(
+                    from: product,
+                    articleId: parsed.postId != 0 ? parsed.postId : review.id,
+                    articleTitle: parsed.title.isEmpty ? articleTitle : parsed.title,
+                    articleURL: parsed.link,
+                    categoryName: parsed.categoryName,
+                    categorySlug: parsed.categorySlug,
+                    articleHeroImageURL: parsed.heroImageURL
+                )
+            }
+        }
+
+        // Fallback: thin WP REST HTML (catalog CloudFront only on most reviews).
+        return extractProductsFromWPHTML(review: review, articleTitle: articleTitle, articleURL: articleURL)
+    }
+
+    private func commerceItem(
+        from product: ArticlePageFeedParser.ParsedProduct,
+        articleId: Int,
+        articleTitle: String,
+        articleURL: URL,
+        categoryName: String,
+        categorySlug: String,
+        articleHeroImageURL: URL?
+    ) -> CommerceItem {
+        var catalog: [URL] = []
+        if let catalogImageURL = product.catalogImageURL {
+            catalog.append(catalogImageURL)
+        }
+
+        let bundle = ProductImageBundle(
+            catalogURLs: catalog,
+            hiResCandidates: product.hiResCandidates,
+            preferredHiResURL: product.preferredHiResURL
+        )
+        let imageURLs = bundle.resolvedDisplayURLs(productName: product.name)
+
+        return CommerceItem(
+            articleId: articleId,
+            articleTitle: articleTitle,
+            articleUrl: articleURL,
+            productId: product.productId,
+            productTitle: product.name,
+            productDescription: product.description,
+            images: imageURLs.isEmpty ? nil : imageURLs,
+            hasDealData: false,
+            sources: nil,
+            imageUrl: imageURLs.first ?? product.catalogImageURL,
+            merchantName: product.merchantName,
+            affiliateUrl: product.affiliateURL,
+            priceFormatted: product.priceFormatted,
+            pickTypeId: product.pickTypeId,
+            ribbon: product.ribbon,
+            categoryName: categoryName,
+            categorySlug: categorySlug,
+            articleHeroImageURL: articleHeroImageURL
+        )
     }
 
     // MARK: - WordPress API
@@ -60,31 +155,39 @@ class APIClient {
         return try decoder.decode([WPReview].self, from: data)
     }
 
-    // MARK: - Product Extraction from HTML
+    // MARK: - WP HTML fallback
 
-    private func extractProducts(from review: WPReview) async -> [CommerceItem] {
+    private func extractProductsFromWPHTML(
+        review: WPReview,
+        articleTitle: String,
+        articleURL: URL
+    ) -> [CommerceItem] {
         let html = review.content.rendered
-        let articleTitle = cleanHTML(review.title.rendered)
-        let articleUrl = review.link
 
-        guard let articleURL = URL(string: articleUrl) else { return [] }
-
-        let images = matches(for: "src=\"(https://d34mvw1if3ud0g\\.cloudfront\\.net/[^\"]+)\"", in: html)
+        let catalogImages = matches(for: "src=\"(https://d34mvw1if3ud0g\\.cloudfront\\.net/[^\"]+)\"", in: html)
+        let hiResCandidates = extractHiResCandidates(from: html)
         let affiliateLinks = matches(for: "href=\"(https://wclink\\.co/link/[^\"]+)\"", in: html)
         let prices = matches(for: "\\$(\\d[\\d,]*)", in: html)
 
-        guard !images.isEmpty else { return [] }
+        guard !catalogImages.isEmpty else { return [] }
 
-        let productDescriptions = extractDescriptions(from: html, imageUrls: images)
+        let productDescriptions = extractDescriptions(from: html, imageUrls: catalogImages)
 
         var products: [CommerceItem] = []
 
-        for (index, imageUrlString) in images.enumerated() {
-            let productName = extractProductName(from: imageUrlString)
+        for (index, catalogUrlString) in catalogImages.enumerated() {
+            let productName = extractProductName(from: catalogUrlString)
             let price = index < prices.count ? "$\(prices[index])" : nil
             let affiliate = index < affiliateLinks.count ? URL(string: affiliateLinks[index]) : nil
-            let imageUrl = URL(string: imageUrlString)
+            let catalogUrl = URL(string: catalogUrlString)
             let description = index < productDescriptions.count ? productDescriptions[index] : nil
+
+            let bundle = ProductImageBundle(
+                catalogURLs: catalogUrl.map { [$0] } ?? [],
+                hiResCandidates: hiResCandidates,
+                preferredHiResURL: nil
+            )
+            let imageURLs = bundle.resolvedDisplayURLs(productName: productName)
 
             let item = CommerceItem(
                 articleId: review.id,
@@ -93,15 +196,18 @@ class APIClient {
                 productId: review.id * 100 + index,
                 productTitle: productName,
                 productDescription: description,
-                images: imageUrl != nil ? [imageUrl!] : nil,
+                images: imageURLs.isEmpty ? nil : imageURLs,
                 hasDealData: false,
                 sources: nil,
-                imageUrl: imageUrl,
+                imageUrl: imageURLs.first ?? catalogUrl,
                 merchantName: "Amazon",
                 affiliateUrl: affiliate,
                 priceFormatted: price,
                 pickTypeId: index == 0 ? 1 : nil,
-                ribbon: index == 0 ? "Top Pick" : (index == 1 ? "Also Great" : nil)
+                ribbon: index == 0 ? "Top Pick" : (index == 1 ? "Also Great" : nil),
+                categoryName: "Other",
+                categorySlug: "other",
+                articleHeroImageURL: nil
             )
             products.append(item)
         }
@@ -109,7 +215,37 @@ class APIClient {
         return products
     }
 
-    /// Split HTML by product image occurrences and extract paragraph text following each image
+    private func extractHiResCandidates(from html: String) -> [(url: String, alt: String)] {
+        let imgTags = matches(for: "(<img\\b[^>]*>)", in: html)
+        var candidates: [(url: String, alt: String)] = []
+        var seen = Set<String>()
+
+        for tag in imgTags {
+            guard let src = attribute("src", in: tag) else { continue }
+            let normalized = ProductImageRanking.normalizeMediaURL(src)
+            guard ProductImageRanking.tier(of: normalized) == .hires else { continue }
+            guard !seen.contains(normalized) else { continue }
+            seen.insert(normalized)
+            let alt = attribute("alt", in: tag).map(cleanHTML) ?? ""
+            candidates.append((normalized, alt))
+        }
+
+        return candidates
+    }
+
+    private func attribute(_ name: String, in tag: String) -> String? {
+        let patterns = [
+            "\(name)=\"([^\"]*)\"",
+            "\(name)='([^']*)'",
+        ]
+        for pattern in patterns {
+            if let value = matches(for: pattern, in: tag).first {
+                return value
+            }
+        }
+        return nil
+    }
+
     private func extractDescriptions(from html: String, imageUrls: [String]) -> [String?] {
         var descriptions: [String?] = []
 
@@ -153,15 +289,11 @@ class APIClient {
     }
 
     private func extractProductName(from imageUrl: String) -> String {
-        // Image URLs look like: .../55107/Vornado-Transom_20250418-051442_full
-        // Extract the product name portion
         guard let lastSlash = imageUrl.lastIndex(of: "/") else { return "Product" }
         var name = String(imageUrl[imageUrl.index(after: lastSlash)...])
-        // Remove the timestamp suffix
         if let underscore = name.range(of: "_20") {
             name = String(name[..<underscore.lowerBound])
         }
-        // Replace hyphens with spaces
         name = name.replacingOccurrences(of: "-", with: " ")
         return name
     }
