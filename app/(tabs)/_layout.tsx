@@ -8,7 +8,7 @@ function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>['name'];
   color: string;
 }) {
-  return <FontAwesome size={24} style={{ marginBottom: -3 }} {...props} />;
+  return <FontAwesome size={22} style={{ marginBottom: -3 }} {...props} />;
 }
 
 export default function TabLayout() {
@@ -17,9 +17,13 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor:
-          colorScheme === 'dark' ? colors.wirecutter.blue : colors.accent,
+        tabBarActiveTintColor: colors.wirecutter.blue,
         tabBarInactiveTintColor: colors.secondary,
+        tabBarStyle: {
+          backgroundColor:
+            colorScheme === 'dark' ? colors.primary : colors.background,
+          borderTopColor: colors.surface,
+        },
         headerStyle: {
           backgroundColor:
             colorScheme === 'dark' ? colors.primary : colors.background,
@@ -31,15 +35,33 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Top Picks',
+          title: 'Picks',
           tabBarIcon: ({ color }) => <TabBarIcon name="star" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="deals"
+        options={{
+          title: 'Deals',
+          tabBarIcon: ({ color }) => <TabBarIcon name="tag" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="lists"
+        options={{
+          title: 'Lists',
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="list-ul" color={color} />
+          ),
         }}
       />
       <Tabs.Screen
         name="categories"
         options={{
           title: 'Categories',
-          tabBarIcon: ({ color }) => <TabBarIcon name="th-large" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="th-large" color={color} />
+          ),
         }}
       />
       <Tabs.Screen
@@ -47,15 +69,6 @@ export default function TabLayout() {
         options={{
           title: 'Search',
           tabBarIcon: ({ color }) => <TabBarIcon name="search" color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="saved"
-        options={{
-          title: 'Saved',
-          tabBarIcon: ({ color }) => (
-            <TabBarIcon name="bookmark" color={color} />
-          ),
         }}
       />
     </Tabs>
