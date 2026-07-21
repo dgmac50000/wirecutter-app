@@ -8,7 +8,7 @@ import {
 import { Body } from './Typography';
 import { colors, spacing, radii } from './tokens';
 
-type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost';
+type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'commerce';
 type ButtonSize = 'sm' | 'md' | 'lg';
 
 interface ButtonProps extends Omit<PressableProps, 'style'> {
@@ -109,5 +109,11 @@ const variantStyles = StyleSheet.create({
   },
   ghost: {
     backgroundColor: 'transparent',
+  },
+  commerce: {
+    backgroundColor: '#000000',
+    borderWidth: 1,
+    borderColor: '#000000',
+    borderRadius: 4,
   },
 });
