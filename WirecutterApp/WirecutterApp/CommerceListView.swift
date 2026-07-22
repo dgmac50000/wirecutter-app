@@ -531,7 +531,7 @@ private struct AskSheetView: View {
                 VStack(alignment: .leading, spacing: 24) {
                     HStack(alignment: .lastTextBaseline, spacing: 8) {
                         Text("Wirecutter Finder")
-                            .font(.system(size: 28, weight: .bold, design: .serif))
+                            .font(.custom("NYTVFranklin-Bold", size: 28))
                         Text("BETA")
                             .font(.system(size: 10, weight: .bold))
                             .foregroundStyle(.white)

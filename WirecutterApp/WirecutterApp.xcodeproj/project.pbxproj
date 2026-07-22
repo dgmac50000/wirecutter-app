@@ -23,6 +23,14 @@
 		B40C1A2D2B0F00010000000E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B40C1A2D2B0F00020000000E /* Assets.xcassets */; };
 		B40C1A2D2B0F00010000000F /* GeminiConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = B40C1A2D2B0F00020000000F /* GeminiConfig.plist */; };
 		B40C1A2D2B0F000100000010 /* products.json in Resources */ = {isa = PBXBuildFile; fileRef = B40C1A2D2B0F000200000010 /* products.json */; };
+		B40C1A2D2B0F000100000020 /* NYTFranklinCWMedium.otf in Resources */ = {isa = PBXBuildFile; fileRef = B40C1A2D2B0F000200000020 /* NYTFranklinCWMedium.otf */; };
+		B40C1A2D2B0F000100000021 /* NYTStockBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = B40C1A2D2B0F000200000021 /* NYTStockBold.otf */; };
+		B40C1A2D2B0F000100000022 /* NYTStockFractionBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = B40C1A2D2B0F000200000022 /* NYTStockFractionBold.otf */; };
+		B40C1A2D2B0F000100000023 /* NYTStockFractionRegular.otf in Resources */ = {isa = PBXBuildFile; fileRef = B40C1A2D2B0F000200000023 /* NYTStockFractionRegular.otf */; };
+		B40C1A2D2B0F000100000024 /* NYTStockRegular.otf in Resources */ = {isa = PBXBuildFile; fileRef = B40C1A2D2B0F000200000024 /* NYTStockRegular.otf */; };
+		B40C1A2D2B0F000100000025 /* NYTVFranklinBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = B40C1A2D2B0F000200000025 /* NYTVFranklinBold.otf */; };
+		B40C1A2D2B0F000100000026 /* NYTVFranklinLight.otf in Resources */ = {isa = PBXBuildFile; fileRef = B40C1A2D2B0F000200000026 /* NYTVFranklinLight.otf */; };
+		B40C1A2D2B0F000100000027 /* NYTVFranklinMedium.otf in Resources */ = {isa = PBXBuildFile; fileRef = B40C1A2D2B0F000200000027 /* NYTVFranklinMedium.otf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +50,16 @@
 		B40C1A2D2B0F00020000000E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B40C1A2D2B0F00020000000F /* GeminiConfig.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = GeminiConfig.plist; sourceTree = "<group>"; };
 		B40C1A2D2B0F000200000010 /* products.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = products.json; sourceTree = "<group>"; };
+		B40C1A2D2B0F000200000018 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B40C1A2D2B0F000200000019 /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Fonts; sourceTree = "<group>"; };
+		B40C1A2D2B0F000200000020 /* NYTFranklinCWMedium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NYTFranklinCWMedium.otf; sourceTree = "<group>"; };
+		B40C1A2D2B0F000200000021 /* NYTStockBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NYTStockBold.otf; sourceTree = "<group>"; };
+		B40C1A2D2B0F000200000022 /* NYTStockFractionBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NYTStockFractionBold.otf; sourceTree = "<group>"; };
+		B40C1A2D2B0F000200000023 /* NYTStockFractionRegular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NYTStockFractionRegular.otf; sourceTree = "<group>"; };
+		B40C1A2D2B0F000200000024 /* NYTStockRegular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NYTStockRegular.otf; sourceTree = "<group>"; };
+		B40C1A2D2B0F000200000025 /* NYTVFranklinBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NYTVFranklinBold.otf; sourceTree = "<group>"; };
+		B40C1A2D2B0F000200000026 /* NYTVFranklinLight.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NYTVFranklinLight.otf; sourceTree = "<group>"; };
+		B40C1A2D2B0F000200000027 /* NYTVFranklinMedium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NYTVFranklinMedium.otf; sourceTree = "<group>"; };
 		B40C1A2D2B0F000300000001 /* WirecutterApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WirecutterApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -63,6 +81,14 @@
 				B40C1A2D2B0F00010000000E /* Assets.xcassets in Resources */,
 				B40C1A2D2B0F00010000000F /* GeminiConfig.plist in Resources */,
 				B40C1A2D2B0F000100000010 /* products.json in Resources */,
+				B40C1A2D2B0F000100000020 /* NYTFranklinCWMedium.otf in Resources */,
+				B40C1A2D2B0F000100000021 /* NYTStockBold.otf in Resources */,
+				B40C1A2D2B0F000100000022 /* NYTStockFractionBold.otf in Resources */,
+				B40C1A2D2B0F000100000023 /* NYTStockFractionRegular.otf in Resources */,
+				B40C1A2D2B0F000100000024 /* NYTStockRegular.otf in Resources */,
+				B40C1A2D2B0F000100000025 /* NYTVFranklinBold.otf in Resources */,
+				B40C1A2D2B0F000100000026 /* NYTVFranklinLight.otf in Resources */,
+				B40C1A2D2B0F000100000027 /* NYTVFranklinMedium.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -95,6 +121,15 @@
 				B40C1A2D2B0F00020000000D /* GeminiClient.swift */,
 				B40C1A2D2B0F00020000000F /* GeminiConfig.plist */,
 				B40C1A2D2B0F000200000010 /* products.json */,
+				B40C1A2D2B0F000200000018 /* Info.plist */,
+				B40C1A2D2B0F000200000020 /* NYTFranklinCWMedium.otf */,
+				B40C1A2D2B0F000200000021 /* NYTStockBold.otf */,
+				B40C1A2D2B0F000200000022 /* NYTStockFractionBold.otf */,
+				B40C1A2D2B0F000200000023 /* NYTStockFractionRegular.otf */,
+				B40C1A2D2B0F000200000024 /* NYTStockRegular.otf */,
+				B40C1A2D2B0F000200000025 /* NYTVFranklinBold.otf */,
+				B40C1A2D2B0F000200000026 /* NYTVFranklinLight.otf */,
+				B40C1A2D2B0F000200000027 /* NYTVFranklinMedium.otf */,
 				B40C1A2D2B0F00020000000E /* Assets.xcassets */,
 			);
 			path = WirecutterApp;
@@ -238,6 +273,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WirecutterApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "NYT Wirecutter";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -265,6 +301,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = WirecutterApp/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "NYT Wirecutter";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
