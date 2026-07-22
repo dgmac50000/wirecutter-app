@@ -12,13 +12,34 @@ class APIClient {
 
     // MARK: - Public
 
-    /// Commerce feed for the prototype.
-    ///
-    /// Image strategy (source-agnostic ranking via `ProductImageRanking`):
-    /// 1. Prefer Next.js article `__NEXT_DATA__` (catalog callouts + chapter CDN heroes)
-    /// 2. Fall back to WP `content.rendered` HTML scrape
-    /// Long-term: add Minotaur / Phoenix providers that fill the same `ProductImageBundle`.
+    /// Commerce feed: loads from bundled products.json (scraped offline).
+    /// Falls back to live API if the bundle is missing.
     func fetchCommerceFeed() async throws -> [CommerceItem] {
+        if let bundled = loadBundledProducts() {
+            return bundled
+        }
+        return try await fetchCommerceFeedLive()
+    }
+
+    /// Load pre-scraped products from the app bundle.
+    private func loadBundledProducts() -> [CommerceItem]? {
+        guard let url = Bundle.main.url(forResource: "products", withExtension: "json"),
+              let data = try? Data(contentsOf: url) else {
+            return nil
+        }
+
+        struct BundledFeed: Decodable {
+            let products: [CommerceItem]
+        }
+
+        guard let feed = try? decoder.decode(BundledFeed.self, from: data) else {
+            return nil
+        }
+        return feed.products
+    }
+
+    /// Live fallback: fetches from Wirecutter WP API and parses HTML.
+    private func fetchCommerceFeedLive() async throws -> [CommerceItem] {
         var reviews = try await fetchReviews(count: 8)
 
         // Prototype: always include a known rich-media review so hi-res chapter
