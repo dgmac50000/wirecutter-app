@@ -1,10 +1,18 @@
- import SwiftUI
+import SwiftUI
 
 @main
 struct WirecutterAppApp: App {
+    @StateObject private var prefsStore = PreferencesStore()
+
     var body: some Scene {
         WindowGroup {
-            CommerceListView()
+            if prefsStore.hasCompletedOnboarding {
+                CommerceListView()
+            } else {
+                OnboardingView(store: prefsStore) {
+                    // Onboarding complete — main feed will appear
+                }
+            }
         }
     }
 }
