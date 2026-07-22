@@ -45,3 +45,4 @@ yarn-error.*
 *.xcuserstate
 xcuserdata/
 DerivedData/
+GeminiConfig.plist

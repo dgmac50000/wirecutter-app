@@ -20,6 +20,8 @@
 		A1000011 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A2000011 /* Assets.xcassets */; };
 		A1000012 /* ProductImageRanking.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000012 /* ProductImageRanking.swift */; };
 		A1000013 /* ArticlePageFeedParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000013 /* ArticlePageFeedParser.swift */; };
+		A1000014 /* GeminiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000014 /* GeminiClient.swift */; };
+		A1000015 /* GeminiConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = A2000015 /* GeminiConfig.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +38,8 @@
 		A2000011 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A2000012 /* ProductImageRanking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductImageRanking.swift; sourceTree = "<group>"; };
 		A2000013 /* ArticlePageFeedParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticlePageFeedParser.swift; sourceTree = "<group>"; };
+		A2000014 /* GeminiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeminiClient.swift; sourceTree = "<group>"; };
+		A2000015 /* GeminiConfig.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = GeminiConfig.plist; sourceTree = "<group>"; };
 		A3000001 /* WirecutterApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WirecutterApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -55,6 +59,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A1000011 /* Assets.xcassets in Resources */,
+				A1000015 /* GeminiConfig.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -84,6 +89,8 @@
 				A2000010 /* SearchAPIClient.swift */,
 				A2000012 /* ProductImageRanking.swift */,
 				A2000013 /* ArticlePageFeedParser.swift */,
+				A2000014 /* GeminiClient.swift */,
+				A2000015 /* GeminiConfig.plist */,
 				A2000011 /* Assets.xcassets */,
 			);
 			path = WirecutterApp;
@@ -162,6 +169,7 @@
 				A1000010 /* SearchAPIClient.swift in Sources */,
 				A1000012 /* ProductImageRanking.swift in Sources */,
 				A1000013 /* ArticlePageFeedParser.swift in Sources */,
+				A1000014 /* GeminiClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -226,6 +234,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "NYT Wirecutter";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -252,6 +261,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "NYT Wirecutter";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

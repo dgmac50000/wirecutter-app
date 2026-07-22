@@ -3,7 +3,6 @@ import SwiftUI
 struct ProductQuickView: View {
     let item: CommerceItem
     let onShop: (URL) -> Void
-    let onReadArticle: (URL) -> Void
     let onDismiss: () -> Void
 
     var body: some View {
@@ -13,7 +12,7 @@ struct ProductQuickView: View {
                 header
                 heroImage
                 productTile
-                articleReference
+                buyButtons
                 ledeText
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -121,92 +120,60 @@ struct ProductQuickView: View {
                 thumbnailPlaceholder
             }
 
-            VStack(alignment: .leading, spacing: 8) {
+            VStack(alignment: .leading, spacing: 4) {
                 Text(item.productTitle)
                     .font(.system(size: 16, weight: .bold))
                     .tracking(-0.5)
                     .lineLimit(2)
                     .fixedSize(horizontal: false, vertical: true)
                     .foregroundStyle(.primary)
-
-                affiliateLinks
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(.horizontal, 20)
-        .padding(.bottom, 24)
+        .padding(.bottom, 16)
     }
 
-    // MARK: - Affiliate Links
+    // MARK: - Buy Buttons
 
-    private var affiliateLinks: some View {
-        VStack(alignment: .leading, spacing: 6) {
+    private var buyButtons: some View {
+        VStack(spacing: 10) {
             if let sources = item.sources, !sources.isEmpty {
                 ForEach(Array(sources.enumerated()), id: \.offset) { _, source in
-                    affiliateLinkRow(
+                    buyButton(
                         price: source.dealPriceFormatted ?? source.priceFormatted,
                         merchant: source.merchantName,
                         url: source.dealAffiliateUrl ?? source.affiliateUrl
                     )
                 }
             } else if let price = item.priceFormatted, let merchant = item.merchantName {
-                affiliateLinkRow(
+                buyButton(
                     price: price,
                     merchant: merchant,
                     url: item.affiliateUrl
                 )
             }
         }
+        .padding(.horizontal, 20)
+        .padding(.bottom, 24)
     }
 
-    private func affiliateLinkRow(price: String?, merchant: String, url: URL?) -> some View {
+    private func buyButton(price: String?, merchant: String, url: URL?) -> some View {
         Button {
             if let url = url {
                 onShop(url)
             }
         } label: {
             Text("\(price ?? "") from \(merchant)")
-                .font(.system(size: 14, weight: .medium))
-                .underline()
-                .foregroundStyle(.primary)
-                .lineLimit(1)
+                .font(.system(size: 16, weight: .bold))
+                .foregroundStyle(.white)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 10)
+                .padding(.horizontal, 16)
+                .background(Color.black)
+                .clipShape(RoundedRectangle(cornerRadius: 4))
         }
         .disabled(url == nil)
-    }
-
-    // MARK: - Article Reference
-
-    private var articleReference: some View {
-        Button {
-            onReadArticle(item.articleUrl)
-        } label: {
-            HStack(spacing: 8) {
-                Image(systemName: "doc.text")
-                    .font(.system(size: 14))
-                    .foregroundStyle(.secondary)
-
-                VStack(alignment: .leading, spacing: 2) {
-                    Text("From")
-                        .font(.system(size: 12, weight: .medium))
-                        .foregroundStyle(.secondary)
-                    Text(item.articleTitle)
-                        .font(.system(size: 14, weight: .semibold))
-                        .foregroundStyle(.primary)
-                        .lineLimit(1)
-                }
-
-                Spacer(minLength: 0)
-
-                Image(systemName: "chevron.right")
-                    .font(.system(size: 12, weight: .medium))
-                    .foregroundStyle(.tertiary)
-            }
-            .padding(12)
-            .background(Color(.systemGray6))
-            .clipShape(RoundedRectangle(cornerRadius: 10))
-        }
-        .padding(.horizontal, 20)
-        .padding(.bottom, 24)
     }
 
     // MARK: - Lede Text
@@ -278,7 +245,6 @@ extension Color {
             articleHeroImageURL: nil
         ),
         onShop: { _ in },
-        onReadArticle: { _ in },
         onDismiss: {}
     )
 }
