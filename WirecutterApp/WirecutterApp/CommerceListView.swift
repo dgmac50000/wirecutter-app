@@ -10,7 +10,6 @@ struct CommerceListView: View {
     @State private var selectedFilter: String = "For you"
     @State private var showHeader = true
     @State private var lastScrollOffset: CGFloat = 0
-    @State private var showSearch = false
     @State private var showAsk = false
     @State private var seeAllSection: CommerceCategorySection?
 
@@ -129,10 +128,6 @@ struct CommerceListView: View {
                 .padding(.bottom, 16)
         }
         .background(Color(.systemBackground))
-        .sheet(isPresented: $showSearch) {
-            SearchSheetView()
-                .presentationDetents([.large])
-        }
         .sheet(isPresented: $showAsk) {
             AskSheetView()
                 .presentationDetents([.large])
@@ -258,45 +253,29 @@ struct CommerceListView: View {
     // MARK: - Persistent Search Bar
 
     private var persistentSearchBar: some View {
-        HStack {
-            Button {
-                showSearch = true
-            } label: {
-                HStack(spacing: 4) {
-                    Image(systemName: "magnifyingglass")
-                        .font(.system(size: 14))
-                        .foregroundStyle(Color(hex: 0x727272))
-                    Text("Search Wirecutter")
-                        .font(.system(size: 14, weight: .medium))
-                        .foregroundStyle(Color(hex: 0x727272))
-                }
+        Button {
+            showAsk = true
+        } label: {
+            HStack(spacing: 6) {
+                Image(systemName: "sparkles")
+                    .font(.system(size: 14))
+                    .foregroundStyle(Color(hex: 0x5B69EB))
+                Text("Search Wirecutter")
+                    .font(.system(size: 14, weight: .medium))
+                    .foregroundStyle(Color(hex: 0x727272))
+                Spacer()
             }
-
-            Spacer()
-
-            Button {
-                showAsk = true
-            } label: {
-                HStack(spacing: 4) {
-                    Image(systemName: "sparkles")
-                        .font(.system(size: 14))
-                        .foregroundStyle(Color(hex: 0x5B69EB))
-                    Text("Ask")
-                        .font(.system(size: 16, weight: .medium))
-                        .foregroundStyle(Color(hex: 0x5A5A5A))
-                }
-            }
+            .padding(.horizontal, 14)
+            .padding(.vertical, 10)
+            .background(Color(.systemBackground))
+            .overlay(
+                Capsule()
+                    .stroke(Color(hex: 0xC7C7C7), lineWidth: 1)
+            )
+            .clipShape(Capsule())
+            .shadow(color: .black.opacity(0.08), radius: 8, x: 0, y: 2)
         }
-        .padding(.leading, 12)
-        .padding(.trailing, 16)
-        .padding(.vertical, 8)
-        .background(Color(.systemBackground))
-        .overlay(
-            Capsule()
-                .stroke(Color(hex: 0xC7C7C7), lineWidth: 1)
-        )
-        .clipShape(Capsule())
-        .shadow(color: .black.opacity(0.08), radius: 8, x: 0, y: 2)
+        .buttonStyle(.plain)
     }
 
     // MARK: - Helpers (kept for compatibility)
@@ -529,65 +508,6 @@ private struct SeeAllRowView: View {
             .shadow(color: .black.opacity(0.06), radius: 4, x: 0, y: 2)
         }
         .buttonStyle(.plain)
-    }
-}
-
-// MARK: - Search Sheet
-
-private struct SearchSheetView: View {
-    @State private var query = ""
-    @State private var hasSearched = false
-    @Environment(\.dismiss) private var dismiss
-
-    private let fakeResults = [
-        "Best Noise-Cancelling Headphones",
-        "Best Wireless Earbuds",
-        "Best Portable Bluetooth Speakers",
-        "Best Soundbars",
-        "Best Turntables for Beginners",
-    ]
-
-    var body: some View {
-        NavigationStack {
-            VStack(spacing: 0) {
-                if hasSearched {
-                    List(fakeResults.filter {
-                        query.isEmpty ? true : $0.lowercased().contains(query.lowercased())
-                    }, id: \.self) { result in
-                        HStack(spacing: 12) {
-                            Image(systemName: "doc.text")
-                                .foregroundStyle(.secondary)
-                            Text(result)
-                                .font(.system(size: 15))
-                        }
-                    }
-                    .listStyle(.plain)
-                } else {
-                    VStack(spacing: 16) {
-                        Image(systemName: "magnifyingglass")
-                            .font(.system(size: 36))
-                            .foregroundStyle(.tertiary)
-                        Text("Search for products, reviews, and recommendations")
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
-                            .multilineTextAlignment(.center)
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .padding()
-                }
-            }
-            .navigationTitle("Search")
-            .navigationBarTitleDisplayMode(.inline)
-            .searchable(text: $query, prompt: "Search Wirecutter")
-            .onChange(of: query) {
-                hasSearched = !query.isEmpty
-            }
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") { dismiss() }
-                }
-            }
-        }
     }
 }
 
