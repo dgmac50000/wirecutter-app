@@ -52,14 +52,14 @@
 		B40C1A2D2B0F000200000010 /* products.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = products.json; sourceTree = "<group>"; };
 		B40C1A2D2B0F000200000018 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B40C1A2D2B0F000200000019 /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Fonts; sourceTree = "<group>"; };
-		B40C1A2D2B0F000200000020 /* NYTFranklinCWMedium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NYTFranklinCWMedium.otf; sourceTree = "<group>"; };
-		B40C1A2D2B0F000200000021 /* NYTStockBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NYTStockBold.otf; sourceTree = "<group>"; };
-		B40C1A2D2B0F000200000022 /* NYTStockFractionBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NYTStockFractionBold.otf; sourceTree = "<group>"; };
-		B40C1A2D2B0F000200000023 /* NYTStockFractionRegular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NYTStockFractionRegular.otf; sourceTree = "<group>"; };
-		B40C1A2D2B0F000200000024 /* NYTStockRegular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NYTStockRegular.otf; sourceTree = "<group>"; };
-		B40C1A2D2B0F000200000025 /* NYTVFranklinBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NYTVFranklinBold.otf; sourceTree = "<group>"; };
-		B40C1A2D2B0F000200000026 /* NYTVFranklinLight.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NYTVFranklinLight.otf; sourceTree = "<group>"; };
-		B40C1A2D2B0F000200000027 /* NYTVFranklinMedium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NYTVFranklinMedium.otf; sourceTree = "<group>"; };
+		B40C1A2D2B0F000200000020 /* NYTFranklinCWMedium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = NYTFranklinCWMedium.otf; path = Fonts/NYTFranklinCWMedium.otf; sourceTree = "<group>"; };
+		B40C1A2D2B0F000200000021 /* NYTStockBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = NYTStockBold.otf; path = Fonts/NYTStockBold.otf; sourceTree = "<group>"; };
+		B40C1A2D2B0F000200000022 /* NYTStockFractionBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = NYTStockFractionBold.otf; path = Fonts/NYTStockFractionBold.otf; sourceTree = "<group>"; };
+		B40C1A2D2B0F000200000023 /* NYTStockFractionRegular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = NYTStockFractionRegular.otf; path = Fonts/NYTStockFractionRegular.otf; sourceTree = "<group>"; };
+		B40C1A2D2B0F000200000024 /* NYTStockRegular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = NYTStockRegular.otf; path = Fonts/NYTStockRegular.otf; sourceTree = "<group>"; };
+		B40C1A2D2B0F000200000025 /* NYTVFranklinBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = NYTVFranklinBold.otf; path = Fonts/NYTVFranklinBold.otf; sourceTree = "<group>"; };
+		B40C1A2D2B0F000200000026 /* NYTVFranklinLight.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = NYTVFranklinLight.otf; path = Fonts/NYTVFranklinLight.otf; sourceTree = "<group>"; };
+		B40C1A2D2B0F000200000027 /* NYTVFranklinMedium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = NYTVFranklinMedium.otf; path = Fonts/NYTVFranklinMedium.otf; sourceTree = "<group>"; };
 		B40C1A2D2B0F000300000001 /* WirecutterApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WirecutterApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
