@@ -23,8 +23,6 @@
 		B40C1A2D2B0F00010000000E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B40C1A2D2B0F00020000000E /* Assets.xcassets */; };
 		B40C1A2D2B0F00010000000F /* GeminiConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = B40C1A2D2B0F00020000000F /* GeminiConfig.plist */; };
 		B40C1A2D2B0F000100000010 /* products.json in Resources */ = {isa = PBXBuildFile; fileRef = B40C1A2D2B0F000200000010 /* products.json */; };
-		B40C1A2D2B0F000100000011 /* OnboardingModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40C1A2D2B0F000200000011 /* OnboardingModels.swift */; };
-		B40C1A2D2B0F000100000012 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40C1A2D2B0F000200000012 /* OnboardingView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,8 +42,6 @@
 		B40C1A2D2B0F00020000000E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B40C1A2D2B0F00020000000F /* GeminiConfig.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = GeminiConfig.plist; sourceTree = "<group>"; };
 		B40C1A2D2B0F000200000010 /* products.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = products.json; sourceTree = "<group>"; };
-		B40C1A2D2B0F000200000011 /* OnboardingModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingModels.swift; sourceTree = "<group>"; };
-		B40C1A2D2B0F000200000012 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		B40C1A2D2B0F000300000001 /* WirecutterApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WirecutterApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -97,8 +93,6 @@
 				B40C1A2D2B0F00020000000B /* ProductImageRanking.swift */,
 				B40C1A2D2B0F00020000000C /* ArticlePageFeedParser.swift */,
 				B40C1A2D2B0F00020000000D /* GeminiClient.swift */,
-				B40C1A2D2B0F000200000011 /* OnboardingModels.swift */,
-				B40C1A2D2B0F000200000012 /* OnboardingView.swift */,
 				B40C1A2D2B0F00020000000F /* GeminiConfig.plist */,
 				B40C1A2D2B0F000200000010 /* products.json */,
 				B40C1A2D2B0F00020000000E /* Assets.xcassets */,
@@ -180,8 +174,6 @@
 				B40C1A2D2B0F00010000000B /* ProductImageRanking.swift in Sources */,
 				B40C1A2D2B0F00010000000C /* ArticlePageFeedParser.swift in Sources */,
 				B40C1A2D2B0F00010000000D /* GeminiClient.swift in Sources */,
-				B40C1A2D2B0F000100000011 /* OnboardingModels.swift in Sources */,
-				B40C1A2D2B0F000100000012 /* OnboardingView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
