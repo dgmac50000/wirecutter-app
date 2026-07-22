@@ -1,20 +1,18 @@
 import SwiftUI
 
 struct CommerceListView: View {
-    private static let pageSize = 8
-
     @State private var items: [CommerceItem] = []
     @State private var isLoading = true
     @State private var errorMessage: String?
     @State private var safariItem: IdentifiableURL?
     @State private var quickViewItem: CommerceItem?
     @State private var feedMode: FeedMode = .forYou
-    @State private var visibleCountBySection: [String: Int] = [:]
     @State private var selectedFilter: String = "For you"
     @State private var showHeader = true
     @State private var lastScrollOffset: CGFloat = 0
     @State private var showSearch = false
     @State private var showAsk = false
+    @State private var seeAllSection: CommerceCategorySection?
 
     private let filters: [(name: String, icon: String?)] = [
         ("For you", nil),
@@ -72,52 +70,37 @@ struct CommerceListView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 } else {
                     ScrollView {
-                        LazyVStack(alignment: .leading, spacing: 28, pinnedViews: [.sectionHeaders]) {
+                        LazyVStack(alignment: .leading, spacing: 32) {
                             ForEach(sections) { section in
-                                let visible = visibleItems(for: section)
-                                let remaining = section.items.count - visible.count
-
-                                Section {
-                                    if let heroURL = section.heroImageURL {
-                                        CategoryHeroImage(url: heroURL)
-                                    }
-
-                                    ForEach(visible.map {
-                                        FeedRow(sectionID: section.id, item: $0)
-                                    }) { row in
-                                        CommerceCardView(
-                                            item: row.item,
-                                            onShop: { url in
-                                                safariItem = IdentifiableURL(url: url)
-                                            },
-                                            onQuickView: {
-                                                quickViewItem = row.item
-                                            }
-                                        )
-                                    }
-
-                                    if remaining > 0 {
-                                        Button {
-                                            loadMore(in: section)
-                                        } label: {
-                                            Text(loadMoreLabel(remaining: remaining))
-                                                .font(.subheadline.weight(.semibold))
-                                                .frame(maxWidth: .infinity)
-                                                .padding(.vertical, 12)
-                                        }
-                                        .buttonStyle(.bordered)
-                                        .tint(.primary)
-                                    }
-                                } header: {
+                                VStack(alignment: .leading, spacing: 12) {
                                     CategorySectionHeader(
                                         title: section.name,
                                         count: section.items.count,
-                                        subtitle: feedMode == .assistant ? "Gift ideas" : nil
+                                        onSeeAll: {
+                                            seeAllSection = section
+                                        }
                                     )
+
+                                    // Horizontal carousel — first 5 items
+                                    ScrollView(.horizontal, showsIndicators: false) {
+                                        LazyHStack(spacing: 14) {
+                                            ForEach(Array(section.items.prefix(5)).map {
+                                                FeedRow(sectionID: section.id, item: $0)
+                                            }) { row in
+                                                CarouselCardView(
+                                                    item: row.item,
+                                                    onTap: {
+                                                        quickViewItem = row.item
+                                                    }
+                                                )
+                                            }
+                                        }
+                                        .padding(.horizontal, 20)
+                                    }
                                 }
                             }
                         }
-                        .padding()
+                        .padding(.vertical, 16)
                         .background(
                             GeometryReader { geo in
                                 Color.clear
@@ -173,6 +156,23 @@ struct CommerceListView: View {
             )
             .presentationDetents([.medium, .large])
             .presentationDragIndicator(.hidden)
+        }
+        .sheet(item: $seeAllSection) { section in
+            SeeAllView(
+                section: section,
+                onProductTap: { item in
+                    seeAllSection = nil
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                        quickViewItem = item
+                    }
+                },
+                onShop: { url in
+                    seeAllSection = nil
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                        safariItem = IdentifiableURL(url: url)
+                    }
+                }
+            )
         }
         .task {
             await loadFeed()
@@ -299,39 +299,12 @@ struct CommerceListView: View {
         .shadow(color: .black.opacity(0.08), radius: 8, x: 0, y: 2)
     }
 
-    // MARK: - Section pagination
-
-    private func sectionKey(_ section: CommerceCategorySection) -> String {
-        "\(feedMode.rawValue)|\(section.id)"
-    }
-
-    private func visibleLimit(for section: CommerceCategorySection) -> Int {
-        visibleCountBySection[sectionKey(section)] ?? Self.pageSize
-    }
-
-    private func visibleItems(for section: CommerceCategorySection) -> [CommerceItem] {
-        Array(section.items.prefix(visibleLimit(for: section)))
-    }
-
-    private func loadMore(in section: CommerceCategorySection) {
-        let key = sectionKey(section)
-        let current = visibleCountBySection[key] ?? Self.pageSize
-        visibleCountBySection[key] = min(current + Self.pageSize, section.items.count)
-    }
-
-    private func loadMoreLabel(remaining: Int) -> String {
-        let next = min(Self.pageSize, remaining)
-        if remaining <= Self.pageSize {
-            return "Load more (\(remaining))"
-        }
-        return "Load more (\(next) of \(remaining))"
-    }
+    // MARK: - Helpers (kept for compatibility)
 
     private func loadFeed() async {
         do {
             let fetched = try await APIClient.shared.fetchCommerceFeed()
             items = fetched
-            visibleCountBySection = [:]
             isLoading = false
         } catch {
             errorMessage = error.localizedDescription
@@ -345,60 +318,217 @@ struct CommerceListView: View {
 private struct CategorySectionHeader: View {
     let title: String
     let count: Int
-    var subtitle: String? = nil
+    var onSeeAll: (() -> Void)?
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 2) {
-            HStack(alignment: .firstTextBaseline) {
-                Text(title)
-                    .font(.title2.weight(.bold))
-                    .foregroundStyle(.primary)
-                Spacer()
-                Text("\(count)")
-                    .font(.subheadline.weight(.medium))
-                    .foregroundStyle(.secondary)
-            }
-            if let subtitle {
-                Text(subtitle)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+        HStack(alignment: .firstTextBaseline) {
+            Text(title)
+                .font(.title3.weight(.bold))
+                .foregroundStyle(.primary)
+            Spacer()
+            if let onSeeAll {
+                Button {
+                    onSeeAll()
+                } label: {
+                    Text("See all")
+                        .font(.subheadline.weight(.medium))
+                        .foregroundStyle(.secondary)
+                }
             }
         }
-        .padding(.vertical, 8)
-        .padding(.horizontal, 4)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color(.systemGroupedBackground).opacity(0.96))
+        .padding(.horizontal, 20)
     }
 }
 
-private struct CategoryHeroImage: View {
-    let url: URL
+// MARK: - Carousel Card (compact horizontal card)
+
+private struct CarouselCardView: View {
+    let item: CommerceItem
+    let onTap: () -> Void
 
     var body: some View {
-        AsyncImage(url: url) { phase in
-            switch phase {
-            case .success(let image):
-                image
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 220)
-                    .clipped()
-            case .failure:
-                Rectangle()
-                    .fill(Color(.systemGray5))
-                    .frame(height: 220)
-            case .empty:
-                ProgressView()
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 220)
-            @unknown default:
-                Rectangle()
-                    .fill(Color(.systemGray5))
-                    .frame(height: 220)
+        Button {
+            onTap()
+        } label: {
+            VStack(alignment: .leading, spacing: 8) {
+                if let imageUrl = item.displayImageUrl {
+                    AsyncImage(url: imageUrl) { phase in
+                        switch phase {
+                        case .success(let image):
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 160, height: 160)
+                                .clipped()
+                        case .failure:
+                            Rectangle()
+                                .fill(Color(.systemGray5))
+                                .frame(width: 160, height: 160)
+                        case .empty:
+                            ProgressView()
+                                .frame(width: 160, height: 160)
+                        @unknown default:
+                            Rectangle()
+                                .fill(Color(.systemGray5))
+                                .frame(width: 160, height: 160)
+                        }
+                    }
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                } else {
+                    Rectangle()
+                        .fill(Color(.systemGray5))
+                        .frame(width: 160, height: 160)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                }
+
+                if let ribbon = item.ribbon {
+                    Text(ribbon)
+                        .font(.system(size: 10, weight: .bold))
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 6)
+                        .padding(.vertical, 2)
+                        .background(ribbonColor(for: ribbon))
+                        .clipShape(Capsule())
+                }
+
+                Text(item.productTitle)
+                    .font(.system(size: 13, weight: .medium))
+                    .foregroundStyle(Color(.label))
+                    .lineLimit(2)
+                    .multilineTextAlignment(.leading)
+
+                if let price = item.displayPrice {
+                    Text(price)
+                        .font(.system(size: 13, weight: .bold))
+                        .foregroundStyle(Color(.label))
+                }
+            }
+            .frame(width: 160)
+        }
+        .buttonStyle(.plain)
+    }
+
+    private func ribbonColor(for ribbon: String) -> Color {
+        switch ribbon {
+        case "Top Pick": return .red
+        case "Budget Pick": return .green
+        case "Upgrade Pick": return .blue
+        case "Also Great": return .orange
+        default: return .gray
+        }
+    }
+}
+
+// MARK: - See All View (full list for a section)
+
+private struct SeeAllView: View {
+    let section: CommerceCategorySection
+    let onProductTap: (CommerceItem) -> Void
+    let onShop: (URL) -> Void
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                LazyVStack(spacing: 16) {
+                    ForEach(section.items) { item in
+                        SeeAllRowView(item: item, onTap: {
+                            onProductTap(item)
+                        }, onShop: {
+                            if let url = item.shopUrl {
+                                onShop(url)
+                            }
+                        })
+                    }
+                }
+                .padding()
+            }
+            .navigationTitle(section.name)
+            .navigationBarTitleDisplayMode(.large)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Done") { dismiss() }
+                }
             }
         }
-        .clipShape(RoundedRectangle(cornerRadius: 14))
+    }
+}
+
+private struct SeeAllRowView: View {
+    let item: CommerceItem
+    let onTap: () -> Void
+    let onShop: () -> Void
+
+    var body: some View {
+        Button {
+            onTap()
+        } label: {
+            HStack(spacing: 14) {
+                if let imageUrl = item.displayImageUrl {
+                    AsyncImage(url: imageUrl) { phase in
+                        switch phase {
+                        case .success(let image):
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 80, height: 80)
+                                .clipped()
+                        case .failure, .empty:
+                            Rectangle()
+                                .fill(Color(.systemGray5))
+                                .frame(width: 80, height: 80)
+                        @unknown default:
+                            Rectangle()
+                                .fill(Color(.systemGray5))
+                                .frame(width: 80, height: 80)
+                        }
+                    }
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                }
+
+                VStack(alignment: .leading, spacing: 4) {
+                    if let ribbon = item.ribbon {
+                        Text(ribbon)
+                            .font(.system(size: 10, weight: .bold))
+                            .foregroundStyle(.orange)
+                    }
+                    Text(item.productTitle)
+                        .font(.system(size: 15, weight: .medium))
+                        .foregroundStyle(Color(.label))
+                        .lineLimit(2)
+                    if let price = item.displayPrice {
+                        Text(price)
+                            .font(.system(size: 14, weight: .bold))
+                            .foregroundStyle(Color(.label))
+                    }
+                    if let merchant = item.displayMerchant {
+                        Text("at \(merchant)")
+                            .font(.system(size: 12))
+                            .foregroundStyle(.secondary)
+                    }
+                }
+
+                Spacer()
+
+                if item.shopUrl != nil {
+                    Button {
+                        onShop()
+                    } label: {
+                        Image(systemName: "cart")
+                            .font(.system(size: 14))
+                            .foregroundStyle(.white)
+                            .frame(width: 32, height: 32)
+                            .background(Color.black)
+                            .clipShape(Circle())
+                    }
+                }
+            }
+            .padding(12)
+            .background(Color(.systemBackground))
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .shadow(color: .black.opacity(0.06), radius: 4, x: 0, y: 2)
+        }
+        .buttonStyle(.plain)
     }
 }
 
@@ -601,129 +731,6 @@ private struct AskSheetView: View {
     }
 }
 
-// MARK: - Commerce Card
-
-private struct CommerceCardView: View {
-    let item: CommerceItem
-    let onShop: (URL) -> Void
-    let onQuickView: () -> Void
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            if let imageUrl = item.displayImageUrl {
-                AsyncImage(url: imageUrl) { phase in
-                    switch phase {
-                    case .success(let image):
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(height: 200)
-                            .clipped()
-                    case .failure:
-                        placeholder
-                    case .empty:
-                        ProgressView()
-                            .frame(height: 200)
-                    @unknown default:
-                        placeholder
-                    }
-                }
-                .frame(maxWidth: .infinity)
-                .clipShape(RoundedRectangle(cornerRadius: 10))
-            }
-
-            if let ribbon = item.ribbon {
-                Text(ribbon)
-                    .font(.caption)
-                    .fontWeight(.semibold)
-                    .foregroundStyle(.white)
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 4)
-                    .background(ribbonColor(for: ribbon))
-                    .clipShape(Capsule())
-            }
-
-            Text(item.productTitle)
-                .font(.headline)
-                .lineLimit(2)
-
-            if let price = item.displayPrice {
-                HStack(spacing: 6) {
-                    Text(price)
-                        .font(.title3)
-                        .fontWeight(.bold)
-                        .foregroundStyle(.primary)
-                    if item.hasDealData == true,
-                       let street = item.sources?.first?.streetPriceFormatted {
-                        Text(street)
-                            .font(.subheadline)
-                            .strikethrough()
-                            .foregroundStyle(.secondary)
-                    }
-                }
-            }
-
-            if let merchant = item.displayMerchant {
-                HStack(spacing: 6) {
-                    Text("at \(merchant)")
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                    if let promo = item.sources?.first?.promoCode, !promo.isEmpty {
-                        Text("Code: \(promo)")
-                            .font(.caption)
-                            .fontWeight(.medium)
-                            .foregroundStyle(.white)
-                            .padding(.horizontal, 6)
-                            .padding(.vertical, 2)
-                            .background(Color.orange)
-                            .clipShape(Capsule())
-                    }
-                }
-            }
-
-            HStack(spacing: 12) {
-                if let shopUrl = item.shopUrl {
-                    Button {
-                        onShop(shopUrl)
-                    } label: {
-                        Label(item.displayMerchant ?? "Buy", systemImage: "cart")
-                            .frame(maxWidth: .infinity)
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .tint(.black)
-                }
-
-                Button {
-                    onQuickView()
-                } label: {
-                    Label("Quick view", systemImage: "eye")
-                        .frame(maxWidth: .infinity)
-                }
-                .buttonStyle(.borderedProminent)
-                .tint(.gray)
-            }
-        }
-        .padding()
-        .background(Color(.systemBackground))
-        .clipShape(RoundedRectangle(cornerRadius: 14))
-        .shadow(color: .black.opacity(0.08), radius: 8, x: 0, y: 2)
-    }
-
-    private var placeholder: some View {
-        Rectangle()
-            .fill(Color(.systemGray5))
-            .frame(height: 200)
-    }
-
-    private func ribbonColor(for ribbon: String) -> Color {
-        switch ribbon {
-        case "Top Pick": return .red
-        case "Budget Pick": return .green
-        case "Upgrade Pick": return .blue
-        default: return .gray
-        }
-    }
-}
 
 // MARK: - Scroll Offset Preference Key
 
