@@ -18,6 +18,8 @@
 		A1000009 /* GenaiSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000009 /* GenaiSearchView.swift */; };
 		A1000010 /* SearchAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000010 /* SearchAPIClient.swift */; };
 		A1000011 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A2000011 /* Assets.xcassets */; };
+		A1000012 /* ProductImageRanking.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000012 /* ProductImageRanking.swift */; };
+		A1000013 /* ArticlePageFeedParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000013 /* ArticlePageFeedParser.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +34,8 @@
 		A2000009 /* GenaiSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenaiSearchView.swift; sourceTree = "<group>"; };
 		A2000010 /* SearchAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchAPIClient.swift; sourceTree = "<group>"; };
 		A2000011 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A2000012 /* ProductImageRanking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductImageRanking.swift; sourceTree = "<group>"; };
+		A2000013 /* ArticlePageFeedParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticlePageFeedParser.swift; sourceTree = "<group>"; };
 		A3000001 /* WirecutterApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WirecutterApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -78,6 +82,8 @@
 				A2000008 /* GenaiSearchModels.swift */,
 				A2000009 /* GenaiSearchView.swift */,
 				A2000010 /* SearchAPIClient.swift */,
+				A2000012 /* ProductImageRanking.swift */,
+				A2000013 /* ArticlePageFeedParser.swift */,
 				A2000011 /* Assets.xcassets */,
 			);
 			path = WirecutterApp;
@@ -154,6 +160,8 @@
 				A1000008 /* GenaiSearchModels.swift in Sources */,
 				A1000009 /* GenaiSearchView.swift in Sources */,
 				A1000010 /* SearchAPIClient.swift in Sources */,
+				A1000012 /* ProductImageRanking.swift in Sources */,
+				A1000013 /* ArticlePageFeedParser.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -2,6 +2,7 @@ import { Router, Request, Response } from "express";
 import { getProductCards, getScoopProductCards } from "../graphql/minotaurClient.js";
 import type { MinotaurProductCard, MinotaurSource } from "../types/minotaur.js";
 import type { CommerceItem, CommerceSource, CommerceFeedResponse } from "../types/commerce.js";
+import { preferHiResImages } from "../utils/preferHiResImages.js";
 
 const router = Router();
 
@@ -64,7 +65,7 @@ function normalizeProductCard(card: MinotaurProductCard): CommerceItem | null {
     productId: card.productId,
     productTitle: product?.name ?? card.title,
     productDescription: card.description,
-    images: product?.images ?? [],
+    images: preferHiResImages(product?.images ?? []),
     hasDealData: product?.hasDealData ?? false,
     sources,
     pickTypeId: card.pickTypeId,

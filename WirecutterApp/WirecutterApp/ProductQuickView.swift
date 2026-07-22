@@ -272,7 +272,10 @@ extension Color {
             affiliateUrl: URL(string: "https://wclink.co/link/example"),
             priceFormatted: "$98",
             pickTypeId: 1,
-            ribbon: "Top Pick"
+            ribbon: "Top Pick",
+            categoryName: "Home",
+            categorySlug: "home",
+            articleHeroImageURL: nil
         ),
         onShop: { _ in },
         onReadArticle: { _ in },
