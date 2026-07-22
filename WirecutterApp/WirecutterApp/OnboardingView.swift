@@ -65,7 +65,7 @@ struct OnboardingView: View {
                     .multilineTextAlignment(.center)
                     .lineSpacing(4)
 
-                Text("Tell us what you\u2019re into and we\u2019ll\npersonalize your recommendations.")
+                Text("Tell us what you\u{2019}re into and we\u{2019}ll\npersonalize your recommendations.")
                     .font(.system(size: 17))
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
@@ -158,10 +158,10 @@ struct OnboardingView: View {
                 VStack(alignment: .leading, spacing: 28) {
                     // Budget section
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("What\u2019s your\nbudget style?")
+                        Text("What\u{2019}s your\nbudget style?")
                             .font(.system(size: 28, weight: .bold, design: .serif))
                             .lineSpacing(2)
-                        Text("We\u2019ll prioritize picks that match.")
+                        Text("We\u{2019}ll prioritize picks that match.")
                             .font(.system(size: 15))
                             .foregroundStyle(.secondary)
                     }
@@ -181,7 +181,7 @@ struct OnboardingView: View {
                     VStack(alignment: .leading, spacing: 8) {
                         Text("What brings you here?")
                             .font(.system(size: 20, weight: .bold, design: .serif))
-                        Text("Optional \u2014 helps us make better picks.")
+                        Text("Optional \u{2014} helps us make better picks.")
                             .font(.system(size: 15))
                             .foregroundStyle(.secondary)
                     }
@@ -239,10 +239,10 @@ struct OnboardingView: View {
                         .foregroundStyle(Color(hex: 0x5B69EB))
                 }
 
-                Text("You\u2019re all set!")
+                Text("You\u{2019}re all set!")
                     .font(.system(size: 32, weight: .bold, design: .serif))
 
-                Text("We\u2019ll show you personalized picks\nbased on your interests.")
+                Text("We\u{2019}ll show you personalized picks\nbased on your interests.")
                     .font(.system(size: 17))
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
