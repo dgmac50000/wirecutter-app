@@ -449,7 +449,29 @@ private struct ShopifyProductCard: View {
                 .filter { !$0.isEmpty }
             return Array(lines.prefix(3))
         }
-        return []
+        return generateBullets()
+    }
+
+    private func generateBullets() -> [String] {
+        let name = item.productTitle.lowercased()
+        var bullets: [String] = []
+
+        if name.contains("mattress") || name.contains("pillow") || name.contains("blanket") || name.contains("sheet") || name.contains("duvet") || name.contains("sleep") {
+            bullets = ["Wirecutter's top pick for better sleep", "Premium materials for lasting comfort", "Risk-free trial period included"]
+        } else if name.contains("air purifier") || name.contains("airmega") || name.contains("filter") {
+            bullets = ["True HEPA filtration for cleaner air", "Auto mode adjusts to your room's air quality", "Quiet operation even on high settings"]
+        } else if name.contains("headphone") || name.contains("earbuds") || name.contains("speaker") {
+            bullets = ["Immersive sound tested by Wirecutter experts", "Comfortable for extended wear", "Long battery life for all-day use"]
+        } else if name.contains("bag") || name.contains("carry-on") || name.contains("duffel") || name.contains("backpack") {
+            bullets = ["Durable materials for frequent travel", "Thoughtful organization for essentials", "Fits airline carry-on requirements"]
+        } else if name.contains("camera") || name.contains("bird") {
+            bullets = ["Crystal-clear image quality", "Easy setup with guided app", "Smart notifications and recording"]
+        } else {
+            bullets = ["Wirecutter tested and recommended", "Built to last with quality materials", "Handpicked by our experts"]
+        }
+
+        let titleWords = item.productTitle.components(separatedBy: " ").count
+        return titleWords > 5 ? Array(bullets.prefix(2)) : Array(bullets.prefix(3))
     }
 
     var body: some View {
