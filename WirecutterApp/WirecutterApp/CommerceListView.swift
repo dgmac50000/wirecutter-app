@@ -73,7 +73,7 @@ struct CommerceListView: View {
                         LazyVStack(alignment: .leading, spacing: 32) {
                             ForEach(Array(sections.enumerated()), id: \.element.id) { index, section in
                                 // Category carousel
-                                VStack(alignment: .leading, spacing: 12) {
+                                VStack(alignment: .leading, spacing: 8) {
                                     CategorySectionHeader(
                                         title: section.name,
                                         count: section.items.count,
@@ -83,7 +83,7 @@ struct CommerceListView: View {
                                     )
 
                                     ScrollView(.horizontal, showsIndicators: false) {
-                                        LazyHStack(spacing: 14) {
+                                        LazyHStack(spacing: 16) {
                                             ForEach(Array(section.items.prefix(5)).map {
                                                 FeedRow(sectionID: section.id, item: $0)
                                             }) { row in
@@ -320,18 +320,20 @@ private struct CategorySectionHeader: View {
     var body: some View {
         HStack(alignment: .center) {
             Text(title)
-                .font(.title3.weight(.bold))
-                .foregroundStyle(.primary)
+                .font(.custom("NYTVFranklin-Bold", size: 22))
+                .tracking(-0.5)
+                .foregroundStyle(.black)
+                .lineSpacing(24 - 22)
             Spacer()
             if let onSeeAll {
                 Button {
                     onSeeAll()
                 } label: {
                     Image(systemName: "chevron.right")
-                        .font(.system(size: 12, weight: .semibold))
+                        .font(.system(size: 10, weight: .semibold))
                         .foregroundStyle(Color(.label))
-                        .frame(width: 30, height: 30)
-                        .background(Color(.systemGray5))
+                        .frame(width: 24, height: 24)
+                        .background(Color(.systemBackground))
                         .clipShape(Circle())
                 }
             }
@@ -350,8 +352,9 @@ private struct CarouselCardView: View {
         Button {
             onTap()
         } label: {
-            VStack(alignment: .leading, spacing: 8) {
-                ZStack(alignment: .topTrailing) {
+            VStack(alignment: .leading, spacing: 12) {
+                // Image container with border and internal padding
+                ZStack {
                     if let imageUrl = item.displayImageUrl {
                         AsyncImage(url: imageUrl) { phase in
                             switch phase {
@@ -359,74 +362,70 @@ private struct CarouselCardView: View {
                                 image
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
-                                    .frame(width: 160, height: 160)
+                                    .blendMode(.multiply)
+                                    .frame(width: 158 - 16, height: 161 - 16)
                                     .clipped()
                             case .failure:
                                 Rectangle()
                                     .fill(Color(.systemGray5))
-                                    .frame(width: 160, height: 160)
+                                    .frame(width: 158 - 16, height: 161 - 16)
                             case .empty:
                                 ProgressView()
-                                    .frame(width: 160, height: 160)
+                                    .frame(width: 158 - 16, height: 161 - 16)
                             @unknown default:
                                 Rectangle()
                                     .fill(Color(.systemGray5))
-                                    .frame(width: 160, height: 160)
+                                    .frame(width: 158 - 16, height: 161 - 16)
                             }
                         }
-                        .clipShape(RoundedRectangle(cornerRadius: 10))
                     } else {
                         Rectangle()
                             .fill(Color(.systemGray5))
-                            .frame(width: 160, height: 160)
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                            .frame(width: 158 - 16, height: 161 - 16)
                     }
-
-                    // Shopify products no longer appear in carousels;
-                    // they are shown as full-width interstitial cards instead.
                 }
-
-                if let ribbon = item.ribbon {
-                    Text(ribbon)
-                        .font(.system(size: 10, weight: .bold))
-                        .foregroundStyle(.white)
-                        .padding(.horizontal, 6)
-                        .padding(.vertical, 2)
-                        .background(ribbonColor(for: ribbon))
-                        .clipShape(Capsule())
-                }
+                .frame(width: 158, height: 161)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(Color(hex: 0xDFDFDF), lineWidth: 1)
+                )
+                .clipShape(RoundedRectangle(cornerRadius: 8))
 
                 Text(item.productTitle)
-                    .font(.system(size: 13, weight: .medium))
-                    .foregroundStyle(Color(.label))
+                    .font(.custom("NYTVFranklin-Bold", size: 16))
+                    .foregroundStyle(.black)
                     .lineLimit(2)
                     .multilineTextAlignment(.leading)
+                    .lineSpacing(20 - 16)
 
-                if let price = item.displayPrice {
-                    Text(price)
-                        .font(.system(size: 13, weight: .bold))
-                        .foregroundStyle(Color(.label))
-                }
-
-                if let merchant = item.displayMerchant {
-                    Text("at \(merchant)")
-                        .font(.system(size: 11))
-                        .foregroundStyle(.secondary)
-                        .lineLimit(1)
-                }
+                priceLine
             }
-            .frame(width: 160)
+            .frame(width: 158)
         }
         .buttonStyle(.plain)
     }
 
-    private func ribbonColor(for ribbon: String) -> Color {
-        switch ribbon {
-        case "Top Pick": return .red
-        case "Budget Pick": return .green
-        case "Upgrade Pick": return .blue
-        case "Also Great": return .orange
-        default: return .gray
+    @ViewBuilder
+    private var priceLine: some View {
+        let priceText: String? = {
+            switch (item.displayPrice, item.displayMerchant) {
+            case let (price?, merchant?):
+                return "\(price) from \(merchant)"
+            case let (price?, nil):
+                return price
+            case let (nil, merchant?):
+                return merchant
+            default:
+                return nil
+            }
+        }()
+
+        if let text = priceText {
+            Text(text)
+                .font(.custom("NYTVFranklin-Medium", size: 14))
+                .foregroundStyle(.black)
+                .underline()
+                .lineLimit(1)
         }
     }
 }
