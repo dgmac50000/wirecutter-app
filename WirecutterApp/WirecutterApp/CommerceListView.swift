@@ -442,42 +442,53 @@ private struct ShopifyProductCard: View {
 
     @State private var showApplePayConfirmation = false
 
+    private var bulletPoints: [String] {
+        if let desc = item.productDescription, !desc.isEmpty {
+            let lines = desc.components(separatedBy: .newlines)
+                .map { $0.trimmingCharacters(in: .whitespaces) }
+                .filter { !$0.isEmpty }
+            return Array(lines.prefix(3))
+        }
+        return ["Wirecutter tested & recommended", "Free shipping included", "Easy returns"]
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             // Product image
             Button {
                 onTap()
             } label: {
-                ZStack {
-                    Color(hex: 0xF6F6F6)
-
-                    if let imageUrl = item.displayImageUrl {
-                        AsyncImage(url: imageUrl) { phase in
-                            switch phase {
-                            case .success(let image):
-                                image
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .padding(16)
-                            case .failure:
-                                Image(systemName: "photo")
-                                    .font(.system(size: 40))
-                                    .foregroundStyle(Color(.systemGray3))
-                            case .empty:
-                                ProgressView()
-                            @unknown default:
-                                EmptyView()
-                            }
+                if let imageUrl = item.displayImageUrl {
+                    AsyncImage(url: imageUrl) { phase in
+                        switch phase {
+                        case .success(let image):
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 280)
+                                .clipped()
+                        case .failure:
+                            Rectangle()
+                                .fill(Color(.systemGray5))
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 280)
+                        case .empty:
+                            ProgressView()
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 280)
+                        @unknown default:
+                            EmptyView()
                         }
-                    } else {
-                        Image(systemName: "photo")
-                            .font(.system(size: 40))
-                            .foregroundStyle(Color(.systemGray3))
                     }
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                } else {
+                    Rectangle()
+                        .fill(Color(.systemGray5))
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 280)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
                 }
-                .frame(maxWidth: .infinity)
-                .frame(height: 280)
-                .clipShape(RoundedRectangle(cornerRadius: 8))
             }
             .buttonStyle(.plain)
 
@@ -499,21 +510,13 @@ private struct ShopifyProductCard: View {
                     .lineLimit(3)
                     .multilineTextAlignment(.leading)
 
-                // Bullet points from description
-                if let description = item.productDescription, !description.isEmpty {
-                    let bullets = description
-                        .components(separatedBy: .newlines)
-                        .map { $0.trimmingCharacters(in: .whitespaces) }
-                        .filter { !$0.isEmpty }
-                        .prefix(3)
-
-                    VStack(alignment: .leading, spacing: 4) {
-                        ForEach(Array(bullets.enumerated()), id: \.offset) { _, bullet in
-                            Text("• \(bullet)")
-                                .font(.custom("NYTVFranklin-Medium", fixedSize: 14))
-                                .foregroundStyle(.black)
-                                .lineSpacing(6)
-                        }
+                // Bullet points
+                VStack(alignment: .leading, spacing: 3) {
+                    ForEach(bulletPoints, id: \.self) { bullet in
+                        Text("• \(bullet)")
+                            .font(.custom("NYTVFranklin-Medium", fixedSize: 12))
+                            .foregroundStyle(Color(hex: 0x666666))
+                            .lineLimit(1)
                     }
                 }
             }
