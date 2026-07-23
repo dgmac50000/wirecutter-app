@@ -459,10 +459,10 @@ private struct CarouselCardView: View {
                 } label: {
                     Text(buyButtonText)
                         .font(.custom("NYTVFranklin-Bold", fixedSize: 14))
-                        .foregroundStyle(.black)
+                        .foregroundStyle(.white)
                         .frame(maxWidth: .infinity)
                         .frame(height: 36)
-                        .background(Color(hex: 0xFCD843))
+                        .background(Color.black)
                 }
                 .buttonStyle(.plain)
             }
