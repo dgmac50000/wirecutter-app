@@ -274,12 +274,13 @@ struct CommerceListView: View {
             showAsk = true
         } label: {
             HStack(spacing: 6) {
-                Image(systemName: "sparkles")
-                    .font(.system(size: 14))
+                Image("NYTAIIcon")
+                    .resizable()
+                    .frame(width: 18, height: 18)
                     .foregroundStyle(Color(hex: 0x5B69EB))
                 Text("Search Wirecutter")
-                    .font(.system(size: 14, weight: .medium))
-                    .foregroundStyle(Color(hex: 0x727272))
+                    .font(.custom("NYTVFranklin-Medium", fixedSize: 14))
+                    .foregroundStyle(Color(hex: 0x222222))
                 Spacer()
             }
             .padding(.horizontal, 14)
@@ -287,7 +288,7 @@ struct CommerceListView: View {
             .background(Color(.systemBackground))
             .overlay(
                 Capsule()
-                    .stroke(Color(hex: 0xC7C7C7), lineWidth: 1)
+                    .stroke(Color(hex: 0xDFDFDF), lineWidth: 1)
             )
             .clipShape(Capsule())
             .shadow(color: .black.opacity(0.08), radius: 8, x: 0, y: 2)
@@ -320,10 +321,10 @@ private struct CategorySectionHeader: View {
     var body: some View {
         HStack(alignment: .center) {
             Text(title)
-                .font(.custom("NYTVFranklin-Bold", size: 22))
+                .font(.custom("NYTVFranklin-Bold", fixedSize: 22))
                 .tracking(-0.5)
                 .foregroundStyle(.black)
-                .lineSpacing(24 - 22)
+                .lineSpacing(2)
             Spacer()
             if let onSeeAll {
                 Button {
@@ -354,7 +355,7 @@ private struct CarouselCardView: View {
         } label: {
             VStack(alignment: .leading, spacing: 12) {
                 // Image container with border and internal padding
-                ZStack {
+                VStack(spacing: 0) {
                     if let imageUrl = item.displayImageUrl {
                         AsyncImage(url: imageUrl) { phase in
                             switch phase {
@@ -362,28 +363,30 @@ private struct CarouselCardView: View {
                                 image
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
-                                    .blendMode(.multiply)
-                                    .frame(width: 158 - 16, height: 161 - 16)
+                                    .frame(width: 142, height: 130)
                                     .clipped()
+                                    .blendMode(.multiply)
                             case .failure:
                                 Rectangle()
                                     .fill(Color(.systemGray5))
-                                    .frame(width: 158 - 16, height: 161 - 16)
+                                    .frame(width: 142, height: 130)
                             case .empty:
                                 ProgressView()
-                                    .frame(width: 158 - 16, height: 161 - 16)
+                                    .frame(width: 142, height: 130)
                             @unknown default:
                                 Rectangle()
                                     .fill(Color(.systemGray5))
-                                    .frame(width: 158 - 16, height: 161 - 16)
+                                    .frame(width: 142, height: 130)
                             }
                         }
                     } else {
                         Rectangle()
                             .fill(Color(.systemGray5))
-                            .frame(width: 158 - 16, height: 161 - 16)
+                            .frame(width: 142, height: 130)
                     }
+                    Spacer(minLength: 0)
                 }
+                .padding(8)
                 .frame(width: 158, height: 161)
                 .overlay(
                     RoundedRectangle(cornerRadius: 8)
@@ -392,11 +395,11 @@ private struct CarouselCardView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 8))
 
                 Text(item.productTitle)
-                    .font(.custom("NYTVFranklin-Bold", size: 16))
+                    .font(.custom("NYTVFranklin-Bold", fixedSize: 16))
                     .foregroundStyle(.black)
                     .lineLimit(2)
                     .multilineTextAlignment(.leading)
-                    .lineSpacing(20 - 16)
+                    .lineSpacing(4)
 
                 priceLine
             }
@@ -422,7 +425,7 @@ private struct CarouselCardView: View {
 
         if let text = priceText {
             Text(text)
-                .font(.custom("NYTVFranklin-Medium", size: 14))
+                .font(.custom("NYTVFranklin-Medium", fixedSize: 14))
                 .foregroundStyle(.black)
                 .underline()
                 .lineLimit(1)
@@ -762,8 +765,7 @@ private struct AskSheetView: View {
     private var promptContent: some View {
         VStack(alignment: .leading, spacing: 24) {
             Text("Wirecutter Finder")
-                .font(.custom("NYTKarnak-Medium", size: 32, relativeTo: .title))
-                .lineSpacing(0)
+                .font(.custom("NYTKarnak-Medium", fixedSize: 32))
                 .foregroundStyle(Color.black)
 
             VStack(alignment: .leading, spacing: 24) {
@@ -778,7 +780,7 @@ private struct AskSheetView: View {
                                 .frame(width: 21, height: 20)
                                 .foregroundStyle(Color(hex: 0x5B69EB))
                             Text(prompt)
-                                .font(.custom("NYTVFranklin-Medium", size: 16, relativeTo: .body))
+                                .font(.custom("NYTVFranklin-Medium", fixedSize: 16))
                                 .foregroundStyle(Color(hex: 0x191919))
                         }
                         .padding(.horizontal, 15)
@@ -840,7 +842,7 @@ private struct AskSheetView: View {
                 .foregroundStyle(Color(hex: 0x5B69EB))
             TextField("I need something with SPF for a beach trip.", text: $query)
                 .textFieldStyle(.plain)
-                .font(.custom("NYTVFranklin-Medium", size: 14, relativeTo: .body))
+                .font(.custom("NYTVFranklin-Medium", fixedSize: 14))
                 .foregroundStyle(Color(hex: 0x222222))
                 .submitLabel(.send)
                 .onSubmit { performAsk() }
