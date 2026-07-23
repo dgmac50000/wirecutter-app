@@ -404,6 +404,13 @@ private struct CarouselCardView: View {
                         .font(.system(size: 13, weight: .bold))
                         .foregroundStyle(Color(.label))
                 }
+
+                if let merchant = item.displayMerchant {
+                    Text("at \(merchant)")
+                        .font(.system(size: 11))
+                        .foregroundStyle(.secondary)
+                        .lineLimit(1)
+                }
             }
             .frame(width: 160)
         }
