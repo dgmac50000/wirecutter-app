@@ -2,6 +2,7 @@ import SwiftUI
 
 struct CommerceListView: View {
     @State private var items: [CommerceItem] = []
+    @State private var shopifyProducts: [CommerceItem] = []
     @State private var isLoading = true
     @State private var errorMessage: String?
     @State private var safariItem: IdentifiableURL?
@@ -70,7 +71,8 @@ struct CommerceListView: View {
                 } else {
                     ScrollView {
                         LazyVStack(alignment: .leading, spacing: 32) {
-                            ForEach(sections) { section in
+                            ForEach(Array(sections.enumerated()), id: \.element.id) { index, section in
+                                // Category carousel
                                 VStack(alignment: .leading, spacing: 12) {
                                     CategorySectionHeader(
                                         title: section.name,
@@ -80,7 +82,6 @@ struct CommerceListView: View {
                                         }
                                     )
 
-                                    // Horizontal carousel — first 5 items
                                     ScrollView(.horizontal, showsIndicators: false) {
                                         LazyHStack(spacing: 14) {
                                             ForEach(Array(section.items.prefix(5)).map {
@@ -96,6 +97,22 @@ struct CommerceListView: View {
                                         }
                                         .padding(.horizontal, 20)
                                     }
+                                }
+
+                                // Interstitial Shopify product card after each section
+                                if index < shopifyProducts.count {
+                                    ShopifyProductCard(
+                                        item: shopifyProducts[index],
+                                        onTap: {
+                                            quickViewItem = shopifyProducts[index]
+                                        },
+                                        onBuy: {
+                                            if let url = shopifyProducts[index].shopUrl {
+                                                safariItem = IdentifiableURL(url: url)
+                                            }
+                                        }
+                                    )
+                                    .padding(.horizontal, 20)
                                 }
                             }
                         }
@@ -282,8 +299,9 @@ struct CommerceListView: View {
 
     private func loadFeed() async {
         do {
-            let fetched = try await APIClient.shared.fetchCommerceFeed()
-            items = fetched
+            let result = try await APIClient.shared.fetchCommerceFeed()
+            items = result.products
+            shopifyProducts = result.shopifyProducts
             isLoading = false
         } catch {
             errorMessage = error.localizedDescription
@@ -361,20 +379,8 @@ private struct CarouselCardView: View {
                             .clipShape(RoundedRectangle(cornerRadius: 10))
                     }
 
-                    if item.isShopifyProduct == true {
-                        HStack(spacing: 3) {
-                            Image(systemName: "bag.fill")
-                                .font(.system(size: 9, weight: .bold))
-                            Text("Buy")
-                                .font(.system(size: 10, weight: .bold))
-                        }
-                        .foregroundStyle(.white)
-                        .padding(.horizontal, 7)
-                        .padding(.vertical, 4)
-                        .background(Color.black.opacity(0.85))
-                        .clipShape(Capsule())
-                        .padding(8)
-                    }
+                    // Shopify products no longer appear in carousels;
+                    // they are shown as full-width interstitial cards instead.
                 }
 
                 if let ribbon = item.ribbon {
@@ -411,6 +417,175 @@ private struct CarouselCardView: View {
         case "Upgrade Pick": return .blue
         case "Also Great": return .orange
         default: return .gray
+        }
+    }
+}
+
+// MARK: - Full-Width Shopify Interstitial Card
+
+private struct ShopifyProductCard: View {
+    let item: CommerceItem
+    let onTap: () -> Void
+    let onBuy: () -> Void
+
+    @State private var showApplePayConfirmation = false
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            // "Wirecutter Store" badge
+            HStack(spacing: 5) {
+                Image(systemName: "bag.fill")
+                    .font(.system(size: 10, weight: .bold))
+                Text("Wirecutter Store")
+                    .font(.system(size: 11, weight: .bold))
+                    .textCase(.uppercase)
+            }
+            .foregroundStyle(.white)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 5)
+            .background(Color.black)
+            .clipShape(Capsule())
+            .padding(.bottom, 10)
+
+            // Full-width product image
+            Button {
+                onTap()
+            } label: {
+                if let imageUrl = item.displayImageUrl {
+                    AsyncImage(url: imageUrl) { phase in
+                        switch phase {
+                        case .success(let image):
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 280)
+                                .clipped()
+                        case .failure:
+                            Rectangle()
+                                .fill(Color(.systemGray5))
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 280)
+                        case .empty:
+                            ProgressView()
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 280)
+                        @unknown default:
+                            Rectangle()
+                                .fill(Color(.systemGray5))
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 280)
+                        }
+                    }
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                } else {
+                    Rectangle()
+                        .fill(Color(.systemGray5))
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 280)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                }
+            }
+            .buttonStyle(.plain)
+
+            // Product title
+            Button {
+                onTap()
+            } label: {
+                Text(item.productTitle)
+                    .font(.system(size: 18, weight: .bold))
+                    .foregroundStyle(Color(.label))
+                    .lineLimit(2)
+                    .multilineTextAlignment(.leading)
+            }
+            .buttonStyle(.plain)
+            .padding(.top, 12)
+
+            // Price
+            if let price = item.displayPrice {
+                Text(price)
+                    .font(.system(size: 16, weight: .bold))
+                    .foregroundStyle(Color(.label))
+                    .padding(.top, 4)
+            }
+
+            // Apple Pay / Buy button
+            HStack(spacing: 10) {
+                Button {
+                    simulateApplePay()
+                } label: {
+                    HStack(spacing: 5) {
+                        Image(systemName: "apple.logo")
+                            .font(.system(size: 15, weight: .semibold))
+                        Text("Pay")
+                            .font(.system(size: 16, weight: .semibold))
+                    }
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 11)
+                    .background(Color.black)
+                    .clipShape(RoundedRectangle(cornerRadius: 6))
+                }
+
+                Button {
+                    onBuy()
+                } label: {
+                    Text("Buy Now")
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundStyle(Color(.label))
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 11)
+                        .background(Color(.systemGray5))
+                        .clipShape(RoundedRectangle(cornerRadius: 6))
+                }
+            }
+            .padding(.top, 12)
+        }
+        .padding(16)
+        .background(Color(.systemBackground))
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+        .shadow(color: .black.opacity(0.08), radius: 8, x: 0, y: 2)
+        .overlay {
+            if showApplePayConfirmation {
+                applePayOverlay
+            }
+        }
+    }
+
+    private func simulateApplePay() {
+        withAnimation(.easeInOut(duration: 0.3)) {
+            showApplePayConfirmation = true
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            withAnimation(.easeInOut(duration: 0.3)) {
+                showApplePayConfirmation = false
+            }
+        }
+    }
+
+    private var applePayOverlay: some View {
+        ZStack {
+            Color.black.opacity(0.4)
+                .clipShape(RoundedRectangle(cornerRadius: 16))
+
+            VStack(spacing: 12) {
+                Image(systemName: "checkmark.circle.fill")
+                    .font(.system(size: 44))
+                    .foregroundStyle(.green)
+                Text("Order Confirmed")
+                    .font(.system(size: 18, weight: .bold))
+                    .foregroundStyle(.white)
+                Text(item.productTitle)
+                    .font(.system(size: 13))
+                    .foregroundStyle(.white.opacity(0.8))
+                    .lineLimit(1)
+                if let price = item.displayPrice {
+                    Text(price)
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundStyle(.white)
+                }
+            }
+            .transition(.scale.combined(with: .opacity))
         }
     }
 }

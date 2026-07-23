@@ -90,6 +90,13 @@ struct CommerceFeedResponse: Codable {
     let items: [CommerceItem]
 }
 
+/// Result of the commerce feed loader: affiliate products grouped by category,
+/// plus a separate pool of Shopify Store products to display as interstitials.
+struct CommerceFeedResult {
+    let products: [CommerceItem]
+    let shopifyProducts: [CommerceItem]
+}
+
 /// Grouped feed section for the commerce list UI (categories or Assistant personas).
 struct CommerceCategorySection: Identifiable {
     let id: String
