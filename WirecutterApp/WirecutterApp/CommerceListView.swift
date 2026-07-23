@@ -83,7 +83,7 @@ struct CommerceListView: View {
                                     )
 
                                     ScrollView(.horizontal, showsIndicators: false) {
-                                        LazyHStack(spacing: 16) {
+                                        LazyHStack(spacing: 12) {
                                             ForEach(Array(section.items.prefix(5)).map {
                                                 FeedRow(sectionID: section.id, item: $0)
                                             }) { row in
@@ -349,51 +349,91 @@ private struct CarouselCardView: View {
     let item: CommerceItem
     let onTap: () -> Void
 
-    var body: some View {
-        Button {
-            onTap()
-        } label: {
-            VStack(alignment: .leading, spacing: 12) {
-                // Image container with border and internal padding
-                VStack(spacing: 0) {
-                    if let imageUrl = item.displayImageUrl {
-                        AsyncImage(url: imageUrl) { phase in
-                            switch phase {
-                            case .success(let image):
-                                image
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(width: 142, height: 130)
-                                    .clipped()
-                            case .failure:
-                                Rectangle()
-                                    .fill(Color(.systemGray5))
-                                    .frame(width: 142, height: 130)
-                            case .empty:
-                                ProgressView()
-                                    .frame(width: 142, height: 130)
-                            @unknown default:
-                                Rectangle()
-                                    .fill(Color(.systemGray5))
-                                    .frame(width: 142, height: 130)
-                            }
-                        }
-                    } else {
-                        Rectangle()
-                            .fill(Color(.systemGray5))
-                            .frame(width: 142, height: 130)
-                    }
-                    Spacer(minLength: 0)
-                }
-                .padding(8)
-                .frame(width: 158, height: 161)
-                .background(Color.white)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 8)
-                        .stroke(Color(hex: 0xDFDFDF), lineWidth: 1)
-                )
-                .clipShape(RoundedRectangle(cornerRadius: 8))
+    private var bulletPoints: [String] {
+        if let desc = item.productDescription, !desc.isEmpty {
+            let lines = desc.components(separatedBy: .newlines)
+                .map { $0.trimmingCharacters(in: .whitespaces) }
+                .filter { !$0.isEmpty }
+            return Array(lines.prefix(2))
+        }
+        let name = item.productTitle.lowercased()
+        if name.contains("mattress") || name.contains("pillow") || name.contains("blanket") {
+            return ["Top pick for better sleep", "Premium comfort materials"]
+        } else if name.contains("air purifier") || name.contains("airmega") {
+            return ["True HEPA filtration", "Auto air quality mode"]
+        } else if name.contains("headphone") || name.contains("earbuds") {
+            return ["Wirecutter tested sound", "All-day comfort"]
+        } else if name.contains("bag") || name.contains("carry-on") || name.contains("backpack") {
+            return ["Durable travel materials", "Smart organization"]
+        } else {
+            return ["Wirecutter recommended", "Expert tested"]
+        }
+    }
 
+    private var buyButtonText: String {
+        switch (item.displayPrice, item.displayMerchant) {
+        case let (price?, merchant?):
+            return "\(price) from \(merchant)"
+        case let (price?, nil):
+            return price
+        case let (nil, merchant?):
+            return "From \(merchant)"
+        default:
+            return "View Details"
+        }
+    }
+
+    var body: some View {
+        VStack(spacing: 0) {
+            // Image area
+            ZStack(alignment: .topTrailing) {
+                Color(hex: 0xF6F6F6)
+
+                if let imageUrl = item.displayImageUrl {
+                    AsyncImage(url: imageUrl) { phase in
+                        switch phase {
+                        case .success(let image):
+                            image
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .padding(12)
+                        case .failure:
+                            Image(systemName: "photo")
+                                .font(.title2)
+                                .foregroundStyle(Color(.systemGray3))
+                        case .empty:
+                            ProgressView()
+                        @unknown default:
+                            EmptyView()
+                        }
+                    }
+                }
+
+                // Bookmark button
+                Circle()
+                    .fill(.white)
+                    .frame(width: 20, height: 20)
+                    .overlay(
+                        Image(systemName: "bookmark")
+                            .font(.system(size: 10, weight: .medium))
+                            .foregroundStyle(.black)
+                    )
+                    .padding(.top, 8)
+                    .padding(.trailing, 8)
+            }
+            .frame(width: 220, height: 180)
+
+            // Info area
+            VStack(alignment: .leading, spacing: 10) {
+                // Subtitle (merchant)
+                if let merchant = item.displayMerchant {
+                    Text(merchant)
+                        .font(.custom("NYTVFranklin-Medium", fixedSize: 12))
+                        .foregroundStyle(Color(hex: 0x666666))
+                        .lineSpacing(6)
+                }
+
+                // Title
                 Text(item.productTitle)
                     .font(.custom("NYTVFranklin-Bold", fixedSize: 16))
                     .foregroundStyle(.black)
@@ -401,35 +441,39 @@ private struct CarouselCardView: View {
                     .multilineTextAlignment(.leading)
                     .lineSpacing(4)
 
-                priceLine
-            }
-            .frame(width: 158)
-        }
-        .buttonStyle(.plain)
-    }
+                // Bullets
+                if !bulletPoints.isEmpty {
+                    VStack(alignment: .leading, spacing: 4) {
+                        ForEach(bulletPoints, id: \.self) { bullet in
+                            Text("• \(bullet)")
+                                .font(.custom("NYTVFranklin-Medium", fixedSize: 12))
+                                .foregroundStyle(.black)
+                                .lineSpacing(4)
+                        }
+                    }
+                }
 
-    @ViewBuilder
-    private var priceLine: some View {
-        let priceText: String? = {
-            switch (item.displayPrice, item.displayMerchant) {
-            case let (price?, merchant?):
-                return "\(price) from \(merchant)"
-            case let (price?, nil):
-                return price
-            case let (nil, merchant?):
-                return merchant
-            default:
-                return nil
+                // Buy button
+                Button {
+                    onTap()
+                } label: {
+                    Text(buyButtonText)
+                        .font(.custom("NYTVFranklin-Bold", fixedSize: 14))
+                        .foregroundStyle(.black)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 36)
+                        .background(Color(hex: 0xFCD843))
+                }
+                .buttonStyle(.plain)
             }
-        }()
-
-        if let text = priceText {
-            Text(text)
-                .font(.custom("NYTVFranklin-Medium", fixedSize: 14))
-                .foregroundStyle(.black)
-                .underline()
-                .lineLimit(1)
+            .padding(.horizontal, 12)
+            .padding(.top, 8)
+            .padding(.bottom, 12)
         }
+        .frame(width: 220)
+        .overlay(Rectangle().stroke(Color(hex: 0xDFDFDF), lineWidth: 1))
+        .contentShape(Rectangle())
+        .onTapGesture { onTap() }
     }
 }
 
@@ -475,102 +519,103 @@ private struct ShopifyProductCard: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            // Product image
-            Button {
-                onTap()
-            } label: {
+        VStack(spacing: 0) {
+            // Image area
+            ZStack(alignment: .topTrailing) {
+                Color(hex: 0xF6F6F6)
+
                 if let imageUrl = item.displayImageUrl {
                     AsyncImage(url: imageUrl) { phase in
                         switch phase {
                         case .success(let image):
                             image
                                 .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(maxWidth: .infinity)
-                                .frame(height: 280)
-                                .clipped()
+                                .aspectRatio(contentMode: .fit)
+                                .padding(16)
                         case .failure:
-                            Rectangle()
-                                .fill(Color(.systemGray5))
-                                .frame(maxWidth: .infinity)
-                                .frame(height: 280)
+                            Image(systemName: "photo")
+                                .font(.largeTitle)
+                                .foregroundStyle(Color(.systemGray3))
                         case .empty:
                             ProgressView()
-                                .frame(maxWidth: .infinity)
-                                .frame(height: 280)
                         @unknown default:
                             EmptyView()
                         }
                     }
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
-                } else {
-                    Rectangle()
-                        .fill(Color(.systemGray5))
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 280)
-                        .clipShape(RoundedRectangle(cornerRadius: 8))
                 }
+
+                // Bookmark button
+                Circle()
+                    .fill(.white)
+                    .frame(width: 24, height: 24)
+                    .overlay(
+                        Image(systemName: "bookmark")
+                            .font(.system(size: 12, weight: .medium))
+                            .foregroundStyle(.black)
+                    )
+                    .padding(.top, 13)
+                    .padding(.trailing, 12)
             }
-            .buttonStyle(.plain)
+            .frame(maxWidth: .infinity)
+            .frame(height: 312)
+            .contentShape(Rectangle())
+            .onTapGesture { onTap() }
 
-            // Product info
-            VStack(alignment: .leading, spacing: 12) {
-                // Brand / merchant subtitle
-                if let merchant = item.displayMerchant {
-                    Text(merchant)
-                        .font(.custom("NYTVFranklin-Medium", fixedSize: 12))
-                        .foregroundStyle(Color(hex: 0x666666))
+            // Info area
+            VStack(alignment: .leading, spacing: 20) {
+                // Info group
+                VStack(alignment: .leading, spacing: 12) {
+                    // Subtitle (merchant)
+                    if let merchant = item.displayMerchant {
+                        Text(merchant)
+                            .font(.custom("NYTVFranklin-Medium", fixedSize: 12))
+                            .foregroundStyle(Color(hex: 0x666666))
+                            .lineSpacing(6)
+                    }
+
+                    // Headline (product title)
+                    Text(item.productTitle)
+                        .font(.custom("NYTVFranklin-Bold", fixedSize: 20))
+                        .foregroundStyle(.black)
                         .lineSpacing(6)
-                }
+                        .lineLimit(3)
+                        .multilineTextAlignment(.leading)
 
-                // Product title headline
-                Text(item.productTitle)
-                    .font(.custom("NYTVFranklin-Bold", fixedSize: 20))
-                    .foregroundStyle(.black)
-                    .lineSpacing(6)
-                    .lineLimit(3)
-                    .multilineTextAlignment(.leading)
-
-                // Bullet points (1-3 from product description)
-                if !bulletPoints.isEmpty {
-                    VStack(alignment: .leading, spacing: 4) {
-                        ForEach(bulletPoints, id: \.self) { bullet in
-                            Text("• \(bullet)")
-                                .font(.custom("NYTVFranklin-Medium", fixedSize: 14))
-                                .foregroundStyle(.black)
-                                .lineSpacing(6)
+                    // Bullet points
+                    if !bulletPoints.isEmpty {
+                        VStack(alignment: .leading, spacing: 4) {
+                            ForEach(bulletPoints, id: \.self) { bullet in
+                                Text("• \(bullet)")
+                                    .font(.custom("NYTVFranklin-Medium", fixedSize: 14))
+                                    .foregroundStyle(.black)
+                                    .lineSpacing(6)
+                            }
                         }
                     }
                 }
-            }
 
-            // Apple Pay button
-            Button {
-                simulateApplePay()
-            } label: {
-                HStack(spacing: 4) {
-                    Image(systemName: "apple.logo")
-                        .font(.system(size: 18, weight: .semibold))
-                    Text("Pay")
-                        .font(.system(size: 18, weight: .semibold))
+                // Apple Pay button
+                Button {
+                    simulateApplePay()
+                } label: {
+                    HStack(spacing: 4) {
+                        Image(systemName: "apple.logo")
+                            .font(.system(size: 18, weight: .semibold))
+                        Text("Pay")
+                            .font(.system(size: 18, weight: .semibold))
+                    }
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 44)
+                    .background(Color.black)
                 }
-                .foregroundStyle(.white)
-                .frame(maxWidth: .infinity)
-                .frame(height: 50)
-                .background(Color.black)
-                .clipShape(RoundedRectangle(cornerRadius: 4))
+                .buttonStyle(.plain)
             }
-            .buttonStyle(.plain)
-            .padding(.top, 4)
+            .padding(.horizontal, 16)
+            .padding(.top, 8)
+            .padding(.bottom, 12)
         }
-        .padding(16)
-        .background(Color.white)
-        .overlay(
-            RoundedRectangle(cornerRadius: 4)
-                .stroke(Color(hex: 0xEEEEEE), lineWidth: 1)
-        )
-        .clipShape(RoundedRectangle(cornerRadius: 4))
+        .overlay(Rectangle().stroke(Color(hex: 0xDFDFDF), lineWidth: 1))
         .overlay {
             if showApplePayConfirmation {
                 applePayOverlay
@@ -592,7 +637,6 @@ private struct ShopifyProductCard: View {
     private var applePayOverlay: some View {
         ZStack {
             Color.black.opacity(0.4)
-                .clipShape(RoundedRectangle(cornerRadius: 4))
 
             VStack(spacing: 12) {
                 Image(systemName: "checkmark.circle.fill")
