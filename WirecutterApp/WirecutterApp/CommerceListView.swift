@@ -443,120 +443,107 @@ private struct ShopifyProductCard: View {
     @State private var showApplePayConfirmation = false
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            // "Wirecutter Store" badge
-            HStack(spacing: 5) {
-                Image(systemName: "bag.fill")
-                    .font(.system(size: 10, weight: .bold))
-                Text("Wirecutter Store")
-                    .font(.system(size: 11, weight: .bold))
-                    .textCase(.uppercase)
-            }
-            .foregroundStyle(.white)
-            .padding(.horizontal, 10)
-            .padding(.vertical, 5)
-            .background(Color.black)
-            .clipShape(Capsule())
-            .padding(.bottom, 10)
-
-            // Full-width product image
+        VStack(alignment: .leading, spacing: 16) {
+            // Product image
             Button {
                 onTap()
             } label: {
-                if let imageUrl = item.displayImageUrl {
-                    AsyncImage(url: imageUrl) { phase in
-                        switch phase {
-                        case .success(let image):
-                            image
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(maxWidth: .infinity)
-                                .frame(height: 280)
-                                .clipped()
-                        case .failure:
-                            Rectangle()
-                                .fill(Color(.systemGray5))
-                                .frame(maxWidth: .infinity)
-                                .frame(height: 280)
-                        case .empty:
-                            ProgressView()
-                                .frame(maxWidth: .infinity)
-                                .frame(height: 280)
-                        @unknown default:
-                            Rectangle()
-                                .fill(Color(.systemGray5))
-                                .frame(maxWidth: .infinity)
-                                .frame(height: 280)
+                ZStack {
+                    Color(hex: 0xF6F6F6)
+
+                    if let imageUrl = item.displayImageUrl {
+                        AsyncImage(url: imageUrl) { phase in
+                            switch phase {
+                            case .success(let image):
+                                image
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .padding(16)
+                            case .failure:
+                                Image(systemName: "photo")
+                                    .font(.system(size: 40))
+                                    .foregroundStyle(Color(.systemGray3))
+                            case .empty:
+                                ProgressView()
+                            @unknown default:
+                                EmptyView()
+                            }
+                        }
+                    } else {
+                        Image(systemName: "photo")
+                            .font(.system(size: 40))
+                            .foregroundStyle(Color(.systemGray3))
+                    }
+                }
+                .frame(maxWidth: .infinity)
+                .frame(height: 280)
+                .clipShape(RoundedRectangle(cornerRadius: 8))
+            }
+            .buttonStyle(.plain)
+
+            // Product info
+            VStack(alignment: .leading, spacing: 12) {
+                // Brand / merchant subtitle
+                if let merchant = item.displayMerchant {
+                    Text(merchant)
+                        .font(.custom("NYTVFranklin-Medium", fixedSize: 12))
+                        .foregroundStyle(Color(hex: 0x666666))
+                        .lineSpacing(6)
+                }
+
+                // Product title headline
+                Text(item.productTitle)
+                    .font(.custom("NYTVFranklin-Bold", fixedSize: 20))
+                    .foregroundStyle(.black)
+                    .lineSpacing(6)
+                    .lineLimit(3)
+                    .multilineTextAlignment(.leading)
+
+                // Bullet points from description
+                if let description = item.productDescription, !description.isEmpty {
+                    let bullets = description
+                        .components(separatedBy: .newlines)
+                        .map { $0.trimmingCharacters(in: .whitespaces) }
+                        .filter { !$0.isEmpty }
+                        .prefix(3)
+
+                    VStack(alignment: .leading, spacing: 4) {
+                        ForEach(Array(bullets.enumerated()), id: \.offset) { _, bullet in
+                            Text("• \(bullet)")
+                                .font(.custom("NYTVFranklin-Medium", fixedSize: 14))
+                                .foregroundStyle(.black)
+                                .lineSpacing(6)
                         }
                     }
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
-                } else {
-                    Rectangle()
-                        .fill(Color(.systemGray5))
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 280)
-                        .clipShape(RoundedRectangle(cornerRadius: 12))
                 }
             }
-            .buttonStyle(.plain)
 
-            // Product title
+            // Apple Pay button
             Button {
-                onTap()
+                simulateApplePay()
             } label: {
-                Text(item.productTitle)
-                    .font(.system(size: 18, weight: .bold))
-                    .foregroundStyle(Color(.label))
-                    .lineLimit(2)
-                    .multilineTextAlignment(.leading)
+                HStack(spacing: 4) {
+                    Image(systemName: "apple.logo")
+                        .font(.system(size: 18, weight: .semibold))
+                    Text("Pay")
+                        .font(.system(size: 18, weight: .semibold))
+                }
+                .foregroundStyle(.white)
+                .frame(maxWidth: .infinity)
+                .frame(height: 50)
+                .background(Color.black)
+                .clipShape(RoundedRectangle(cornerRadius: 4))
             }
             .buttonStyle(.plain)
-            .padding(.top, 12)
-
-            // Price
-            if let price = item.displayPrice {
-                Text(price)
-                    .font(.system(size: 16, weight: .bold))
-                    .foregroundStyle(Color(.label))
-                    .padding(.top, 4)
-            }
-
-            // Apple Pay / Buy button
-            HStack(spacing: 10) {
-                Button {
-                    simulateApplePay()
-                } label: {
-                    HStack(spacing: 5) {
-                        Image(systemName: "apple.logo")
-                            .font(.system(size: 15, weight: .semibold))
-                        Text("Pay")
-                            .font(.system(size: 16, weight: .semibold))
-                    }
-                    .foregroundStyle(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 11)
-                    .background(Color.black)
-                    .clipShape(RoundedRectangle(cornerRadius: 6))
-                }
-
-                Button {
-                    onBuy()
-                } label: {
-                    Text("Buy Now")
-                        .font(.system(size: 16, weight: .semibold))
-                        .foregroundStyle(Color(.label))
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 11)
-                        .background(Color(.systemGray5))
-                        .clipShape(RoundedRectangle(cornerRadius: 6))
-                }
-            }
-            .padding(.top, 12)
+            .padding(.top, 4)
         }
         .padding(16)
-        .background(Color(.systemBackground))
-        .clipShape(RoundedRectangle(cornerRadius: 16))
-        .shadow(color: .black.opacity(0.08), radius: 8, x: 0, y: 2)
+        .background(Color.white)
+        .overlay(
+            RoundedRectangle(cornerRadius: 4)
+                .stroke(Color(hex: 0xEEEEEE), lineWidth: 1)
+        )
+        .clipShape(RoundedRectangle(cornerRadius: 4))
         .overlay {
             if showApplePayConfirmation {
                 applePayOverlay
@@ -578,7 +565,7 @@ private struct ShopifyProductCard: View {
     private var applePayOverlay: some View {
         ZStack {
             Color.black.opacity(0.4)
-                .clipShape(RoundedRectangle(cornerRadius: 16))
+                .clipShape(RoundedRectangle(cornerRadius: 4))
 
             VStack(spacing: 12) {
                 Image(systemName: "checkmark.circle.fill")
