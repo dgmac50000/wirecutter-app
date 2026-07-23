@@ -32,6 +32,7 @@
 		B40C1A2D2B0F000100000025 /* NYTVFranklinBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = B40C1A2D2B0F000200000025 /* NYTVFranklinBold.otf */; };
 		B40C1A2D2B0F000100000026 /* NYTVFranklinLight.otf in Resources */ = {isa = PBXBuildFile; fileRef = B40C1A2D2B0F000200000026 /* NYTVFranklinLight.otf */; };
 		B40C1A2D2B0F000100000027 /* NYTVFranklinMedium.otf in Resources */ = {isa = PBXBuildFile; fileRef = B40C1A2D2B0F000200000027 /* NYTVFranklinMedium.otf */; };
+		E7A1B2C3D4E5F6A7B8C9D0E1 /* NYTKarnak-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = E7A1B2C3D4E5F6A7B8C9D0E2 /* NYTKarnak-Medium.otf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -62,6 +63,7 @@
 		B40C1A2D2B0F000200000025 /* NYTVFranklinBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = NYTVFranklinBold.otf; path = Fonts/NYTVFranklinBold.otf; sourceTree = "<group>"; };
 		B40C1A2D2B0F000200000026 /* NYTVFranklinLight.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = NYTVFranklinLight.otf; path = Fonts/NYTVFranklinLight.otf; sourceTree = "<group>"; };
 		B40C1A2D2B0F000200000027 /* NYTVFranklinMedium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = NYTVFranklinMedium.otf; path = Fonts/NYTVFranklinMedium.otf; sourceTree = "<group>"; };
+		E7A1B2C3D4E5F6A7B8C9D0E2 /* NYTKarnak-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = NYTKarnak-Medium.otf; path = Fonts/NYTKarnak-Medium.otf; sourceTree = "<group>"; };
 		B40C1A2D2B0F000300000001 /* WirecutterApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WirecutterApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -91,6 +93,7 @@
 				B40C1A2D2B0F000100000025 /* NYTVFranklinBold.otf in Resources */,
 				B40C1A2D2B0F000100000026 /* NYTVFranklinLight.otf in Resources */,
 				B40C1A2D2B0F000100000027 /* NYTVFranklinMedium.otf in Resources */,
+				E7A1B2C3D4E5F6A7B8C9D0E1 /* NYTKarnak-Medium.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -133,6 +136,7 @@
 				B40C1A2D2B0F000200000025 /* NYTVFranklinBold.otf */,
 				B40C1A2D2B0F000200000026 /* NYTVFranklinLight.otf */,
 				B40C1A2D2B0F000200000027 /* NYTVFranklinMedium.otf */,
+				E7A1B2C3D4E5F6A7B8C9D0E2 /* NYTKarnak-Medium.otf */,
 				B40C1A2D2B0F00020000000E /* Assets.xcassets */,
 			);
 			path = WirecutterApp;

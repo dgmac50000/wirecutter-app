@@ -729,7 +729,6 @@ private struct AskSheetView: View {
 
     var body: some View {
         ZStack(alignment: .topTrailing) {
-            // Radial gradient background
             RadialGradient(
                 colors: [Color(hex: 0xE8EAFF), Color.white],
                 center: .center,
@@ -738,120 +737,144 @@ private struct AskSheetView: View {
             )
             .ignoresSafeArea()
 
-            // Main content — bottom-aligned
             VStack(alignment: .leading, spacing: 0) {
                 Spacer()
 
-                ScrollView {
-                    VStack(alignment: .leading, spacing: 24) {
-                        Text("Wirecutter Finder")
-                            .font(.custom("NYTKarnak-Medium", size: 32))
-                            .foregroundStyle(Color(hex: 0x191919))
-
-                        if response == nil && !isLoading {
-                            VStack(alignment: .leading, spacing: 24) {
-                                ForEach(suggestedPrompts, id: \.self) { prompt in
-                                    Button {
-                                        query = prompt
-                                        performAsk()
-                                    } label: {
-                                        HStack(spacing: 8) {
-                                            Image(systemName: "sparkles")
-                                                .font(.system(size: 14))
-                                                .foregroundStyle(Color(hex: 0x5B69EB))
-                                            Text(prompt)
-                                                .font(.system(size: 16, weight: .medium))
-                                                .foregroundStyle(Color(hex: 0x191919))
-                                        }
-                                        .padding(.horizontal, 15)
-                                        .padding(.vertical, 10)
-                                        .background(Color(hex: 0xF0F1FF))
-                                        .clipShape(RoundedRectangle(cornerRadius: 20))
-                                    }
-                                }
-                            }
-                        }
-
-                        if isLoading {
-                            HStack(spacing: 12) {
-                                ProgressView()
-                                Text("Finding recommendations…")
-                                    .font(.system(size: 15))
-                                    .foregroundStyle(.secondary)
-                            }
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.top, 20)
-                        } else if let response {
-                            VStack(alignment: .leading, spacing: 12) {
-                                HStack(spacing: 6) {
-                                    Image(systemName: "sparkles")
-                                        .font(.system(size: 14))
-                                        .foregroundStyle(Color(hex: 0x5B69EB))
-                                    Text("Wirecutter Finder")
-                                        .font(.system(size: 14, weight: .semibold))
-                                }
-
-                                Text(response)
-                                    .font(.system(size: 16, weight: .regular, design: .serif))
-                                    .lineSpacing(8)
-                            }
-                            .padding(16)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .background(Color(hex: 0xF8F7FF))
-                            .clipShape(RoundedRectangle(cornerRadius: 12))
-                        }
-                    }
-                    .padding(.horizontal, 20)
+                if isLoading {
+                    loadingView
+                } else if let response {
+                    responseView(response)
+                } else {
+                    promptContent
                 }
 
-                // Bottom search bar
-                HStack(spacing: 8) {
-                    HStack(spacing: 8) {
-                        Image(systemName: "sparkles")
-                            .font(.system(size: 14))
-                            .foregroundStyle(Color(hex: 0x5B69EB))
-                        TextField("I need something with SPF for a beach trip.", text: $query)
-                            .textFieldStyle(.plain)
-                            .font(.system(size: 16))
-                            .submitLabel(.send)
-                            .onSubmit { performAsk() }
-                    }
-                    .padding(12)
-                    .background(Color.white)
-                    .clipShape(Capsule())
-                    .overlay(
-                        Capsule()
-                            .stroke(Color(hex: 0x5B69EB).opacity(0.3), lineWidth: 1)
-                    )
-
-                    Button {
-                        performAsk()
-                    } label: {
-                        Image(systemName: "arrow.up.circle.fill")
-                            .font(.system(size: 32))
-                            .foregroundStyle(Color(hex: 0x5B69EB))
-                    }
-                    .disabled(query.trimmingCharacters(in: .whitespaces).isEmpty)
-                }
-                .padding(.horizontal, 16)
-                .padding(.vertical, 12)
+                searchBar
             }
+            .padding(.horizontal, 20)
+            .padding(.top, 20)
+            .padding(.bottom, 16)
 
-            // Close button — top-right overlay
-            Button {
-                dismiss()
-            } label: {
-                Image(systemName: "xmark")
-                    .font(.system(size: 12, weight: .semibold))
-                    .foregroundStyle(Color(hex: 0x191919))
-                    .frame(width: 32, height: 32)
-                    .background(Color.white)
-                    .clipShape(RoundedRectangle(cornerRadius: 4))
-            }
-            .padding(.top, 16)
-            .padding(.trailing, 16)
+            closeButton
         }
     }
+
+    // MARK: - Initial prompt state (bottom-aligned)
+
+    private var promptContent: some View {
+        VStack(alignment: .leading, spacing: 24) {
+            Text("Wirecutter Finder")
+                .font(.custom("NYTKarnak-Medium", size: 32, relativeTo: .title))
+                .lineSpacing(0)
+                .foregroundStyle(Color.black)
+
+            VStack(alignment: .leading, spacing: 24) {
+                ForEach(suggestedPrompts, id: \.self) { prompt in
+                    Button {
+                        query = prompt
+                        performAsk()
+                    } label: {
+                        HStack(spacing: 8) {
+                            Image("NYTAIIcon")
+                                .resizable()
+                                .frame(width: 21, height: 20)
+                                .foregroundStyle(Color(hex: 0x5B69EB))
+                            Text(prompt)
+                                .font(.custom("NYTVFranklin-Medium", size: 16, relativeTo: .body))
+                                .foregroundStyle(Color(hex: 0x191919))
+                        }
+                        .padding(.horizontal, 15)
+                        .padding(.vertical, 10)
+                        .background(Color(hex: 0xF0F1FF))
+                        .clipShape(RoundedRectangle(cornerRadius: 20))
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+        }
+    }
+
+    // MARK: - Loading state
+
+    private var loadingView: some View {
+        HStack(spacing: 12) {
+            ProgressView()
+            Text("Finding recommendations…")
+                .font(.system(size: 15))
+                .foregroundStyle(.secondary)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.top, 20)
+    }
+
+    // MARK: - Response state
+
+    private func responseView(_ text: String) -> some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 12) {
+                HStack(spacing: 6) {
+                    Image("NYTAIIcon")
+                        .resizable()
+                        .frame(width: 16, height: 16)
+                        .foregroundStyle(Color(hex: 0x5B69EB))
+                    Text("Wirecutter Finder")
+                        .font(.system(size: 14, weight: .semibold))
+                }
+
+                Text(text)
+                    .font(.system(size: 16, weight: .regular, design: .serif))
+                    .lineSpacing(8)
+            }
+            .padding(16)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(Color(hex: 0xF8F7FF))
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+        }
+    }
+
+    // MARK: - Search bar (pinned to bottom)
+
+    private var searchBar: some View {
+        HStack(spacing: 8) {
+            Image("NYTAIIcon")
+                .resizable()
+                .frame(width: 18, height: 18)
+                .foregroundStyle(Color(hex: 0x5B69EB))
+            TextField("I need something with SPF for a beach trip.", text: $query)
+                .textFieldStyle(.plain)
+                .font(.custom("NYTVFranklin-Medium", size: 14, relativeTo: .body))
+                .foregroundStyle(Color(hex: 0x222222))
+                .submitLabel(.send)
+                .onSubmit { performAsk() }
+        }
+        .padding(.horizontal, 14)
+        .frame(height: 45)
+        .background(Color.white)
+        .clipShape(Capsule())
+        .overlay(
+            Capsule()
+                .stroke(Color(.systemGray4), lineWidth: 1)
+        )
+        .padding(.top, 24)
+    }
+
+    // MARK: - Close button (top-right)
+
+    private var closeButton: some View {
+        Button {
+            dismiss()
+        } label: {
+            Image(systemName: "xmark")
+                .font(.system(size: 11, weight: .medium))
+                .foregroundStyle(Color(.label))
+                .frame(width: 32, height: 32)
+                .background(Color.white)
+                .clipShape(RoundedRectangle(cornerRadius: 4))
+        }
+        .padding(.top, 20)
+        .padding(.trailing, 20)
+    }
+
+    // MARK: - Ask action
 
     private func performAsk() {
         guard !query.trimmingCharacters(in: .whitespaces).isEmpty else { return }
