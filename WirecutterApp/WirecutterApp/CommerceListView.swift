@@ -728,89 +728,101 @@ private struct AskSheetView: View {
     ]
 
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 24) {
-                    HStack(alignment: .lastTextBaseline, spacing: 8) {
-                        Text("Wirecutter Finder")
-                            .font(.custom("NYTVFranklin-Bold", size: 28))
-                        Text("BETA")
-                            .font(.system(size: 10, weight: .bold))
-                            .foregroundStyle(.white)
-                            .padding(.horizontal, 6)
-                            .padding(.vertical, 3)
-                            .background(Color(.darkGray))
-                            .clipShape(Capsule())
-                    }
-                    .padding(.top, 16)
+        ZStack(alignment: .topTrailing) {
+            // Radial gradient background
+            RadialGradient(
+                colors: [Color(hex: 0xE8EAFF), Color.white],
+                center: .center,
+                startRadius: 0,
+                endRadius: 400
+            )
+            .ignoresSafeArea()
 
-                    if response == nil && !isLoading {
-                        VStack(spacing: 10) {
-                            ForEach(suggestedPrompts, id: \.self) { prompt in
-                                Button {
-                                    query = prompt
-                                    performAsk()
-                                } label: {
-                                    Text(prompt)
-                                        .font(.system(size: 14, weight: .medium))
-                                        .foregroundStyle(Color(.label))
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                        .padding(.horizontal, 14)
+            // Main content — bottom-aligned
+            VStack(alignment: .leading, spacing: 0) {
+                Spacer()
+
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 24) {
+                        Text("Wirecutter Finder")
+                            .font(.custom("NYTKarnak-Medium", size: 32))
+                            .foregroundStyle(Color(hex: 0x191919))
+
+                        if response == nil && !isLoading {
+                            VStack(alignment: .leading, spacing: 24) {
+                                ForEach(suggestedPrompts, id: \.self) { prompt in
+                                    Button {
+                                        query = prompt
+                                        performAsk()
+                                    } label: {
+                                        HStack(spacing: 8) {
+                                            Image(systemName: "sparkles")
+                                                .font(.system(size: 14))
+                                                .foregroundStyle(Color(hex: 0x5B69EB))
+                                            Text(prompt)
+                                                .font(.system(size: 16, weight: .medium))
+                                                .foregroundStyle(Color(hex: 0x191919))
+                                        }
+                                        .padding(.horizontal, 15)
                                         .padding(.vertical, 10)
-                                        .background(Color(hex: 0xF0EEFF))
-                                        .clipShape(Capsule())
-                                        .overlay(
-                                            Capsule()
-                                                .stroke(Color(hex: 0xDDD8FF), lineWidth: 1)
-                                        )
+                                        .background(Color(hex: 0xF0F1FF))
+                                        .clipShape(RoundedRectangle(cornerRadius: 20))
+                                    }
                                 }
                             }
                         }
-                    }
 
-                    if isLoading {
-                        HStack(spacing: 12) {
-                            ProgressView()
-                            Text("Finding recommendations…")
-                                .font(.system(size: 15))
-                                .foregroundStyle(.secondary)
-                        }
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.top, 20)
-                    } else if let response {
-                        VStack(alignment: .leading, spacing: 12) {
-                            HStack(spacing: 6) {
-                                Image(systemName: "sparkles")
-                                    .font(.system(size: 14))
-                                    .foregroundStyle(Color(hex: 0x5B69EB))
-                                Text("Wirecutter Finder")
-                                    .font(.system(size: 14, weight: .semibold))
+                        if isLoading {
+                            HStack(spacing: 12) {
+                                ProgressView()
+                                Text("Finding recommendations…")
+                                    .font(.system(size: 15))
+                                    .foregroundStyle(.secondary)
                             }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.top, 20)
+                        } else if let response {
+                            VStack(alignment: .leading, spacing: 12) {
+                                HStack(spacing: 6) {
+                                    Image(systemName: "sparkles")
+                                        .font(.system(size: 14))
+                                        .foregroundStyle(Color(hex: 0x5B69EB))
+                                    Text("Wirecutter Finder")
+                                        .font(.system(size: 14, weight: .semibold))
+                                }
 
-                            Text(response)
-                                .font(.system(size: 16, weight: .regular, design: .serif))
-                                .lineSpacing(8)
+                                Text(response)
+                                    .font(.system(size: 16, weight: .regular, design: .serif))
+                                    .lineSpacing(8)
+                            }
+                            .padding(16)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .background(Color(hex: 0xF8F7FF))
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
                         }
-                        .padding(16)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .background(Color(hex: 0xF8F7FF))
-                        .clipShape(RoundedRectangle(cornerRadius: 12))
                     }
-
-                    Spacer()
+                    .padding(.horizontal, 20)
                 }
-                .padding(.horizontal, 20)
-            }
-            .safeAreaInset(edge: .bottom) {
+
+                // Bottom search bar
                 HStack(spacing: 8) {
-                    TextField("Show me the best…", text: $query)
-                        .textFieldStyle(.plain)
-                        .font(.system(size: 16))
-                        .padding(12)
-                        .background(Color(.systemGray6))
-                        .clipShape(RoundedRectangle(cornerRadius: 20))
-                        .submitLabel(.send)
-                        .onSubmit { performAsk() }
+                    HStack(spacing: 8) {
+                        Image(systemName: "sparkles")
+                            .font(.system(size: 14))
+                            .foregroundStyle(Color(hex: 0x5B69EB))
+                        TextField("I need something with SPF for a beach trip.", text: $query)
+                            .textFieldStyle(.plain)
+                            .font(.system(size: 16))
+                            .submitLabel(.send)
+                            .onSubmit { performAsk() }
+                    }
+                    .padding(12)
+                    .background(Color.white)
+                    .clipShape(Capsule())
+                    .overlay(
+                        Capsule()
+                            .stroke(Color(hex: 0x5B69EB).opacity(0.3), lineWidth: 1)
+                    )
 
                     Button {
                         performAsk()
@@ -823,23 +835,21 @@ private struct AskSheetView: View {
                 }
                 .padding(.horizontal, 16)
                 .padding(.vertical, 12)
-                .background(Color(.systemBackground))
             }
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Image(systemName: "xmark")
-                            .font(.system(size: 12, weight: .semibold))
-                            .foregroundStyle(Color(.label))
-                            .frame(width: 30, height: 30)
-                            .background(Color(.systemGray5))
-                            .clipShape(Circle())
-                    }
-                }
+
+            // Close button — top-right overlay
+            Button {
+                dismiss()
+            } label: {
+                Image(systemName: "xmark")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundStyle(Color(hex: 0x191919))
+                    .frame(width: 32, height: 32)
+                    .background(Color.white)
+                    .clipShape(RoundedRectangle(cornerRadius: 4))
             }
+            .padding(.top, 16)
+            .padding(.trailing, 16)
         }
     }
 
