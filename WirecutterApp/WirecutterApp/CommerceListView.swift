@@ -449,7 +449,7 @@ private struct ShopifyProductCard: View {
                 .filter { !$0.isEmpty }
             return Array(lines.prefix(3))
         }
-        return ["Wirecutter tested & recommended", "Free shipping included", "Easy returns"]
+        return []
     }
 
     var body: some View {
@@ -510,13 +510,15 @@ private struct ShopifyProductCard: View {
                     .lineLimit(3)
                     .multilineTextAlignment(.leading)
 
-                // Bullet points
-                VStack(alignment: .leading, spacing: 3) {
-                    ForEach(bulletPoints, id: \.self) { bullet in
-                        Text("• \(bullet)")
-                            .font(.custom("NYTVFranklin-Medium", fixedSize: 12))
-                            .foregroundStyle(Color(hex: 0x666666))
-                            .lineLimit(1)
+                // Bullet points (1-3 from product description)
+                if !bulletPoints.isEmpty {
+                    VStack(alignment: .leading, spacing: 4) {
+                        ForEach(bulletPoints, id: \.self) { bullet in
+                            Text("• \(bullet)")
+                                .font(.custom("NYTVFranklin-Medium", fixedSize: 14))
+                                .foregroundStyle(.black)
+                                .lineSpacing(6)
+                        }
                     }
                 }
             }
