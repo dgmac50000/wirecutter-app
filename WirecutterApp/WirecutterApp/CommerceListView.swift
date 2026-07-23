@@ -745,25 +745,24 @@ private struct AskSheetView: View {
                     .padding(.top, 16)
 
                     if response == nil && !isLoading {
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: 10) {
-                                ForEach(suggestedPrompts, id: \.self) { prompt in
-                                    Button {
-                                        query = prompt
-                                        performAsk()
-                                    } label: {
-                                        Text(prompt)
-                                            .font(.system(size: 14, weight: .medium))
-                                            .foregroundStyle(Color(.label))
-                                            .padding(.horizontal, 14)
-                                            .padding(.vertical, 10)
-                                            .background(Color(hex: 0xF0EEFF))
-                                            .clipShape(Capsule())
-                                            .overlay(
-                                                Capsule()
-                                                    .stroke(Color(hex: 0xDDD8FF), lineWidth: 1)
-                                            )
-                                    }
+                        VStack(spacing: 10) {
+                            ForEach(suggestedPrompts, id: \.self) { prompt in
+                                Button {
+                                    query = prompt
+                                    performAsk()
+                                } label: {
+                                    Text(prompt)
+                                        .font(.system(size: 14, weight: .medium))
+                                        .foregroundStyle(Color(.label))
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                        .padding(.horizontal, 14)
+                                        .padding(.vertical, 10)
+                                        .background(Color(hex: 0xF0EEFF))
+                                        .clipShape(Capsule())
+                                        .overlay(
+                                            Capsule()
+                                                .stroke(Color(hex: 0xDDD8FF), lineWidth: 1)
+                                        )
                                 }
                             }
                         }
@@ -828,8 +827,17 @@ private struct AskSheetView: View {
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") { dismiss() }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "xmark")
+                            .font(.system(size: 12, weight: .semibold))
+                            .foregroundStyle(Color(.label))
+                            .frame(width: 30, height: 30)
+                            .background(Color(.systemGray5))
+                            .clipShape(Circle())
+                    }
                 }
             }
         }
