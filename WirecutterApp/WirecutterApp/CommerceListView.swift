@@ -365,7 +365,6 @@ private struct CarouselCardView: View {
                                     .aspectRatio(contentMode: .fill)
                                     .frame(width: 142, height: 130)
                                     .clipped()
-                                    .blendMode(.multiply)
                             case .failure:
                                 Rectangle()
                                     .fill(Color(.systemGray5))
@@ -388,6 +387,7 @@ private struct CarouselCardView: View {
                 }
                 .padding(8)
                 .frame(width: 158, height: 161)
+                .background(Color.white)
                 .overlay(
                     RoundedRectangle(cornerRadius: 8)
                         .stroke(Color(hex: 0xDFDFDF), lineWidth: 1)
