@@ -12,13 +12,77 @@ class APIClient {
 
     // MARK: - Public
 
-    /// Commerce feed: loads from bundled products.json (scraped offline).
+    /// Commerce feed: loads from bundled products.json (scraped offline),
+    /// then enriches with live Shopify Store products woven into matching categories.
     /// Falls back to live API if the bundle is missing.
     func fetchCommerceFeed() async throws -> [CommerceItem] {
+        let baseProducts: [CommerceItem]
         if let bundled = loadBundledProducts() {
-            return bundled
+            baseProducts = bundled
+        } else {
+            baseProducts = try await fetchCommerceFeedLive()
         }
-        return try await fetchCommerceFeedLive()
+
+        // Fetch Shopify products concurrently — failure is non-fatal
+        let shopifyProducts = await ShopifyClient.shared.fetchAllProducts()
+
+        guard !shopifyProducts.isEmpty else {
+            return baseProducts
+        }
+
+        return mergeShopifyProducts(base: baseProducts, shopify: shopifyProducts)
+    }
+
+    /// Weaves Shopify products into the existing feed, interspersed within matching category groups.
+    private func mergeShopifyProducts(base: [CommerceItem], shopify: [CommerceItem]) -> [CommerceItem] {
+        var grouped = Dictionary(grouping: shopify) { $0.resolvedCategorySlug }
+        var result = base
+
+        // For each category, insert Shopify products at regular intervals
+        var insertions: [(index: Int, item: CommerceItem)] = []
+
+        let baseByCategory = Dictionary(grouping: result.indices.map { (index: $0, item: result[$0]) }) {
+            $0.item.resolvedCategorySlug
+        }
+
+        for (slug, categoryItems) in baseByCategory {
+            guard let shopifyItems = grouped.removeValue(forKey: slug), !shopifyItems.isEmpty else { continue }
+
+            // Insert one Shopify product every 3 items within that category's block
+            let step = max(3, categoryItems.count / (shopifyItems.count + 1))
+            var offset = step
+            var shopIdx = 0
+
+            for entry in categoryItems {
+                if offset <= 0 && shopIdx < shopifyItems.count {
+                    insertions.append((index: entry.index, item: shopifyItems[shopIdx]))
+                    shopIdx += 1
+                    offset = step
+                }
+                offset -= 1
+            }
+
+            // Append any remaining Shopify items for this category at end
+            while shopIdx < shopifyItems.count {
+                if let lastIndex = categoryItems.last?.index {
+                    insertions.append((index: lastIndex + 1, item: shopifyItems[shopIdx]))
+                }
+                shopIdx += 1
+            }
+        }
+
+        // Shopify items for categories not already in the feed — just append them
+        for (_, items) in grouped {
+            result.append(contentsOf: items)
+        }
+
+        // Apply insertions in reverse order to keep indices stable
+        for insertion in insertions.sorted(by: { $0.index > $1.index }) {
+            let safeIndex = min(insertion.index, result.count)
+            result.insert(insertion.item, at: safeIndex)
+        }
+
+        return result
     }
 
     /// Load pre-scraped products from the app bundle.
@@ -142,7 +206,9 @@ class APIClient {
             ribbon: product.ribbon,
             categoryName: categoryName,
             categorySlug: categorySlug,
-            articleHeroImageURL: articleHeroImageURL
+            articleHeroImageURL: articleHeroImageURL,
+            isShopifyProduct: nil,
+            shopifyVariantId: nil
         )
     }
 
@@ -228,7 +294,9 @@ class APIClient {
                 ribbon: index == 0 ? "Top Pick" : (index == 1 ? "Also Great" : nil),
                 categoryName: "Other",
                 categorySlug: "other",
-                articleHeroImageURL: nil
+                articleHeroImageURL: nil,
+                isShopifyProduct: nil,
+                shopifyVariantId: nil
             )
             products.append(item)
         }

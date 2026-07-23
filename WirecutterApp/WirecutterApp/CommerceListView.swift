@@ -330,34 +330,51 @@ private struct CarouselCardView: View {
             onTap()
         } label: {
             VStack(alignment: .leading, spacing: 8) {
-                if let imageUrl = item.displayImageUrl {
-                    AsyncImage(url: imageUrl) { phase in
-                        switch phase {
-                        case .success(let image):
-                            image
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: 160, height: 160)
-                                .clipped()
-                        case .failure:
-                            Rectangle()
-                                .fill(Color(.systemGray5))
-                                .frame(width: 160, height: 160)
-                        case .empty:
-                            ProgressView()
-                                .frame(width: 160, height: 160)
-                        @unknown default:
-                            Rectangle()
-                                .fill(Color(.systemGray5))
-                                .frame(width: 160, height: 160)
+                ZStack(alignment: .topTrailing) {
+                    if let imageUrl = item.displayImageUrl {
+                        AsyncImage(url: imageUrl) { phase in
+                            switch phase {
+                            case .success(let image):
+                                image
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 160, height: 160)
+                                    .clipped()
+                            case .failure:
+                                Rectangle()
+                                    .fill(Color(.systemGray5))
+                                    .frame(width: 160, height: 160)
+                            case .empty:
+                                ProgressView()
+                                    .frame(width: 160, height: 160)
+                            @unknown default:
+                                Rectangle()
+                                    .fill(Color(.systemGray5))
+                                    .frame(width: 160, height: 160)
+                            }
                         }
-                    }
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                } else {
-                    Rectangle()
-                        .fill(Color(.systemGray5))
-                        .frame(width: 160, height: 160)
                         .clipShape(RoundedRectangle(cornerRadius: 10))
+                    } else {
+                        Rectangle()
+                            .fill(Color(.systemGray5))
+                            .frame(width: 160, height: 160)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                    }
+
+                    if item.isShopifyProduct == true {
+                        HStack(spacing: 3) {
+                            Image(systemName: "bag.fill")
+                                .font(.system(size: 9, weight: .bold))
+                            Text("Buy")
+                                .font(.system(size: 10, weight: .bold))
+                        }
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 7)
+                        .padding(.vertical, 4)
+                        .background(Color.black.opacity(0.85))
+                        .clipShape(Capsule())
+                        .padding(8)
+                    }
                 }
 
                 if let ribbon = item.ribbon {

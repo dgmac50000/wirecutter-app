@@ -5,6 +5,8 @@ struct ProductQuickView: View {
     let onShop: (URL) -> Void
     let onDismiss: () -> Void
 
+    @State private var showApplePayConfirmation = false
+
     var body: some View {
         ScrollView(.vertical, showsIndicators: true) {
             VStack(alignment: .leading, spacing: 0) {
@@ -19,6 +21,11 @@ struct ProductQuickView: View {
         }
         .clipped()
         .background(Color(.systemBackground))
+        .overlay {
+            if showApplePayConfirmation {
+                applePayConfirmationOverlay
+            }
+        }
     }
 
     // MARK: - Drag Handle
@@ -138,6 +145,10 @@ struct ProductQuickView: View {
 
     private var buyButtons: some View {
         VStack(spacing: 10) {
+            if item.isShopifyProduct == true {
+                applePayButton
+            }
+
             if let sources = item.sources, !sources.isEmpty {
                 ForEach(Array(sources.enumerated()), id: \.offset) { _, source in
                     buyButton(
@@ -146,6 +157,12 @@ struct ProductQuickView: View {
                         url: source.dealAffiliateUrl ?? source.affiliateUrl
                     )
                 }
+            } else if item.isShopifyProduct == true {
+                buyButton(
+                    price: item.priceFormatted,
+                    merchant: "Wirecutter Store",
+                    url: item.shopUrl
+                )
             } else if let price = item.priceFormatted, let merchant = item.merchantName {
                 buyButton(
                     price: price,
@@ -156,6 +173,74 @@ struct ProductQuickView: View {
         }
         .padding(.horizontal, 20)
         .padding(.bottom, 24)
+    }
+
+    // MARK: - Apple Pay Button
+
+    private var applePayButton: some View {
+        Button {
+            simulateApplePayCheckout()
+        } label: {
+            HStack(spacing: 6) {
+                Image(systemName: "apple.logo")
+                    .font(.system(size: 16, weight: .semibold))
+                Text("Pay")
+                    .font(.system(size: 18, weight: .semibold))
+            }
+            .foregroundStyle(.white)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 12)
+            .background(Color.black)
+            .clipShape(RoundedRectangle(cornerRadius: 6))
+        }
+    }
+
+    private func simulateApplePayCheckout() {
+        withAnimation(.easeInOut(duration: 0.3)) {
+            showApplePayConfirmation = true
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            withAnimation(.easeInOut(duration: 0.3)) {
+                showApplePayConfirmation = false
+            }
+        }
+    }
+
+    // MARK: - Apple Pay Confirmation Overlay
+
+    private var applePayConfirmationOverlay: some View {
+        ZStack {
+            Color.black.opacity(0.4)
+                .ignoresSafeArea()
+
+            VStack(spacing: 16) {
+                Image(systemName: "checkmark.circle.fill")
+                    .font(.system(size: 56))
+                    .foregroundStyle(.green)
+
+                Text("Order Confirmed")
+                    .font(.system(size: 22, weight: .bold))
+                    .foregroundStyle(.primary)
+
+                Text(item.productTitle)
+                    .font(.system(size: 15))
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+                    .lineLimit(2)
+
+                if let price = item.displayPrice {
+                    Text(price)
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundStyle(.primary)
+                }
+            }
+            .padding(32)
+            .background(Color(.systemBackground))
+            .clipShape(RoundedRectangle(cornerRadius: 20))
+            .shadow(color: .black.opacity(0.2), radius: 20, x: 0, y: 10)
+            .padding(.horizontal, 40)
+            .transition(.scale.combined(with: .opacity))
+        }
     }
 
     private func buyButton(price: String?, merchant: String, url: URL?) -> some View {
@@ -242,7 +327,9 @@ extension Color {
             ribbon: "Top Pick",
             categoryName: "Home",
             categorySlug: "home",
-            articleHeroImageURL: nil
+            articleHeroImageURL: nil,
+            isShopifyProduct: nil,
+            shopifyVariantId: nil
         ),
         onShop: { _ in },
         onDismiss: {}
