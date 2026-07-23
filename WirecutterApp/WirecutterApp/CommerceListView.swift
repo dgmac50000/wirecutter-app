@@ -318,7 +318,7 @@ private struct CategorySectionHeader: View {
     var onSeeAll: (() -> Void)?
 
     var body: some View {
-        HStack(alignment: .firstTextBaseline) {
+        HStack(alignment: .center) {
             Text(title)
                 .font(.title3.weight(.bold))
                 .foregroundStyle(.primary)
@@ -327,9 +327,12 @@ private struct CategorySectionHeader: View {
                 Button {
                     onSeeAll()
                 } label: {
-                    Text("See all")
-                        .font(.subheadline.weight(.medium))
-                        .foregroundStyle(.secondary)
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundStyle(Color(.label))
+                        .frame(width: 30, height: 30)
+                        .background(Color(.systemGray5))
+                        .clipShape(Circle())
                 }
             }
         }
