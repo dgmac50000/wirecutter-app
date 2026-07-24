@@ -63,9 +63,13 @@ struct CommerceListView: View {
                 } else {
                     ScrollView {
                         LazyVStack(spacing: 16) {
-                            ForEach(shuffledProducts) { item in
-                                ProductCardView(item: item, onTap: { quickViewItem = item })
-                                    .padding(.horizontal, 20)
+                            ForEach(Array(shuffledProducts.enumerated()), id: \.element.id) { index, item in
+                                ProductCardView(
+                                    item: item,
+                                    onTap: { quickViewItem = item },
+                                    showAddToList: index % 5 == 4
+                                )
+                                .padding(.horizontal, 20)
                             }
                         }
                         .padding(.vertical, 16)
@@ -251,6 +255,7 @@ struct CommerceListView: View {
 private struct ProductCardView: View {
     let item: CommerceItem
     let onTap: () -> Void
+    let showAddToList: Bool
 
     private var hasBullets: Bool { !bulletPoints.isEmpty }
 
@@ -346,6 +351,14 @@ private struct ProductCardView: View {
             }
             .frame(maxWidth: .infinity)
             .frame(height: 280)
+            .overlay(alignment: .bottom) {
+                HStack(spacing: 4) {
+                    Circle().fill(Color.black).frame(width: 6, height: 6)
+                    Circle().fill(Color(hex: 0xCCCCCC)).frame(width: 4, height: 4)
+                    Circle().fill(Color(hex: 0xCCCCCC)).frame(width: 4, height: 4)
+                }
+                .padding(.bottom, 12)
+            }
 
             // Info section
             VStack(alignment: .leading, spacing: 20) {
@@ -391,7 +404,26 @@ private struct ProductCardView: View {
             }
             .padding(.horizontal, 16)
             .padding(.top, 8)
-            .padding(.bottom, 12)
+            .padding(.bottom, showAddToList ? 0 : 12)
+
+            if showAddToList {
+                HStack(spacing: 8) {
+                    Image("NYTAIIcon")
+                        .resizable()
+                        .frame(width: 21, height: 20)
+                        .foregroundStyle(Color(hex: 0x5B69EB))
+                    Text("Add to my \"\(item.resolvedCategoryName)\" list")
+                        .font(.custom("NYTVFranklin-Medium", fixedSize: 16))
+                        .foregroundStyle(Color(hex: 0x191919))
+                }
+                .padding(.horizontal, 15)
+                .padding(.vertical, 10)
+                .background(Color(hex: 0xF0F1FF))
+                .clipShape(Capsule())
+                .frame(maxWidth: .infinity)
+                .padding(.top, 8)
+                .padding(.bottom, 16)
+            }
         }
         .background(Color.white)
         .clipShape(RoundedRectangle(cornerRadius: 8))
