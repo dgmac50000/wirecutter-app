@@ -122,7 +122,7 @@ struct CommerceListView: View {
                     quickViewItem = nil
                 }
             )
-            .presentationDetents([.medium, .large])
+            .presentationDetents([.large])
             .presentationDragIndicator(.hidden)
         }
         .task {
@@ -336,6 +336,7 @@ private struct ProductCardView: View {
                             EmptyView()
                         }
                     }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
 
                 Circle()

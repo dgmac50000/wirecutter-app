@@ -14,8 +14,8 @@ struct ProductQuickView: View {
                 header
                 heroImage
                 productTile
+                editorialOverview
                 buyButtons
-                ledeText
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
@@ -128,12 +128,18 @@ struct ProductQuickView: View {
             }
 
             VStack(alignment: .leading, spacing: 4) {
-                Text(item.productTitle)
-                    .font(.system(size: 16, weight: .bold))
-                    .tracking(-0.5)
+                Text(item.articleTitle)
+                    .font(.custom("NYTVFranklin-Bold", fixedSize: 16))
                     .lineLimit(2)
                     .fixedSize(horizontal: false, vertical: true)
                     .foregroundStyle(.primary)
+
+                Link(destination: item.articleUrl) {
+                    Text("Show full review")
+                        .font(.custom("NYTVFranklin-Medium", fixedSize: 14))
+                        .underline()
+                        .foregroundStyle(.primary)
+                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
@@ -261,18 +267,18 @@ struct ProductQuickView: View {
         .disabled(url == nil)
     }
 
-    // MARK: - Lede Text
+    // MARK: - Editorial Overview
 
-    private var ledeText: some View {
+    private var editorialOverview: some View {
         Group {
-            if let description = item.productDescription {
-                Text(description)
-                    .font(.system(size: 18, weight: .regular, design: .serif))
-                    .lineSpacing(12)
+            if let desc = item.productDescription, !desc.isEmpty {
+                Text(desc)
+                    .font(.custom("NYTVFranklin-Medium", fixedSize: 16))
                     .foregroundStyle(.primary)
+                    .lineSpacing(4)
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(.horizontal, 20)
-                    .padding(.bottom, 40)
+                    .padding(.bottom, 20)
             }
         }
     }
