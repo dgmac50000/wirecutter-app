@@ -7,12 +7,10 @@ struct CommerceListView: View {
     @State private var errorMessage: String?
     @State private var safariItem: IdentifiableURL?
     @State private var quickViewItem: CommerceItem?
-    @State private var feedMode: FeedMode = .forYou
     @State private var selectedFilter: String = "For you"
     @State private var showHeader = true
     @State private var lastScrollOffset: CGFloat = 0
     @State private var showAsk = false
-    @State private var seeAllSection: CommerceCategorySection?
 
     private let filters: [(name: String, icon: String?)] = [
         ("For you", nil),
@@ -23,17 +21,11 @@ struct CommerceListView: View {
         ("Home", nil),
     ]
 
-    private var filteredItems: [CommerceItem] {
-        return items
-    }
-
-    private var sections: [CommerceCategorySection] {
-        switch feedMode {
-        case .forYou:
-            return CommerceCategorySection.build(from: filteredItems)
-        case .assistant:
-            return CommerceCategorySection.buildAssistantPersonas(from: filteredItems)
-        }
+    private var shuffledProducts: [CommerceItem] {
+        var all = items + shopifyProducts
+        var rng = SeededRandomNumberGenerator(seed: UInt64(all.count))
+        all.shuffle(using: &rng)
+        return all
     }
 
     var body: some View {
@@ -59,7 +51,7 @@ struct CommerceListView: View {
                             .multilineTextAlignment(.center)
                     }
                     .padding()
-                } else if filteredItems.isEmpty {
+                } else if shuffledProducts.isEmpty {
                     VStack(spacing: 12) {
                         Image(systemName: "tray")
                             .font(.largeTitle)
@@ -70,50 +62,10 @@ struct CommerceListView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 } else {
                     ScrollView {
-                        LazyVStack(alignment: .leading, spacing: 32) {
-                            ForEach(Array(sections.enumerated()), id: \.element.id) { index, section in
-                                // Category carousel
-                                VStack(alignment: .leading, spacing: 8) {
-                                    CategorySectionHeader(
-                                        title: section.name,
-                                        count: section.items.count,
-                                        onSeeAll: {
-                                            seeAllSection = section
-                                        }
-                                    )
-
-                                    ScrollView(.horizontal, showsIndicators: false) {
-                                        LazyHStack(spacing: 12) {
-                                            ForEach(Array(section.items.prefix(5)).map {
-                                                FeedRow(sectionID: section.id, item: $0)
-                                            }) { row in
-                                                CarouselCardView(
-                                                    item: row.item,
-                                                    onTap: {
-                                                        quickViewItem = row.item
-                                                    }
-                                                )
-                                            }
-                                        }
-                                        .padding(.horizontal, 20)
-                                    }
-                                }
-
-                                // Interstitial Shopify product card after each section
-                                if index < shopifyProducts.count {
-                                    ShopifyProductCard(
-                                        item: shopifyProducts[index],
-                                        onTap: {
-                                            quickViewItem = shopifyProducts[index]
-                                        },
-                                        onBuy: {
-                                            if let url = shopifyProducts[index].shopUrl {
-                                                safariItem = IdentifiableURL(url: url)
-                                            }
-                                        }
-                                    )
+                        LazyVStack(spacing: 16) {
+                            ForEach(shuffledProducts) { item in
+                                ProductCardView(item: item, onTap: { quickViewItem = item })
                                     .padding(.horizontal, 20)
-                                }
                             }
                         }
                         .padding(.vertical, 16)
@@ -168,23 +120,6 @@ struct CommerceListView: View {
             )
             .presentationDetents([.medium, .large])
             .presentationDragIndicator(.hidden)
-        }
-        .sheet(item: $seeAllSection) { section in
-            SeeAllView(
-                section: section,
-                onProductTap: { item in
-                    seeAllSection = nil
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                        quickViewItem = item
-                    }
-                },
-                onShop: { url in
-                    seeAllSection = nil
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                        safariItem = IdentifiableURL(url: url)
-                    }
-                }
-            )
         }
         .task {
             await loadFeed()
@@ -296,7 +231,7 @@ struct CommerceListView: View {
         .buttonStyle(.plain)
     }
 
-    // MARK: - Helpers (kept for compatibility)
+    // MARK: - Load Feed
 
     private func loadFeed() async {
         do {
@@ -311,76 +246,65 @@ struct CommerceListView: View {
     }
 }
 
-// MARK: - Category chrome
+// MARK: - Product Card (unified full-width card)
 
-private struct CategorySectionHeader: View {
-    let title: String
-    let count: Int
-    var onSeeAll: (() -> Void)?
-
-    var body: some View {
-        HStack(alignment: .center) {
-            Text(title)
-                .font(.custom("NYTVFranklin-Bold", fixedSize: 22))
-                .tracking(-0.5)
-                .foregroundStyle(.black)
-                .lineSpacing(2)
-            Spacer()
-            if let onSeeAll {
-                Button {
-                    onSeeAll()
-                } label: {
-                    Image(systemName: "chevron.right")
-                        .font(.system(size: 10, weight: .semibold))
-                        .foregroundStyle(Color(.label))
-                        .frame(width: 24, height: 24)
-                        .background(Color(.systemBackground))
-                        .clipShape(Circle())
-                }
-            }
-        }
-        .padding(.horizontal, 20)
-    }
-}
-
-// MARK: - Carousel Card (compact horizontal card)
-
-private struct CarouselCardView: View {
+private struct ProductCardView: View {
     let item: CommerceItem
     let onTap: () -> Void
+
+    private var hasBullets: Bool { !bulletPoints.isEmpty }
 
     private var bulletPoints: [String] {
         if let desc = item.productDescription, !desc.isEmpty {
             let lines = desc.components(separatedBy: .newlines)
                 .map { $0.trimmingCharacters(in: .whitespaces) }
                 .filter { !$0.isEmpty }
-            return Array(lines.prefix(2))
+            return Array(lines.prefix(3))
         }
+        if item.isShopifyProduct == true {
+            return generateBullets()
+        }
+        return []
+    }
+
+    private func generateBullets() -> [String] {
         let name = item.productTitle.lowercased()
-        if name.contains("mattress") || name.contains("pillow") || name.contains("blanket") {
-            return ["Top pick for better sleep", "Premium comfort materials"]
-        } else if name.contains("air purifier") || name.contains("airmega") {
-            return ["True HEPA filtration", "Auto air quality mode"]
-        } else if name.contains("headphone") || name.contains("earbuds") {
-            return ["Wirecutter tested sound", "All-day comfort"]
-        } else if name.contains("bag") || name.contains("carry-on") || name.contains("backpack") {
-            return ["Durable travel materials", "Smart organization"]
+        if name.contains("mattress") || name.contains("pillow") || name.contains("blanket") || name.contains("sheet") || name.contains("duvet") || name.contains("sleep") {
+            return ["Wirecutter's top pick for better sleep", "Premium materials for lasting comfort", "Risk-free trial period included"]
+        } else if name.contains("air purifier") || name.contains("airmega") || name.contains("filter") {
+            return ["True HEPA filtration for cleaner air", "Auto mode adjusts to air quality", "Quiet operation even on high settings"]
+        } else if name.contains("headphone") || name.contains("earbuds") || name.contains("speaker") {
+            return ["Immersive sound tested by experts", "Comfortable for extended wear", "Long battery life for all-day use"]
+        } else if name.contains("bag") || name.contains("carry-on") || name.contains("duffel") || name.contains("backpack") {
+            return ["Durable materials for frequent travel", "Thoughtful organization for essentials", "Fits airline carry-on requirements"]
+        } else if name.contains("camera") || name.contains("bird") {
+            return ["Crystal-clear image quality", "Easy setup with guided app", "Smart notifications and recording"]
         } else {
-            return ["Wirecutter recommended", "Expert tested"]
+            return ["Wirecutter tested and recommended", "Built to last with quality materials", "Handpicked by our experts"]
         }
     }
 
-    private var buyButtonText: String {
+    private var buyButtons: [(text: String, url: URL?)] {
+        if let sources = item.sources, !sources.isEmpty {
+            return Array(sources.prefix(2)).map { source in
+                let price = source.dealPriceFormatted ?? source.priceFormatted ?? ""
+                let merchant = source.merchantName
+                let text = price.isEmpty ? "From \(merchant)" : "\(price) from \(merchant)"
+                return (text: text, url: source.dealAffiliateUrl ?? source.affiliateUrl)
+            }
+        }
+        let text: String
         switch (item.displayPrice, item.displayMerchant) {
         case let (price?, merchant?):
-            return "\(price) from \(merchant)"
+            text = "\(price) from \(merchant)"
         case let (price?, nil):
-            return price
+            text = price
         case let (nil, merchant?):
-            return "From \(merchant)"
+            text = "From \(merchant)"
         default:
-            return "View Details"
+            text = "View Details"
         }
+        return [(text: text, url: item.shopUrl)]
     }
 
     var body: some View {
@@ -399,141 +323,6 @@ private struct CarouselCardView: View {
                                 .padding(12)
                         case .failure:
                             Image(systemName: "photo")
-                                .font(.title2)
-                                .foregroundStyle(Color(.systemGray3))
-                        case .empty:
-                            ProgressView()
-                        @unknown default:
-                            EmptyView()
-                        }
-                    }
-                }
-
-                // Bookmark button
-                Circle()
-                    .fill(.white)
-                    .frame(width: 20, height: 20)
-                    .overlay(
-                        Image(systemName: "bookmark")
-                            .font(.system(size: 10, weight: .medium))
-                            .foregroundStyle(.black)
-                    )
-                    .padding(.top, 8)
-                    .padding(.trailing, 8)
-            }
-            .frame(width: 220, height: 180)
-
-            // Info area
-            VStack(alignment: .leading, spacing: 10) {
-                // Subtitle (merchant)
-                if let merchant = item.displayMerchant {
-                    Text(merchant)
-                        .font(.custom("NYTVFranklin-Medium", fixedSize: 12))
-                        .foregroundStyle(Color(hex: 0x666666))
-                        .lineSpacing(6)
-                }
-
-                // Title
-                Text(item.productTitle)
-                    .font(.custom("NYTVFranklin-Bold", fixedSize: 16))
-                    .foregroundStyle(.black)
-                    .lineLimit(2)
-                    .multilineTextAlignment(.leading)
-                    .lineSpacing(4)
-
-                // Bullets
-                if !bulletPoints.isEmpty {
-                    VStack(alignment: .leading, spacing: 4) {
-                        ForEach(bulletPoints, id: \.self) { bullet in
-                            Text("• \(bullet)")
-                                .font(.custom("NYTVFranklin-Medium", fixedSize: 12))
-                                .foregroundStyle(.black)
-                                .lineSpacing(4)
-                        }
-                    }
-                }
-
-                // Buy button
-                Button {
-                    onTap()
-                } label: {
-                    Text(buyButtonText)
-                        .font(.custom("NYTVFranklin-Bold", fixedSize: 14))
-                        .foregroundStyle(.white)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 36)
-                        .background(Color.black)
-                }
-                .buttonStyle(.plain)
-            }
-            .padding(.horizontal, 12)
-            .padding(.top, 8)
-            .padding(.bottom, 12)
-        }
-        .frame(width: 220)
-        .overlay(Rectangle().stroke(Color(hex: 0xDFDFDF), lineWidth: 1))
-        .contentShape(Rectangle())
-        .onTapGesture { onTap() }
-    }
-}
-
-// MARK: - Full-Width Shopify Interstitial Card
-
-private struct ShopifyProductCard: View {
-    let item: CommerceItem
-    let onTap: () -> Void
-    let onBuy: () -> Void
-
-    @State private var showApplePayConfirmation = false
-
-    private var bulletPoints: [String] {
-        if let desc = item.productDescription, !desc.isEmpty {
-            let lines = desc.components(separatedBy: .newlines)
-                .map { $0.trimmingCharacters(in: .whitespaces) }
-                .filter { !$0.isEmpty }
-            return Array(lines.prefix(3))
-        }
-        return generateBullets()
-    }
-
-    private func generateBullets() -> [String] {
-        let name = item.productTitle.lowercased()
-        var bullets: [String] = []
-
-        if name.contains("mattress") || name.contains("pillow") || name.contains("blanket") || name.contains("sheet") || name.contains("duvet") || name.contains("sleep") {
-            bullets = ["Wirecutter's top pick for better sleep", "Premium materials for lasting comfort", "Risk-free trial period included"]
-        } else if name.contains("air purifier") || name.contains("airmega") || name.contains("filter") {
-            bullets = ["True HEPA filtration for cleaner air", "Auto mode adjusts to your room's air quality", "Quiet operation even on high settings"]
-        } else if name.contains("headphone") || name.contains("earbuds") || name.contains("speaker") {
-            bullets = ["Immersive sound tested by Wirecutter experts", "Comfortable for extended wear", "Long battery life for all-day use"]
-        } else if name.contains("bag") || name.contains("carry-on") || name.contains("duffel") || name.contains("backpack") {
-            bullets = ["Durable materials for frequent travel", "Thoughtful organization for essentials", "Fits airline carry-on requirements"]
-        } else if name.contains("camera") || name.contains("bird") {
-            bullets = ["Crystal-clear image quality", "Easy setup with guided app", "Smart notifications and recording"]
-        } else {
-            bullets = ["Wirecutter tested and recommended", "Built to last with quality materials", "Handpicked by our experts"]
-        }
-
-        let titleWords = item.productTitle.components(separatedBy: " ").count
-        return titleWords > 5 ? Array(bullets.prefix(2)) : Array(bullets.prefix(3))
-    }
-
-    var body: some View {
-        VStack(spacing: 0) {
-            // Image area
-            ZStack(alignment: .topTrailing) {
-                Color(hex: 0xF6F6F6)
-
-                if let imageUrl = item.displayImageUrl {
-                    AsyncImage(url: imageUrl) { phase in
-                        switch phase {
-                        case .success(let image):
-                            image
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .padding(16)
-                        case .failure:
-                            Image(systemName: "photo")
                                 .font(.largeTitle)
                                 .foregroundStyle(Color(.systemGray3))
                         case .empty:
@@ -544,7 +333,6 @@ private struct ShopifyProductCard: View {
                     }
                 }
 
-                // Bookmark button
                 Circle()
                     .fill(.white)
                     .frame(width: 24, height: 24)
@@ -557,23 +345,15 @@ private struct ShopifyProductCard: View {
                     .padding(.trailing, 12)
             }
             .frame(maxWidth: .infinity)
-            .frame(height: 312)
-            .contentShape(Rectangle())
-            .onTapGesture { onTap() }
+            .frame(height: 280)
 
-            // Info area
+            // Info section
             VStack(alignment: .leading, spacing: 20) {
-                // Info group
                 VStack(alignment: .leading, spacing: 12) {
-                    // Subtitle (merchant)
-                    if let merchant = item.displayMerchant {
-                        Text(merchant)
-                            .font(.custom("NYTVFranklin-Medium", fixedSize: 12))
-                            .foregroundStyle(Color(hex: 0x666666))
-                            .lineSpacing(6)
-                    }
+                    Text(item.displayMerchant ?? item.productTitle)
+                        .font(.custom("NYTVFranklin-Medium", fixedSize: 12))
+                        .foregroundStyle(Color(hex: 0x666666))
 
-                    // Headline (product title)
                     Text(item.productTitle)
                         .font(.custom("NYTVFranklin-Bold", fixedSize: 20))
                         .foregroundStyle(.black)
@@ -581,195 +361,43 @@ private struct ShopifyProductCard: View {
                         .lineLimit(3)
                         .multilineTextAlignment(.leading)
 
-                    // Bullet points
-                    if !bulletPoints.isEmpty {
+                    if hasBullets {
                         VStack(alignment: .leading, spacing: 4) {
                             ForEach(bulletPoints, id: \.self) { bullet in
                                 Text("• \(bullet)")
                                     .font(.custom("NYTVFranklin-Medium", fixedSize: 14))
                                     .foregroundStyle(.black)
-                                    .lineSpacing(6)
                             }
                         }
                     }
                 }
 
-                // Apple Pay button
-                Button {
-                    simulateApplePay()
-                } label: {
-                    HStack(spacing: 4) {
-                        Image(systemName: "apple.logo")
-                            .font(.system(size: 18, weight: .semibold))
-                        Text("Pay")
-                            .font(.system(size: 18, weight: .semibold))
+                VStack(spacing: 8) {
+                    ForEach(Array(buyButtons.enumerated()), id: \.offset) { _, button in
+                        Button {
+                            onTap()
+                        } label: {
+                            Text(button.text)
+                                .font(.custom("NYTVFranklin-Bold", fixedSize: 14))
+                                .foregroundStyle(.white)
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 39)
+                                .background(Color.black)
+                                .clipShape(RoundedRectangle(cornerRadius: 4))
+                        }
+                        .buttonStyle(.plain)
                     }
-                    .foregroundStyle(.white)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 44)
-                    .background(Color.black)
                 }
-                .buttonStyle(.plain)
             }
             .padding(.horizontal, 16)
             .padding(.top, 8)
             .padding(.bottom, 12)
         }
-        .overlay(Rectangle().stroke(Color(hex: 0xDFDFDF), lineWidth: 1))
-        .overlay {
-            if showApplePayConfirmation {
-                applePayOverlay
-            }
-        }
-    }
-
-    private func simulateApplePay() {
-        withAnimation(.easeInOut(duration: 0.3)) {
-            showApplePayConfirmation = true
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            withAnimation(.easeInOut(duration: 0.3)) {
-                showApplePayConfirmation = false
-            }
-        }
-    }
-
-    private var applePayOverlay: some View {
-        ZStack {
-            Color.black.opacity(0.4)
-
-            VStack(spacing: 12) {
-                Image(systemName: "checkmark.circle.fill")
-                    .font(.system(size: 44))
-                    .foregroundStyle(.green)
-                Text("Order Confirmed")
-                    .font(.system(size: 18, weight: .bold))
-                    .foregroundStyle(.white)
-                Text(item.productTitle)
-                    .font(.system(size: 13))
-                    .foregroundStyle(.white.opacity(0.8))
-                    .lineLimit(1)
-                if let price = item.displayPrice {
-                    Text(price)
-                        .font(.system(size: 16, weight: .semibold))
-                        .foregroundStyle(.white)
-                }
-            }
-            .transition(.scale.combined(with: .opacity))
-        }
-    }
-}
-
-// MARK: - See All View (full list for a section)
-
-private struct SeeAllView: View {
-    let section: CommerceCategorySection
-    let onProductTap: (CommerceItem) -> Void
-    let onShop: (URL) -> Void
-    @Environment(\.dismiss) private var dismiss
-
-    var body: some View {
-        NavigationStack {
-            ScrollView {
-                LazyVStack(spacing: 16) {
-                    ForEach(section.items) { item in
-                        SeeAllRowView(item: item, onTap: {
-                            onProductTap(item)
-                        }, onShop: {
-                            if let url = item.shopUrl {
-                                onShop(url)
-                            }
-                        })
-                    }
-                }
-                .padding()
-            }
-            .navigationTitle(section.name)
-            .navigationBarTitleDisplayMode(.large)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Done") { dismiss() }
-                }
-            }
-        }
-    }
-}
-
-private struct SeeAllRowView: View {
-    let item: CommerceItem
-    let onTap: () -> Void
-    let onShop: () -> Void
-
-    var body: some View {
-        Button {
-            onTap()
-        } label: {
-            HStack(spacing: 14) {
-                if let imageUrl = item.displayImageUrl {
-                    AsyncImage(url: imageUrl) { phase in
-                        switch phase {
-                        case .success(let image):
-                            image
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: 80, height: 80)
-                                .clipped()
-                        case .failure, .empty:
-                            Rectangle()
-                                .fill(Color(.systemGray5))
-                                .frame(width: 80, height: 80)
-                        @unknown default:
-                            Rectangle()
-                                .fill(Color(.systemGray5))
-                                .frame(width: 80, height: 80)
-                        }
-                    }
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
-                }
-
-                VStack(alignment: .leading, spacing: 4) {
-                    if let ribbon = item.ribbon {
-                        Text(ribbon)
-                            .font(.system(size: 10, weight: .bold))
-                            .foregroundStyle(.orange)
-                    }
-                    Text(item.productTitle)
-                        .font(.system(size: 15, weight: .medium))
-                        .foregroundStyle(Color(.label))
-                        .lineLimit(2)
-                    if let price = item.displayPrice {
-                        Text(price)
-                            .font(.system(size: 14, weight: .bold))
-                            .foregroundStyle(Color(.label))
-                    }
-                    if let merchant = item.displayMerchant {
-                        Text("at \(merchant)")
-                            .font(.system(size: 12))
-                            .foregroundStyle(.secondary)
-                    }
-                }
-
-                Spacer()
-
-                if item.shopUrl != nil {
-                    Button {
-                        onShop()
-                    } label: {
-                        Image(systemName: "cart")
-                            .font(.system(size: 14))
-                            .foregroundStyle(.white)
-                            .frame(width: 32, height: 32)
-                            .background(Color.black)
-                            .clipShape(Circle())
-                    }
-                }
-            }
-            .padding(12)
-            .background(Color(.systemBackground))
-            .clipShape(RoundedRectangle(cornerRadius: 12))
-            .shadow(color: .black.opacity(0.06), radius: 4, x: 0, y: 2)
-        }
-        .buttonStyle(.plain)
+        .background(Color.white)
+        .clipShape(RoundedRectangle(cornerRadius: 8))
+        .shadow(color: .black.opacity(0.12), radius: 6, x: 0, y: 2)
+        .contentShape(Rectangle())
+        .onTapGesture { onTap() }
     }
 }
 
@@ -965,15 +593,20 @@ private struct ScrollOffsetPreferenceKey: PreferenceKey {
 
 // MARK: - Identifiable URL wrapper for .sheet(item:)
 
-private struct FeedRow: Identifiable {
-    let sectionID: String
-    let item: CommerceItem
-    var id: String { "\(sectionID)-\(item.productId)" }
-}
-
 struct IdentifiableURL: Identifiable {
     let id = UUID()
     let url: URL
+}
+
+// MARK: - Seeded RNG for stable shuffle
+
+private struct SeededRandomNumberGenerator: RandomNumberGenerator {
+    var state: UInt64
+    init(seed: UInt64) { state = seed == 0 ? 1 : seed }
+    mutating func next() -> UInt64 {
+        state = state &* 6364136223846793005 &+ 1442695040888963407
+        return state
+    }
 }
 
 #Preview {
