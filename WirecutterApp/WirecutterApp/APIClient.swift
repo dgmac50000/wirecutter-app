@@ -12,13 +12,45 @@ class APIClient {
 
     // MARK: - Public
 
-    /// Commerce feed for the prototype.
-    ///
-    /// Image strategy (source-agnostic ranking via `ProductImageRanking`):
-    /// 1. Prefer Next.js article `__NEXT_DATA__` (catalog callouts + chapter CDN heroes)
-    /// 2. Fall back to WP `content.rendered` HTML scrape
-    /// Long-term: add Minotaur / Phoenix providers that fill the same `ProductImageBundle`.
-    func fetchCommerceFeed() async throws -> [CommerceItem] {
+    /// Commerce feed: loads affiliate products from the bundle (or live API)
+    /// and Shopify Store products separately. The view interleaves Shopify
+    /// products as full-width interstitial cards between category carousels.
+    func fetchCommerceFeed() async throws -> CommerceFeedResult {
+        let baseProducts: [CommerceItem]
+        if let bundled = loadBundledProducts() {
+            baseProducts = bundled
+        } else {
+            baseProducts = try await fetchCommerceFeedLive()
+        }
+
+        // Fetch Shopify products concurrently — failure is non-fatal
+        let shopifyProducts = await ShopifyClient.shared.fetchAllProducts()
+
+        return CommerceFeedResult(
+            products: baseProducts,
+            shopifyProducts: shopifyProducts
+        )
+    }
+
+    /// Load pre-scraped products from the app bundle.
+    private func loadBundledProducts() -> [CommerceItem]? {
+        guard let url = Bundle.main.url(forResource: "products", withExtension: "json"),
+              let data = try? Data(contentsOf: url) else {
+            return nil
+        }
+
+        struct BundledFeed: Decodable {
+            let products: [CommerceItem]
+        }
+
+        guard let feed = try? decoder.decode(BundledFeed.self, from: data) else {
+            return nil
+        }
+        return feed.products
+    }
+
+    /// Live fallback: fetches from Wirecutter WP API and parses HTML.
+    private func fetchCommerceFeedLive() async throws -> [CommerceItem] {
         var reviews = try await fetchReviews(count: 8)
 
         // Prototype: always include a known rich-media review so hi-res chapter
@@ -121,7 +153,9 @@ class APIClient {
             ribbon: product.ribbon,
             categoryName: categoryName,
             categorySlug: categorySlug,
-            articleHeroImageURL: articleHeroImageURL
+            articleHeroImageURL: articleHeroImageURL,
+            isShopifyProduct: nil,
+            shopifyVariantId: nil
         )
     }
 
@@ -207,7 +241,9 @@ class APIClient {
                 ribbon: index == 0 ? "Top Pick" : (index == 1 ? "Also Great" : nil),
                 categoryName: "Other",
                 categorySlug: "other",
-                articleHeroImageURL: nil
+                articleHeroImageURL: nil,
+                isShopifyProduct: nil,
+                shopifyVariantId: nil
             )
             products.append(item)
         }

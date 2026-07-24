@@ -37,6 +37,11 @@ struct CommerceItem: Codable, Identifiable {
     /// Article-level editorial hero (often hi-res CDN) — used to lead category sections.
     let articleHeroImageURL: URL?
 
+    /// `true` for products sourced from the Wirecutter Shopify Store (direct-buy).
+    let isShopifyProduct: Bool?
+    /// Shopify variant ID used for checkout (e.g. "gid://shopify/ProductVariant/...").
+    let shopifyVariantId: String?
+
     var id: Int { productId }
 
     /// Prefer editorial hi-res CDN assets when present; otherwise fall back to catalog / legacy URL.
@@ -57,8 +62,12 @@ struct CommerceItem: Codable, Identifiable {
         sources?.first?.merchantName ?? merchantName
     }
 
-    /// Best affiliate URL: deal link > source link > legacy field
+    /// Best affiliate URL: deal link > source link > legacy field.
+    /// For Shopify products, links directly to the storefront product page.
     var shopUrl: URL? {
+        if isShopifyProduct == true {
+            return affiliateUrl
+        }
         if let source = sources?.first {
             return source.dealAffiliateUrl ?? source.affiliateUrl
         }
@@ -79,6 +88,13 @@ struct CommerceItem: Codable, Identifiable {
 
 struct CommerceFeedResponse: Codable {
     let items: [CommerceItem]
+}
+
+/// Result of the commerce feed loader: affiliate products grouped by category,
+/// plus a separate pool of Shopify Store products to display as interstitials.
+struct CommerceFeedResult {
+    let products: [CommerceItem]
+    let shopifyProducts: [CommerceItem]
 }
 
 /// Grouped feed section for the commerce list UI (categories or Assistant personas).
