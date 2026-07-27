@@ -10,21 +10,38 @@ class APIClient {
         return d
     }()
 
+    /// When `true`, loads products via the live article-page parser (confident
+    /// editorial hi-res matching). Slower cold start (~2–5s). Kept available but
+    /// off by default in favor of bundled `products.json`.
+    private static let preferLiveArticleHiResFeed = false
+
     // MARK: - Public
 
-    /// Commerce feed: loads affiliate products from the bundle (or live API)
-    /// and Shopify Store products separately. The view interleaves Shopify
-    /// products as full-width interstitial cards between category carousels.
+    /// Commerce feed: loads affiliate products (bundled by default; optional live
+    /// article-page hi-res path) plus Shopify Store products concurrently.
     func fetchCommerceFeed() async throws -> CommerceFeedResult {
+        async let shopifyTask = ShopifyClient.shared.fetchAllProducts()
+
         let baseProducts: [CommerceItem]
-        if let bundled = loadBundledProducts() {
+        if Self.preferLiveArticleHiResFeed {
+            do {
+                let live = try await fetchCommerceFeedLive()
+                baseProducts = live.isEmpty ? (loadBundledProducts() ?? []) : live
+            } catch {
+                if let bundled = loadBundledProducts(), !bundled.isEmpty {
+                    baseProducts = bundled
+                } else {
+                    _ = await shopifyTask
+                    throw error
+                }
+            }
+        } else if let bundled = loadBundledProducts() {
             baseProducts = bundled
         } else {
             baseProducts = try await fetchCommerceFeedLive()
         }
 
-        // Fetch Shopify products concurrently — failure is non-fatal
-        let shopifyProducts = await ShopifyClient.shared.fetchAllProducts()
+        let shopifyProducts = await shopifyTask
 
         return CommerceFeedResult(
             products: baseProducts,

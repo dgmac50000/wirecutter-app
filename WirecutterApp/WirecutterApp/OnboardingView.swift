@@ -61,12 +61,12 @@ struct OnboardingView: View {
                     .frame(height: 30)
 
                 Text("Find the best\nstuff, faster.")
-                    .font(.system(size: 36, weight: .bold, design: .serif))
+                    .font(.nytFranklin(size: 36, weight: .bold))
                     .multilineTextAlignment(.center)
                     .lineSpacing(4)
 
                 Text("Tell us what you\u{2019}re into and we\u{2019}ll\npersonalize your recommendations.")
-                    .font(.system(size: 17))
+                    .font(.nytFranklin(size: 17))
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
                     .lineSpacing(4)
@@ -79,7 +79,7 @@ struct OnboardingView: View {
                     withAnimation { currentStep = 1 }
                 } label: {
                     Text("Get started")
-                        .font(.system(size: 17, weight: .semibold))
+                        .font(.nytFranklin(size: 17, weight: .semibold))
                         .foregroundStyle(.white)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 16)
@@ -91,7 +91,7 @@ struct OnboardingView: View {
                     skipOnboarding()
                 } label: {
                     Text("Skip for now")
-                        .font(.system(size: 15))
+                        .font(.nytFranklin(size: 15))
                         .foregroundStyle(.secondary)
                 }
                 .padding(.bottom, 8)
@@ -107,10 +107,10 @@ struct OnboardingView: View {
         VStack(spacing: 0) {
             VStack(alignment: .leading, spacing: 8) {
                 Text("What are you\nshopping for?")
-                    .font(.system(size: 28, weight: .bold, design: .serif))
+                    .font(.nytFranklin(size: 28, weight: .bold))
                     .lineSpacing(2)
                 Text("Pick as many as you like.")
-                    .font(.system(size: 15))
+                    .font(.nytFranklin(size: 15))
                     .foregroundStyle(.secondary)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -159,10 +159,10 @@ struct OnboardingView: View {
                     // Budget section
                     VStack(alignment: .leading, spacing: 8) {
                         Text("What\u{2019}s your\nbudget style?")
-                            .font(.system(size: 28, weight: .bold, design: .serif))
+                            .font(.nytFranklin(size: 28, weight: .bold))
                             .lineSpacing(2)
                         Text("We\u{2019}ll prioritize picks that match.")
-                            .font(.system(size: 15))
+                            .font(.nytFranklin(size: 15))
                             .foregroundStyle(.secondary)
                     }
                     .padding(.top, 24)
@@ -180,9 +180,9 @@ struct OnboardingView: View {
                     // Context section
                     VStack(alignment: .leading, spacing: 8) {
                         Text("What brings you here?")
-                            .font(.system(size: 20, weight: .bold, design: .serif))
+                            .font(.nytFranklin(size: 20, weight: .bold))
                         Text("Optional \u{2014} helps us make better picks.")
-                            .font(.system(size: 15))
+                            .font(.nytFranklin(size: 15))
                             .foregroundStyle(.secondary)
                     }
                     .padding(.top, 8)
@@ -240,10 +240,10 @@ struct OnboardingView: View {
                 }
 
                 Text("You\u{2019}re all set!")
-                    .font(.system(size: 32, weight: .bold, design: .serif))
+                    .font(.nytFranklin(size: 32, weight: .bold))
 
                 Text("We\u{2019}ll show you personalized picks\nbased on your interests.")
-                    .font(.system(size: 17))
+                    .font(.nytFranklin(size: 17))
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
                     .lineSpacing(4)
@@ -256,7 +256,7 @@ struct OnboardingView: View {
                                 Image(systemName: cat.icon)
                                     .font(.system(size: 11))
                                 Text(cat.name)
-                                    .font(.system(size: 13, weight: .medium))
+                                    .font(.nytFranklin(size: 13, weight: .medium))
                             }
                             .padding(.horizontal, 12)
                             .padding(.vertical, 6)
@@ -275,7 +275,7 @@ struct OnboardingView: View {
                     onComplete()
                 } label: {
                     Text("Start exploring")
-                        .font(.system(size: 17, weight: .semibold))
+                        .font(.nytFranklin(size: 17, weight: .semibold))
                         .foregroundStyle(.white)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 16)
@@ -313,7 +313,7 @@ struct OnboardingView: View {
                     onNext()
                 } label: {
                     Text("Continue")
-                        .font(.system(size: 17, weight: .semibold))
+                        .font(.nytFranklin(size: 17, weight: .semibold))
                         .foregroundStyle(.white)
                         .padding(.horizontal, 32)
                         .padding(.vertical, 14)
@@ -352,7 +352,7 @@ private struct CategoryPill: View {
                     .clipShape(RoundedRectangle(cornerRadius: 10))
 
                 Text(category.name)
-                    .font(.system(size: 15, weight: .medium))
+                    .font(.nytFranklin(size: 15, weight: .medium))
                     .foregroundStyle(Color(.label))
 
                 Spacer()
@@ -398,10 +398,10 @@ private struct BudgetRow: View {
 
                 VStack(alignment: .leading, spacing: 2) {
                     Text(budget.rawValue)
-                        .font(.system(size: 16, weight: .medium))
+                        .font(.nytFranklin(size: 16, weight: .medium))
                         .foregroundStyle(Color(.label))
                     Text(budget.description)
-                        .font(.system(size: 13))
+                        .font(.nytFranklin(size: 13))
                         .foregroundStyle(.secondary)
                 }
 
@@ -435,7 +435,7 @@ private struct ContextRow: View {
                     .frame(width: 24)
 
                 Text(context.label)
-                    .font(.system(size: 15, weight: .medium))
+                    .font(.nytFranklin(size: 15, weight: .medium))
                     .foregroundStyle(Color(.label))
 
                 Spacer()
