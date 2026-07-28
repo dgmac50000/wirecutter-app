@@ -86,11 +86,11 @@ struct CommerceListView: View {
                                 .frame(maxWidth: .infinity)
                                 .padding(.top, 40)
                             } else {
-                                ForEach(Array(shuffledProducts.enumerated()), id: \.element.id) { index, item in
+                                ForEach(shuffledProducts) { item in
                                     ProductCardView(
                                         item: item,
                                         onTap: { quickViewItem = item },
-                                        showAddToList: index % 5 == 4
+                                        onDeepDive: { quickViewItem = item }
                                     )
                                     .padding(.horizontal, 20)
                                     .transition(.opacity.combined(with: .move(edge: .bottom)))
@@ -491,14 +491,35 @@ struct GhostProductCard: View {
     }
 }
 
-// MARK: - Product Card (unified full-width card)
+// MARK: - Product Card (Default + Specialty variants)
 
 struct ProductCardView: View {
     let item: CommerceItem
     let onTap: () -> Void
-    var showAddToList: Bool = false
+    var onDeepDive: (() -> Void)? = nil
     var isSaved: Bool = false
     var onBookmarkTap: (() -> Void)? = nil
+
+    var isSpecialty: Bool {
+        if let sources = item.sources {
+            for source in sources {
+                if let priceStr = source.priceFormatted ?? source.dealPriceFormatted,
+                   let price = Self.extractPrice(from: priceStr), price >= 250 {
+                    return true
+                }
+            }
+        }
+        if let priceStr = item.priceFormatted,
+           let price = Self.extractPrice(from: priceStr), price >= 250 {
+            return true
+        }
+        return false
+    }
+
+    private static func extractPrice(from str: String) -> Double? {
+        let cleaned = str.replacingOccurrences(of: "[^0-9.]", with: "", options: .regularExpression)
+        return Double(cleaned)
+    }
 
     private var hasBullets: Bool { !bulletPoints.isEmpty }
 
@@ -557,78 +578,155 @@ struct ProductCardView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            // Image area
-            ZStack(alignment: .topTrailing) {
-                Color(hex: 0xF6F6F6)
+            imageArea
+            infoSection
+        }
+        .background(Color.white)
+        .clipShape(RoundedRectangle(cornerRadius: 8))
+        .shadow(color: .black.opacity(0.12), radius: 6, x: 0, y: 2)
+        .contentShape(Rectangle())
+        .onTapGesture { onTap() }
+    }
 
-                if let imageUrl = item.displayImageUrl {
-                    AsyncImage(url: imageUrl) { phase in
-                        switch phase {
-                        case .success(let image):
-                            image
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                                .padding(12)
-                        case .failure:
-                            Image(systemName: "photo")
-                                .font(.largeTitle)
-                                .foregroundStyle(Color(.systemGray3))
-                        case .empty:
-                            Color(hex: 0xEEEEEE)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 4)
-                                        .fill(Color(hex: 0xE4E4E4))
-                                        .frame(width: 64, height: 64)
-                                )
-                        @unknown default:
-                            EmptyView()
-                        }
+    // MARK: - Image Area
+
+    private var imageArea: some View {
+        ZStack(alignment: .topTrailing) {
+            Color(hex: 0xF6F6F6)
+
+            if let imageUrl = item.displayImageUrl {
+                AsyncImage(url: imageUrl) { phase in
+                    switch phase {
+                    case .success(let image):
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .padding(12)
+                    case .failure:
+                        Image(systemName: "photo")
+                            .font(.largeTitle)
+                            .foregroundStyle(Color(.systemGray3))
+                    case .empty:
+                        Color(hex: 0xEEEEEE)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 4)
+                                    .fill(Color(hex: 0xE4E4E4))
+                                    .frame(width: 64, height: 64)
+                            )
+                    @unknown default:
+                        EmptyView()
                     }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
-
-                bookmarkButton
-                    .padding(.top, 13)
-                    .padding(.trailing, 12)
-            }
-            .frame(maxWidth: .infinity)
-            .frame(height: 280)
-            .clipped()
-            .overlay(alignment: .bottom) {
-                HStack(spacing: 4) {
-                    Circle().fill(Color.black).frame(width: 6, height: 6)
-                    Circle().fill(Color(hex: 0xCCCCCC)).frame(width: 4, height: 4)
-                    Circle().fill(Color(hex: 0xCCCCCC)).frame(width: 4, height: 4)
-                }
-                .padding(.bottom, 12)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
 
-            // Info section
-            VStack(alignment: .leading, spacing: 20) {
-                VStack(alignment: .leading, spacing: 12) {
-                    Text(item.displayMerchant ?? item.productTitle)
-                        .font(.nytFranklin(.medium, size: 12))
-                        .foregroundStyle(Color(hex: 0x666666))
+            actionButtons
+                .padding(.top, 20)
+                .padding(.trailing, 15)
+        }
+        .frame(maxWidth: .infinity)
+        .frame(height: 280)
+        .clipShape(
+            UnevenRoundedRectangle(
+                topLeadingRadius: 8,
+                bottomLeadingRadius: 0,
+                bottomTrailingRadius: 0,
+                topTrailingRadius: 8
+            )
+        )
+        .overlay(alignment: .bottom) {
+            HStack(spacing: 4) {
+                Circle().fill(Color.black).frame(width: 6, height: 6)
+                Circle().fill(Color(hex: 0xCCCCCC)).frame(width: 4, height: 4)
+                Circle().fill(Color(hex: 0xCCCCCC)).frame(width: 4, height: 4)
+            }
+            .padding(.bottom, 12)
+        }
+    }
 
-                    Text(item.productTitle)
-                        .font(.nytFranklin(.bold, size: 20))
+    // MARK: - Action Buttons (bell + bookmark)
+
+    private var actionButtons: some View {
+        VStack(spacing: 8) {
+            Circle()
+                .fill(.white)
+                .frame(width: 24, height: 24)
+                .overlay(
+                    Image(systemName: "bell.fill")
+                        .font(.system(size: 12, weight: .medium))
                         .foregroundStyle(.black)
-                        .lineSpacing(6)
-                        .lineLimit(3)
-                        .multilineTextAlignment(.leading)
+                )
 
-                    if hasBullets {
-                        VStack(alignment: .leading, spacing: 4) {
-                            ForEach(bulletPoints, id: \.self) { bullet in
-                                Text("• \(bullet)")
-                                    .font(.nytFranklin(.medium, size: 14))
-                                    .foregroundStyle(.black)
-                            }
+            if let onBookmarkTap {
+                Button {
+                    onBookmarkTap()
+                } label: {
+                    Circle()
+                        .fill(.white)
+                        .frame(width: 24, height: 24)
+                        .overlay(
+                            Image(systemName: isSaved ? "bookmark.fill" : "bookmark")
+                                .font(.system(size: 12, weight: .medium))
+                                .foregroundStyle(.black)
+                        )
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel(isSaved ? "Remove from saved" : "Save")
+            } else {
+                Circle()
+                    .fill(.white)
+                    .frame(width: 24, height: 24)
+                    .overlay(
+                        Image(systemName: isSaved ? "bookmark.fill" : "bookmark")
+                            .font(.system(size: 12, weight: .medium))
+                            .foregroundStyle(.black)
+                    )
+            }
+        }
+    }
+
+    // MARK: - Info Section
+
+    private var infoSection: some View {
+        VStack(alignment: .leading, spacing: 20) {
+            VStack(alignment: .leading, spacing: 12) {
+                Text(item.displayMerchant ?? item.productTitle)
+                    .font(.nytFranklin(.medium, size: 12))
+                    .foregroundStyle(Color(hex: 0x666666))
+
+                Text(item.productTitle)
+                    .font(.nytFranklin(.bold, size: 20))
+                    .foregroundStyle(.black)
+                    .lineSpacing(6)
+                    .lineLimit(3)
+                    .multilineTextAlignment(.leading)
+
+                if hasBullets {
+                    VStack(alignment: .leading, spacing: 4) {
+                        ForEach(bulletPoints, id: \.self) { bullet in
+                            Text("• \(bullet)")
+                                .font(.nytFranklin(.medium, size: 14))
+                                .foregroundStyle(.black)
                         }
                     }
                 }
+            }
 
+            if isSpecialty {
+                Button {
+                    onDeepDive?()
+                } label: {
+                    Text("See the Research")
+                        .font(.nytFranklin(.bold, size: 14))
+                        .foregroundStyle(.white)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 39)
+                        .background(Color.black)
+                        .clipShape(RoundedRectangle(cornerRadius: 4))
+                }
+                .buttonStyle(.plain)
+            } else {
                 VStack(spacing: 8) {
                     ForEach(Array(buyButtons.enumerated()), id: \.offset) { _, button in
                         Button {
@@ -646,59 +744,10 @@ struct ProductCardView: View {
                     }
                 }
             }
-            .padding(.horizontal, 16)
-            .padding(.top, 8)
-            .padding(.bottom, showAddToList ? 0 : 12)
-
-            if showAddToList {
-                HStack(spacing: 8) {
-                    Image("NYTAIIcon")
-                        .resizable()
-                        .frame(width: 21, height: 20)
-                        .foregroundStyle(Color(hex: 0x5B69EB))
-                    Text("Add to my \"\(item.resolvedCategoryName)\" list")
-                        .font(.custom("NYTVFranklin-Medium", fixedSize: 16))
-                        .foregroundStyle(Color(hex: 0x191919))
-                }
-                .padding(.horizontal, 15)
-                .padding(.vertical, 10)
-                .background(Color(hex: 0xF0F1FF))
-                .clipShape(Capsule())
-                .frame(maxWidth: .infinity)
-                .padding(.top, 8)
-                .padding(.bottom, 16)
-            }
         }
-        .background(Color.white)
-        .clipShape(RoundedRectangle(cornerRadius: 8))
-        .shadow(color: .black.opacity(0.12), radius: 6, x: 0, y: 2)
-        .contentShape(Rectangle())
-        .onTapGesture { onTap() }
-    }
-
-    @ViewBuilder
-    private var bookmarkButton: some View {
-        let icon = Image(systemName: isSaved ? "bookmark.fill" : "bookmark")
-            .font(.system(size: 12, weight: .medium))
-            .foregroundStyle(.black)
-
-        let badge = Circle()
-            .fill(.white)
-            .frame(width: 24, height: 24)
-            .overlay(icon)
-
-        if let onBookmarkTap {
-            Button {
-                onBookmarkTap()
-            } label: {
-                badge
-            }
-            .buttonStyle(.plain)
-            .accessibilityLabel(isSaved ? "Remove from saved" : "Save")
-        } else {
-            badge
-                .accessibilityHidden(true)
-        }
+        .padding(.horizontal, 16)
+        .padding(.top, 8)
+        .padding(.bottom, 12)
     }
 }
 

@@ -47,7 +47,7 @@ struct ProductQuickView: View {
     private var header: some View {
         HStack(alignment: .top, spacing: 12) {
             VStack(alignment: .leading, spacing: 2) {
-                Text("Quick view")
+                Text("Deep Dive")
                     .font(.nytFranklin(size: 14, weight: .medium))
                     .foregroundStyle(.secondary)
 
@@ -176,6 +176,7 @@ struct ProductQuickView: View {
                     url: item.affiliateUrl
                 )
             }
+
         }
         .padding(.horizontal, 20)
         .padding(.bottom, 24)
