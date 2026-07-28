@@ -98,7 +98,7 @@ struct GlassTabBar: View {
                     .frame(width: 24, height: 24)
 
                 Text(tab.title)
-                    .font(.nytFranklin(size: 10, weight: .semibold))
+                    .font(.nytFranklin(size: 10, weight: .medium))
                     .tracking(-0.1)
                     .lineLimit(1)
             }

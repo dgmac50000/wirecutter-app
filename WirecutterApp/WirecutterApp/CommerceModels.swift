@@ -74,6 +74,31 @@ struct CommerceItem: Codable, Identifiable {
         return affiliateUrl
     }
 
+    /// Best available unit price in dollars (prefers source `priceRaw` cents).
+    var priceInDollars: Double? {
+        if let raw = sources?.compactMap(\.priceRaw).first(where: { $0 > 0 }) {
+            return Double(raw) / 100.0
+        }
+        if let legacy = priceFormatted, let parsed = Self.parseDollars(from: legacy) {
+            return parsed
+        }
+        if let formatted = displayPrice, let parsed = Self.parseDollars(from: formatted) {
+            return parsed
+        }
+        return nil
+    }
+
+    var isWirecutterStoreProduct: Bool {
+        isShopifyProduct == true
+            || displayMerchant?.caseInsensitiveCompare("Wirecutter Store") == .orderedSame
+            || merchantName?.caseInsensitiveCompare("Wirecutter Store") == .orderedSame
+    }
+
+    private static func parseDollars(from formatted: String) -> Double? {
+        let filtered = formatted.filter { $0.isNumber || $0 == "." }
+        return Double(filtered)
+    }
+
     var resolvedCategoryName: String {
         let trimmed = categoryName?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         return trimmed.isEmpty ? "Other" : trimmed

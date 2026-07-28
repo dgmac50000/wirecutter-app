@@ -151,7 +151,7 @@ struct GenaiSearchView: View {
                             VStack(alignment: .leading, spacing: 4) {
                                 Text(article.title)
                                     .font(.nytFranklin(size: 15))
-                                    .fontWeight(.semibold)
+                                    .fontWeight(.medium)
                                     .foregroundStyle(.primary)
                                     .lineLimit(2)
                                 if let summary = article.summary {
@@ -168,7 +168,7 @@ struct GenaiSearchView: View {
                             }
                             Spacer()
                             Image(systemName: "chevron.right")
-                                .font(.system(size: 12, weight: .semibold))
+                                .font(.system(size: 12, weight: .medium))
                                 .foregroundStyle(.tertiary)
                         }
                         .padding(12)
@@ -198,7 +198,7 @@ struct GenaiSearchView: View {
                             VStack(alignment: .leading, spacing: 4) {
                                 Text(product.name)
                                     .font(.nytFranklin(size: 15))
-                                    .fontWeight(.semibold)
+                                    .fontWeight(.medium)
                                     .foregroundStyle(.primary)
                                     .lineLimit(2)
                                 HStack(spacing: 8) {

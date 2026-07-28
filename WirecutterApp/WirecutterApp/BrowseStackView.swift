@@ -13,6 +13,12 @@ struct BrowseStackView: View {
                 onSelectPerson: { profile in
                     path.append(profile)
                 },
+                onSelectEditorial: { moment in
+                    path.append(moment)
+                },
+                onViewAllWatchlist: {
+                    selectedTab = .account
+                },
                 onSearch: { showAsk = true }
             )
             .navigationDestination(for: PersonProfile.self) { profile in
@@ -23,6 +29,13 @@ struct BrowseStackView: View {
                     onOpenSaved: {
                         path.append(SavesFolder(id: profile.id, name: profile.name))
                     }
+                )
+            }
+            .navigationDestination(for: WatchlistEditorialMoment.self) { moment in
+                EditorialMomentView(
+                    moment: moment,
+                    onBack: { path.removeLast() },
+                    onSearch: { showAsk = true }
                 )
             }
             .navigationDestination(for: SavesFolder.self) { folder in

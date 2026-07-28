@@ -82,6 +82,219 @@ enum ArticlePageFeedParser {
         return parse(html: html, fallbackLink: link)
     }
 
+    /// Lightweight hero-only fetch for Upcoming / watchlist thumbnails.
+    static func fetchHeroImageURL(from link: URL) async -> URL? {
+        var request = URLRequest(url: link)
+        request.timeoutInterval = 12
+        request.setValue(
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15",
+            forHTTPHeaderField: "User-Agent"
+        )
+        request.setValue("text/html,application/xhtml+xml", forHTTPHeaderField: "Accept")
+
+        guard let (data, response) = try? await URLSession.shared.data(for: request),
+              let http = response as? HTTPURLResponse,
+              (200...299).contains(http.statusCode),
+              let html = String(data: data, encoding: .utf8) else {
+            return nil
+        }
+
+        if let jsonText = extractNextDataJSON(from: html),
+           let jsonData = jsonText.data(using: .utf8),
+           let root = try? JSONSerialization.jsonObject(with: jsonData) as? [String: Any],
+           let pageProps = dig(root, ["props", "pageProps"]) as? [String: Any],
+           let post = pageProps["post"] as? [String: Any],
+           let hero = parseHeroImageURL(from: post["heroImage"]) {
+            return hero
+        }
+
+        return parseOGImageURL(from: html)
+    }
+
+    /// Latest section hub article plus publish metadata (for cross-section ranking).
+    struct SectionArticleCandidate {
+        let url: URL
+        let title: String
+        let publishedLocalISO: String
+        /// Listing hero when present (useful if the article page has no author image).
+        let featuredImageURL: URL?
+    }
+
+    /// Most recently updated/published article from a Wirecutter section hub
+    /// (e.g. `sleep` → `https://www.nytimes.com/wirecutter/sleep/`).
+    /// When `titleKeywords` is non-empty, prefers posts whose titles match any keyword.
+    /// When `sortByPublishedOnly` is true, ranks by publish date (not last update).
+    /// When `preferShortform` is true, prefers blog / guides / Ask Wirecutter posts.
+    /// When `expectedSectionNameTokens` is non-empty, rejects hubs whose section
+    /// name doesn’t contain any token (guards CMS misfires like `/kitchen/advice`
+    /// serving Sleep content).
+    static func fetchLatestSectionArticleURL(
+        sectionSlug: String,
+        titleKeywords: [String] = [],
+        sortByPublishedOnly: Bool = false,
+        preferShortform: Bool = false,
+        expectedSectionNameTokens: [String] = []
+    ) async -> URL? {
+        await fetchLatestSectionArticleCandidate(
+            sectionSlug: sectionSlug,
+            titleKeywords: titleKeywords,
+            sortByPublishedOnly: sortByPublishedOnly,
+            preferShortform: preferShortform,
+            expectedSectionNameTokens: expectedSectionNameTokens
+        )?.url
+    }
+
+    static func fetchLatestSectionArticleCandidate(
+        sectionSlug: String,
+        titleKeywords: [String] = [],
+        sortByPublishedOnly: Bool = false,
+        preferShortform: Bool = false,
+        expectedSectionNameTokens: [String] = []
+    ) async -> SectionArticleCandidate? {
+        guard let hub = URL(string: "https://www.nytimes.com/wirecutter/\(sectionSlug)/") else {
+            return nil
+        }
+
+        var request = URLRequest(url: hub)
+        request.timeoutInterval = 12
+        request.setValue(
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15",
+            forHTTPHeaderField: "User-Agent"
+        )
+        request.setValue("text/html,application/xhtml+xml", forHTTPHeaderField: "Accept")
+
+        guard let (data, response) = try? await URLSession.shared.data(for: request),
+              let http = response as? HTTPURLResponse,
+              (200...299).contains(http.statusCode),
+              let html = String(data: data, encoding: .utf8),
+              let jsonText = extractNextDataJSON(from: html),
+              let jsonData = jsonText.data(using: .utf8),
+              let root = try? JSONSerialization.jsonObject(with: jsonData) as? [String: Any],
+              let section = dig(root, ["props", "pageProps", "section"]) as? [String: Any],
+              let nodes = (section["posts"] as? [String: Any])?["nodes"] as? [[String: Any]],
+              !nodes.isEmpty else {
+            return nil
+        }
+
+        if !expectedSectionNameTokens.isEmpty {
+            let name = ((section["name"] as? String) ?? "").lowercased()
+            let slug = ((section["slug"] as? String) ?? "").lowercased()
+            let haystack = name + " " + slug
+            let tokens = expectedSectionNameTokens.map { $0.lowercased() }
+            guard tokens.contains(where: { haystack.contains($0) }) else {
+                return nil
+            }
+        }
+
+        let needles = titleKeywords.map { $0.lowercased() }.filter { !$0.isEmpty }
+        var pool: [[String: Any]]
+        if needles.isEmpty {
+            pool = nodes
+        } else {
+            let matched = nodes.filter { post in
+                let title = ((post["title"] as? String) ?? "").lowercased()
+                return needles.contains { title.contains($0) }
+            }
+            pool = matched.isEmpty ? nodes : matched
+        }
+
+        if preferShortform {
+            let shortform = pool.filter(isShortformSectionPost)
+            if !shortform.isEmpty {
+                pool = shortform
+            }
+        }
+
+        let ranked = pool.sorted { lhs, rhs in
+            let left = sortByPublishedOnly
+                ? (lhs["publishedLocalISO"] as? String ?? "")
+                : sectionArticleRecency(lhs)
+            let right = sortByPublishedOnly
+                ? (rhs["publishedLocalISO"] as? String ?? "")
+                : sectionArticleRecency(rhs)
+            return left > right
+        }
+        guard let top = ranked.first,
+              let link = top["link"] as? String,
+              let url = absolutizeWirecutterPath(link) else {
+            return nil
+        }
+        return SectionArticleCandidate(
+            url: url,
+            title: (top["title"] as? String) ?? "",
+            publishedLocalISO: (top["publishedLocalISO"] as? String) ?? "",
+            featuredImageURL: featuredImageURL(from: top["featuredImage"])
+        )
+    }
+
+    /// Blog / shortform / how-to style posts preferred for watchlist editorials.
+    private static func isShortformSectionPost(_ post: [String: Any]) -> Bool {
+        let type = ((post["type"] as? String) ?? "").lowercased()
+        if type == "post" { return true }
+
+        let link = ((post["link"] as? String) ?? "").lowercased()
+        if link.contains("/blog/") || link.contains("/guides/") { return true }
+
+        let title = ((post["title"] as? String) ?? "").lowercased()
+        if title.contains("ask wirecutter") { return true }
+
+        return false
+    }
+
+    private static func featuredImageURL(from raw: Any?) -> URL? {
+        guard let image = raw as? [String: Any],
+              let source = image["source"] as? String,
+              let absolute = absolutizeMediaURL(source) else {
+            return nil
+        }
+        return URL(string: stripQuery(absolute))
+    }
+
+    /// Lead author headshot from an article page (`post.authors[0].authorImage`).
+    static func fetchLeadAuthorImageURL(from link: URL) async -> URL? {
+        var request = URLRequest(url: link)
+        request.timeoutInterval = 12
+        request.setValue(
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15",
+            forHTTPHeaderField: "User-Agent"
+        )
+        request.setValue("text/html,application/xhtml+xml", forHTTPHeaderField: "Accept")
+
+        guard let (data, response) = try? await URLSession.shared.data(for: request),
+              let http = response as? HTTPURLResponse,
+              (200...299).contains(http.statusCode),
+              let html = String(data: data, encoding: .utf8),
+              let jsonText = extractNextDataJSON(from: html),
+              let jsonData = jsonText.data(using: .utf8),
+              let root = try? JSONSerialization.jsonObject(with: jsonData) as? [String: Any],
+              let authors = dig(root, ["props", "pageProps", "post", "authors"]) as? [[String: Any]],
+              let authorImage = authors.first?["authorImage"] as? [String: Any],
+              let source = authorImage["source"] as? String,
+              let absolute = absolutizeMediaURL(source) else {
+            return nil
+        }
+        return URL(string: stripQuery(absolute))
+    }
+
+    private static func sectionArticleRecency(_ post: [String: Any]) -> String {
+        let updated = post["updatedLocalISO"] as? String ?? ""
+        let published = post["publishedLocalISO"] as? String ?? ""
+        return updated > published ? updated : published
+    }
+
+    private static func absolutizeWirecutterPath(_ raw: String) -> URL? {
+        let cleaned = H.unescape(raw)
+        if cleaned.hasPrefix("http") {
+            return URL(string: cleaned)
+        }
+        var path = cleaned
+        if !path.hasPrefix("/") { path = "/" + path }
+        if path.hasPrefix("/wirecutter/") {
+            return URL(string: "https://www.nytimes.com\(path)")
+        }
+        return URL(string: "https://www.nytimes.com/wirecutter\(path)")
+    }
+
     static func parse(html: String, fallbackLink: URL) -> ParsedArticle? {
         guard let jsonText = extractNextDataJSON(from: html),
               let jsonData = jsonText.data(using: .utf8),
@@ -149,6 +362,26 @@ enum ArticlePageFeedParser {
         if let source = hero["source"] as? String,
            let absolute = absolutizeMediaURL(source) {
             return URL(string: stripQuery(absolute))
+        }
+        return nil
+    }
+
+    /// Fallback when `__NEXT_DATA__` has no post hero (hubs, some deals pages).
+    private static func parseOGImageURL(from html: String) -> URL? {
+        let patterns = [
+            #"property=["']og:image["']\s+content=["']([^"']+)["']"#,
+            #"content=["']([^"']+)["']\s+property=["']og:image["']"#,
+        ]
+        for pattern in patterns {
+            guard let regex = try? NSRegularExpression(pattern: pattern, options: [.caseInsensitive]),
+                  let match = regex.firstMatch(in: html, range: NSRange(html.startIndex..., in: html)),
+                  let range = Range(match.range(at: 1), in: html) else {
+                continue
+            }
+            let raw = H.unescape(String(html[range]))
+            if let absolute = absolutizeMediaURL(raw) ?? (raw.hasPrefix("http") ? raw : nil) {
+                return URL(string: stripQuery(absolute))
+            }
         }
         return nil
     }
@@ -288,15 +521,20 @@ enum ArticlePageFeedParser {
     private static func absolutizeMediaURL(_ raw: String) -> String? {
         let cleaned = H.unescape(raw)
         if cleaned.hasPrefix("http"),
-           cleaned.contains(cdnHost) || cleaned.contains(catalogHost) || cleaned.contains("/wp-content/media/") {
+           cleaned.contains(cdnHost) || cleaned.contains(catalogHost)
+            || cleaned.contains("/wp-content/media/") || cleaned.contains("/wp-content/uploads/")
+            || cleaned.contains("static01.nyt.com") {
             return ProductImageRanking.normalizeMediaURL(cleaned)
         }
-        if cleaned.contains("wp-content/media/") {
-            var path = cleaned
-            while path.hasPrefix("/") { path.removeFirst() }
-            if let range = path.range(of: "wp-content/media/") {
-                path = String(path[range.lowerBound...])
-                return "https://cdn.thewirecutter.com/\(path)"
+        // Author headshots and legacy assets often live under uploads/.
+        for marker in ["wp-content/media/", "wp-content/uploads/"] {
+            if cleaned.contains(marker) {
+                var path = cleaned
+                while path.hasPrefix("/") { path.removeFirst() }
+                if let range = path.range(of: marker) {
+                    path = String(path[range.lowerBound...])
+                    return "https://cdn.thewirecutter.com/\(path)"
+                }
             }
         }
         // imagePaths.full style: "2025/09/BEST-….jpg"
