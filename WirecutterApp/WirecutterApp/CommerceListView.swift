@@ -285,8 +285,7 @@ struct CommerceListView: View {
                     quickViewItem = nil
                 }
             )
-            .presentationDetents([.large])
-            .presentationDragIndicator(.hidden)
+            .interactiveDismissDisabled(false)
         }
         .sheet(item: $profilePickerCard) { card in
             UpcomingProfilePickerSheet(

@@ -6,40 +6,175 @@ struct ProductQuickView: View {
     let onDismiss: () -> Void
 
     @State private var showApplePayConfirmation = false
+    @State private var selectedDetent: PresentationDetent = .medium
+
+    private var bulletSummary: [String] {
+        guard let desc = item.productDescription, !desc.isEmpty else {
+            return []
+        }
+        let lines = desc.components(separatedBy: .newlines)
+            .map { $0.trimmingCharacters(in: .whitespaces) }
+            .filter { !$0.isEmpty }
+        return Array(lines.prefix(3))
+    }
 
     var body: some View {
-        ScrollView(.vertical, showsIndicators: true) {
-            VStack(alignment: .leading, spacing: 0) {
-                dragHandle
-                header
-                heroImage
-                productTile
-                editorialOverview
-                buyButtons
+        VStack(spacing: 0) {
+            header
+                .padding(.top, 12)
+
+            if selectedDetent == .medium {
+                mediumContent
+            } else {
+                largeContent
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .clipped()
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .background(Color(.systemBackground))
         .overlay {
             if showApplePayConfirmation {
                 applePayConfirmationOverlay
             }
         }
+        .presentationDetents([.medium, .large], selection: $selectedDetent)
+        .presentationDragIndicator(.visible)
+        .animation(.easeInOut(duration: 0.25), value: selectedDetent)
     }
 
-    // MARK: - Drag Handle
+    // MARK: - Medium Content (summary state)
 
-    private var dragHandle: some View {
-        HStack {
+    private var mediumContent: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            if let imageUrl = item.displayImageUrl {
+                AsyncImage(url: imageUrl) { phase in
+                    switch phase {
+                    case .success(let image):
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 160)
+                            .clipped()
+                    default:
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(Color(hex: 0xF5F5F5))
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 160)
+                    }
+                }
+            }
+
+            if !bulletSummary.isEmpty {
+                VStack(alignment: .leading, spacing: 10) {
+                    ForEach(bulletSummary, id: \.self) { bullet in
+                        HStack(alignment: .top, spacing: 8) {
+                            Circle()
+                                .fill(Color.primary)
+                                .frame(width: 5, height: 5)
+                                .padding(.top, 6)
+                            Text(bullet)
+                                .font(.nytFranklin(.medium, size: 15))
+                                .foregroundStyle(.primary)
+                                .fixedSize(horizontal: false, vertical: true)
+                        }
+                    }
+                }
+            }
+
+            buyButtons
+
             Spacer()
-            RoundedRectangle(cornerRadius: 2.5)
-                .fill(Color(.systemGray3))
-                .frame(width: 40, height: 5)
-            Spacer()
+
+            HStack {
+                Spacer()
+                VStack(spacing: 4) {
+                    Image(systemName: "chevron.up")
+                        .font(.system(size: 12, weight: .medium))
+                        .foregroundStyle(.tertiary)
+                    Text("Full review")
+                        .font(.nytFranklin(.medium, size: 11))
+                        .foregroundStyle(.tertiary)
+                }
+                Spacer()
+            }
+            .padding(.bottom, 16)
         }
-        .padding(.top, 8)
-        .padding(.bottom, 16)
+        .padding(.horizontal, 20)
+        .padding(.top, 12)
+    }
+
+    // MARK: - Large Content (article state)
+
+    private var largeContent: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            HStack(spacing: 10) {
+                if let imageUrl = item.displayImageUrl {
+                    AsyncImage(url: imageUrl) { phase in
+                        switch phase {
+                        case .success(let image):
+                            image.resizable().aspectRatio(contentMode: .fill)
+                                .frame(width: 44, height: 44)
+                                .clipShape(RoundedRectangle(cornerRadius: 6))
+                        default:
+                            RoundedRectangle(cornerRadius: 6)
+                                .fill(Color(hex: 0xEEEEEE))
+                                .frame(width: 44, height: 44)
+                        }
+                    }
+                }
+
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(item.articleTitle)
+                        .font(.nytFranklin(.bold, size: 14))
+                        .lineLimit(1)
+                    Text("Wirecutter")
+                        .font(.nytFranklin(.medium, size: 12))
+                        .foregroundStyle(.secondary)
+                }
+
+                Spacer()
+
+                buyPill
+            }
+            .padding(.horizontal, 20)
+            .padding(.vertical, 12)
+
+            Divider()
+                .padding(.horizontal, 20)
+
+            ArticleWebView(url: item.articleUrl)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+    }
+
+    private var buyPill: some View {
+        Group {
+            if let source = item.sources?.first, let url = source.dealAffiliateUrl ?? source.affiliateUrl {
+                Button {
+                    onShop(url)
+                } label: {
+                    Text(source.dealPriceFormatted ?? source.priceFormatted ?? "Buy")
+                        .font(.nytFranklin(.bold, size: 13))
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 14)
+                        .padding(.vertical, 7)
+                        .background(Color.black)
+                        .clipShape(Capsule())
+                }
+            } else if let url = item.affiliateUrl {
+                Button {
+                    onShop(url)
+                } label: {
+                    Text(item.priceFormatted ?? "Buy")
+                        .font(.nytFranklin(.bold, size: 13))
+                        .foregroundStyle(.white)
+                        .padding(.horizontal, 14)
+                        .padding(.vertical, 7)
+                        .background(Color.black)
+                        .clipShape(Capsule())
+                }
+            }
+        }
     }
 
     // MARK: - Header
@@ -73,79 +208,6 @@ struct ProductQuickView: View {
         .padding(.bottom, 16)
     }
 
-    // MARK: - Hero Image
-
-    private var heroImage: some View {
-        Group {
-            if let imageUrl = item.displayImageUrl {
-                AsyncImage(url: imageUrl) { phase in
-                    switch phase {
-                    case .success(let image):
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(maxWidth: .infinity, maxHeight: 335)
-                            .clipped()
-                    case .failure:
-                        imagePlaceholder
-                    case .empty:
-                        ProgressView()
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 335)
-                    @unknown default:
-                        imagePlaceholder
-                    }
-                }
-            } else {
-                imagePlaceholder
-            }
-        }
-        .padding(.horizontal, 20)
-        .padding(.bottom, 20)
-    }
-
-    // MARK: - Product Tile
-
-    private var productTile: some View {
-        HStack(alignment: .top, spacing: 16) {
-            if let imageUrl = item.displayImageUrl {
-                AsyncImage(url: imageUrl) { phase in
-                    switch phase {
-                    case .success(let image):
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 109, height: 100)
-                            .clipped()
-                    default:
-                        thumbnailPlaceholder
-                    }
-                }
-                .frame(width: 109, height: 100)
-                .clipped()
-            } else {
-                thumbnailPlaceholder
-            }
-
-            VStack(alignment: .leading, spacing: 4) {
-                Text(item.articleTitle)
-                    .font(.nytFranklin(size: 16, weight: .bold))
-                    .lineLimit(2)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .foregroundStyle(.primary)
-
-                Link(destination: item.articleUrl) {
-                    Text("Show full review")
-                        .font(.custom("NYTVFranklin-Medium", fixedSize: 14))
-                        .underline()
-                        .foregroundStyle(.primary)
-                }
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-        }
-        .padding(.horizontal, 20)
-        .padding(.bottom, 16)
-    }
 
     // MARK: - Buy Buttons
 
@@ -176,10 +238,7 @@ struct ProductQuickView: View {
                     url: item.affiliateUrl
                 )
             }
-
         }
-        .padding(.horizontal, 20)
-        .padding(.bottom, 24)
     }
 
     // MARK: - Apple Pay Button
@@ -268,37 +327,9 @@ struct ProductQuickView: View {
         .disabled(url == nil)
     }
 
-    // MARK: - Editorial Overview
 
-    private var editorialOverview: some View {
-        Group {
-            if let desc = item.productDescription, !desc.isEmpty {
-                Text(desc)
-                    .font(.nytFranklin(size: 16, weight: .regular))
-                    .foregroundStyle(.primary)
-                    .lineSpacing(4)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .padding(.horizontal, 20)
-                    .padding(.bottom, 20)
-            }
-        }
-    }
-
-    // MARK: - Placeholders
-
-    private var imagePlaceholder: some View {
-        Rectangle()
-            .fill(Color(hex: 0xEEEEEE))
-            .frame(maxWidth: .infinity)
-            .frame(height: 335)
-    }
-
-    private var thumbnailPlaceholder: some View {
-        Rectangle()
-            .fill(Color(hex: 0xEEEEEE))
-            .frame(width: 109, height: 100)
-    }
 }
+
 
 // MARK: - Color Hex Extension
 
