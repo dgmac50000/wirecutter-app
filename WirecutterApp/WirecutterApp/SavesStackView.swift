@@ -171,7 +171,7 @@ struct SavesFoldersView: View {
         VStack(alignment: .leading, spacing: 24) {
             Button(action: onAdd) {
                 Text("+ New")
-                    .font(.nytFranklin(size: 24, weight: .semibold))
+                    .font(.nytFranklin(size: 24, weight: .medium))
                     .foregroundStyle(Color.black)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .contentShape(Rectangle())
@@ -303,7 +303,7 @@ struct SavesFoldersSquareGridView: View {
                     }
 
                 Image(systemName: "plus")
-                    .font(.system(size: 32, weight: .semibold))
+                    .font(.system(size: 32, weight: .medium))
                     .foregroundStyle(.black)
             }
 

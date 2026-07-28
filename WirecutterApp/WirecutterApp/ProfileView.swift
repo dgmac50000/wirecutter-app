@@ -229,7 +229,7 @@ struct ProfileView: View {
             Spacer(minLength: 16)
 
             Text(value)
-                .font(.nytFranklin(size: 14, weight: .semibold))
+                .font(.nytFranklin(size: 14, weight: .medium))
                 .foregroundStyle(Color(.label))
                 .lineLimit(1)
                 .truncationMode(.tail)
