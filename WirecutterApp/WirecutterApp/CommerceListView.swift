@@ -86,7 +86,14 @@ struct CommerceListView: View {
                                 .frame(maxWidth: .infinity)
                                 .padding(.top, 40)
                             } else {
-                                ForEach(shuffledProducts) { item in
+                                ForEach(Array(shuffledProducts.enumerated()), id: \.element.id) { index, item in
+                                    if index == 8 {
+                                        SeriesCardView(
+                                            series: .headphones,
+                                            onProductTap: { quickViewItem = $0 }
+                                        )
+                                    }
+
                                     ProductCardView(
                                         item: item,
                                         onTap: { quickViewItem = item },
@@ -553,9 +560,11 @@ struct ProductCardView: View {
         }
     }
 
+    var maxBuyButtons: Int = 2
+
     private var buyButtons: [(text: String, url: URL?)] {
         if let sources = item.sources, !sources.isEmpty {
-            return Array(sources.prefix(2)).map { source in
+            return Array(sources.prefix(maxBuyButtons)).map { source in
                 let price = source.dealPriceFormatted ?? source.priceFormatted ?? ""
                 let merchant = source.merchantName
                 let text = price.isEmpty ? "From \(merchant)" : "\(price) from \(merchant)"
@@ -577,6 +586,16 @@ struct ProductCardView: View {
     }
 
     var body: some View {
+        if isSpecialty {
+            specialtyCard
+        } else {
+            defaultCard
+        }
+    }
+
+    // MARK: - Default Card
+
+    private var defaultCard: some View {
         VStack(spacing: 0) {
             imageArea
             infoSection
@@ -588,7 +607,100 @@ struct ProductCardView: View {
         .onTapGesture { onTap() }
     }
 
-    // MARK: - Image Area
+    private static let specialtyImageOverrides: [Int: String] = [
+        73792: "SpecialtyImages/AwayCarryOn",
+    ]
+
+    // MARK: - Specialty Card (full-bleed hero)
+
+    private var specialtyCard: some View {
+        specialtyImage
+            .frame(height: 594)
+            .frame(maxWidth: .infinity)
+            .clipped()
+            .overlay {
+                LinearGradient(
+                    colors: [.clear, .clear, .black.opacity(0.5)],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+            }
+            .overlay(alignment: .bottomLeading) {
+                VStack(alignment: .leading, spacing: 20) {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(item.displayMerchant?.uppercased() ?? item.productTitle.uppercased())
+                            .font(.nytFranklin(.bold, size: 11))
+                            .tracking(1.1)
+                            .foregroundStyle(.white)
+
+                        Text(item.productTitle)
+                            .font(.nytFranklin(.bold, size: 31))
+                            .tracking(-0.5)
+                            .lineSpacing(2)
+                            .foregroundStyle(.white)
+                            .lineLimit(3)
+
+                        if let firstBullet = bulletPoints.first {
+                            Text(firstBullet)
+                                .font(.nytFranklin(.medium, size: 16))
+                                .foregroundStyle(.white)
+                                .lineLimit(2)
+                        }
+                    }
+
+                    Button {
+                        onDeepDive?()
+                    } label: {
+                        Text("See the Research")
+                            .font(.nytFranklin(.bold, size: 14))
+                            .foregroundStyle(.black)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 39)
+                            .background(Color.white)
+                            .clipShape(RoundedRectangle(cornerRadius: 4))
+                    }
+                    .buttonStyle(.plain)
+                }
+                .padding(16)
+            }
+            .overlay(alignment: .topTrailing) {
+                actionButtons
+                    .padding(.top, 16)
+                    .padding(.trailing, 16)
+            }
+            .clipShape(RoundedRectangle(cornerRadius: 8))
+            .shadow(color: .black.opacity(0.12), radius: 6, x: 0, y: 2)
+            .contentShape(Rectangle())
+    }
+
+    @ViewBuilder
+    private var specialtyImage: some View {
+        if let localAsset = Self.specialtyImageOverrides[item.productId] {
+            Image(localAsset)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+        } else if let imageUrl = item.displayImageUrl {
+            AsyncImage(url: imageUrl) { phase in
+                switch phase {
+                case .success(let image):
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                case .failure:
+                    Color(hex: 0x222222)
+                case .empty:
+                    Color(hex: 0x222222)
+                        .overlay(ProgressView().tint(.white))
+                @unknown default:
+                    Color(hex: 0x222222)
+                }
+            }
+        } else {
+            Color(hex: 0x222222)
+        }
+    }
+
+    // MARK: - Image Area (default card only)
 
     private var imageArea: some View {
         ZStack(alignment: .topTrailing) {
@@ -686,7 +798,7 @@ struct ProductCardView: View {
         }
     }
 
-    // MARK: - Info Section
+    // MARK: - Info Section (default card only)
 
     private var infoSection: some View {
         VStack(alignment: .leading, spacing: 20) {
@@ -713,41 +825,102 @@ struct ProductCardView: View {
                 }
             }
 
-            if isSpecialty {
-                Button {
-                    onDeepDive?()
-                } label: {
-                    Text("See the Research")
-                        .font(.nytFranklin(.bold, size: 14))
-                        .foregroundStyle(.white)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 39)
-                        .background(Color.black)
-                        .clipShape(RoundedRectangle(cornerRadius: 4))
-                }
-                .buttonStyle(.plain)
-            } else {
-                VStack(spacing: 8) {
-                    ForEach(Array(buyButtons.enumerated()), id: \.offset) { _, button in
-                        Button {
-                            onTap()
-                        } label: {
-                            Text(button.text)
-                                .font(.nytFranklin(.bold, size: 14))
-                                .foregroundStyle(.white)
-                                .frame(maxWidth: .infinity)
-                                .frame(height: 39)
-                                .background(Color.black)
-                                .clipShape(RoundedRectangle(cornerRadius: 4))
-                        }
-                        .buttonStyle(.plain)
+            VStack(spacing: 8) {
+                ForEach(Array(buyButtons.enumerated()), id: \.offset) { _, button in
+                    Button {
+                        onTap()
+                    } label: {
+                        Text(button.text)
+                            .font(.nytFranklin(.bold, size: 14))
+                            .foregroundStyle(.white)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 39)
+                            .background(Color.black)
+                            .clipShape(RoundedRectangle(cornerRadius: 4))
                     }
+                    .buttonStyle(.plain)
                 }
             }
         }
         .padding(.horizontal, 16)
         .padding(.top, 8)
         .padding(.bottom, 12)
+    }
+}
+
+// MARK: - Series Card (editorial carousel)
+
+struct SeriesCardView: View {
+    let series: SeriesData
+    let onProductTap: (CommerceItem) -> Void
+
+    var body: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 16) {
+                seriesIntroCard
+
+                ForEach(series.products) { product in
+                    ProductCardView(
+                        item: product,
+                        onTap: { onProductTap(product) },
+                        maxBuyButtons: 3
+                    )
+                    .frame(width: 303)
+                }
+            }
+            .padding(.horizontal, 20)
+        }
+    }
+
+    private var seriesIntroCard: some View {
+        AsyncImage(url: series.heroImageURL) { phase in
+            switch phase {
+            case .success(let image):
+                image
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+            case .failure:
+                Color(hex: 0x222222)
+            case .empty:
+                Color(hex: 0x222222)
+                    .overlay(ProgressView().tint(.white))
+            @unknown default:
+                Color(hex: 0x222222)
+            }
+        }
+        .frame(width: 303, height: 594)
+        .clipped()
+        .overlay {
+            LinearGradient(
+                colors: [.clear, .clear, .black.opacity(0.5)],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+        }
+        .overlay(alignment: .bottomLeading) {
+            HStack(alignment: .bottom) {
+                Text(series.title)
+                    .font(.nytFranklin(.bold, size: 31))
+                    .tracking(-0.5)
+                    .lineSpacing(34 - 31)
+                    .foregroundStyle(.white)
+                    .lineLimit(4)
+
+                Spacer(minLength: 8)
+
+                Circle()
+                    .fill(.white)
+                    .frame(width: 24, height: 24)
+                    .overlay(
+                        Image(systemName: "chevron.right")
+                            .font(.system(size: 10, weight: .bold))
+                            .foregroundStyle(.black)
+                    )
+            }
+            .padding(16)
+        }
+        .clipShape(RoundedRectangle(cornerRadius: 8))
+        .shadow(color: .black.opacity(0.12), radius: 6, x: 0, y: 2)
     }
 }
 
