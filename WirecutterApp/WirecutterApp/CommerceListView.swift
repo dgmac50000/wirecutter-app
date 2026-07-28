@@ -614,63 +614,69 @@ struct ProductCardView: View {
     // MARK: - Specialty Card (full-bleed hero)
 
     private var specialtyCard: some View {
-        specialtyImage
-            .frame(height: 594)
-            .frame(maxWidth: .infinity)
-            .clipped()
-            .overlay {
-                LinearGradient(
-                    colors: [.clear, .clear, .black.opacity(0.5)],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-            }
-            .overlay(alignment: .bottomLeading) {
-                VStack(alignment: .leading, spacing: 20) {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(item.displayMerchant?.uppercased() ?? item.productTitle.uppercased())
-                            .font(.nytFranklin(.bold, size: 11))
-                            .tracking(1.1)
+        GeometryReader { geo in
+            specialtyImage
+                .frame(width: geo.size.width, height: geo.size.height)
+                .clipped()
+        }
+        .frame(height: 594)
+        .overlay {
+            LinearGradient(
+                stops: [
+                    .init(color: .clear, location: 0.0),
+                    .init(color: .clear, location: 0.39),
+                    .init(color: .black.opacity(0.5), location: 1.0),
+                ],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+        }
+        .overlay(alignment: .bottomLeading) {
+            VStack(alignment: .leading, spacing: 20) {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(item.displayMerchant?.uppercased() ?? item.productTitle.uppercased())
+                        .font(.nytFranklin(.bold, size: 11))
+                        .tracking(1.1)
+                        .foregroundStyle(.white)
+
+                    Text(item.productTitle)
+                        .font(.nytFranklin(.bold, size: 31))
+                        .tracking(-0.5)
+                        .lineSpacing(34 - 31)
+                        .foregroundStyle(.white)
+                        .lineLimit(3)
+
+                    if let firstBullet = bulletPoints.first {
+                        Text(firstBullet)
+                            .font(.nytFranklin(.medium, size: 16))
                             .foregroundStyle(.white)
-
-                        Text(item.productTitle)
-                            .font(.nytFranklin(.bold, size: 31))
-                            .tracking(-0.5)
-                            .lineSpacing(2)
-                            .foregroundStyle(.white)
-                            .lineLimit(3)
-
-                        if let firstBullet = bulletPoints.first {
-                            Text(firstBullet)
-                                .font(.nytFranklin(.medium, size: 16))
-                                .foregroundStyle(.white)
-                                .lineLimit(2)
-                        }
+                            .lineLimit(2)
                     }
-
-                    Button {
-                        onDeepDive?()
-                    } label: {
-                        Text("See the Research")
-                            .font(.nytFranklin(.bold, size: 14))
-                            .foregroundStyle(.black)
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 39)
-                            .background(Color.white)
-                            .clipShape(RoundedRectangle(cornerRadius: 4))
-                    }
-                    .buttonStyle(.plain)
                 }
-                .padding(16)
+
+                Button {
+                    onDeepDive?()
+                } label: {
+                    Text("See the Research")
+                        .font(.nytFranklin(.bold, size: 14))
+                        .foregroundStyle(.black)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 39)
+                        .background(Color.white)
+                        .clipShape(RoundedRectangle(cornerRadius: 4))
+                }
+                .buttonStyle(.plain)
             }
-            .overlay(alignment: .topTrailing) {
-                actionButtons
-                    .padding(.top, 16)
-                    .padding(.trailing, 16)
-            }
-            .clipShape(RoundedRectangle(cornerRadius: 8))
-            .shadow(color: .black.opacity(0.12), radius: 6, x: 0, y: 2)
-            .contentShape(Rectangle())
+            .padding(16)
+        }
+        .overlay(alignment: .topTrailing) {
+            actionButtons
+                .padding(.top, 16)
+                .padding(.trailing, 16)
+        }
+        .clipShape(RoundedRectangle(cornerRadius: 8))
+        .shadow(color: .black.opacity(0.12), radius: 6, x: 0, y: 2)
+        .contentShape(Rectangle())
     }
 
     @ViewBuilder
@@ -854,73 +860,217 @@ struct SeriesCardView: View {
     let series: SeriesData
     let onProductTap: (CommerceItem) -> Void
 
+    private var cardWidth: CGFloat {
+        UIScreen.main.bounds.width - 60
+    }
+
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 16) {
                 seriesIntroCard
 
                 ForEach(series.products) { product in
-                    ProductCardView(
-                        item: product,
-                        onTap: { onProductTap(product) },
-                        maxBuyButtons: 3
-                    )
-                    .frame(width: 303)
+                    seriesProductCard(product)
+                        .frame(width: cardWidth)
                 }
             }
+            .scrollTargetLayout()
             .padding(.horizontal, 20)
+        }
+        .scrollTargetBehavior(.viewAligned)
+    }
+
+    @ViewBuilder
+    private func seriesProductCard(_ product: CommerceItem) -> some View {
+        if let assetName = series.localImageOverrides[product.productId] {
+            let bgColor: Color = {
+                if let hex = series.productBackgrounds[product.productId] {
+                    return Color(hex: hex)
+                }
+                return Color(hex: 0xF6F6F6)
+            }()
+            SeriesLocalImageProductCard(
+                item: product,
+                localAsset: assetName,
+                backgroundColor: bgColor,
+                onTap: { onProductTap(product) }
+            )
+        } else {
+            ProductCardView(
+                item: product,
+                onTap: { onProductTap(product) },
+                maxBuyButtons: 3
+            )
+        }
+    }
+
+    @ViewBuilder
+    private var heroImage: some View {
+        if let asset = series.heroImageAsset {
+            Image(asset)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+        } else {
+            AsyncImage(url: series.heroImageURL) { phase in
+                switch phase {
+                case .success(let image):
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                case .failure:
+                    Color(hex: 0x222222)
+                case .empty:
+                    Color(hex: 0x222222)
+                        .overlay(ProgressView().tint(.white))
+                @unknown default:
+                    Color(hex: 0x222222)
+                }
+            }
         }
     }
 
     private var seriesIntroCard: some View {
-        AsyncImage(url: series.heroImageURL) { phase in
-            switch phase {
-            case .success(let image):
-                image
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-            case .failure:
-                Color(hex: 0x222222)
-            case .empty:
-                Color(hex: 0x222222)
-                    .overlay(ProgressView().tint(.white))
-            @unknown default:
-                Color(hex: 0x222222)
+        heroImage
+            .frame(width: cardWidth, height: 640)
+            .clipped()
+            .overlay {
+                LinearGradient(
+                    colors: [.clear, .clear, .black.opacity(0.5)],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+            }
+            .overlay(alignment: .bottomLeading) {
+                HStack(alignment: .bottom) {
+                    Text(series.title)
+                        .font(.nytFranklin(.bold, size: 31))
+                        .tracking(-0.5)
+                        .lineSpacing(34 - 31)
+                        .foregroundStyle(.white)
+                        .lineLimit(4)
+
+                    Spacer(minLength: 8)
+
+                    Circle()
+                        .fill(.white)
+                        .frame(width: 24, height: 24)
+                        .overlay(
+                            Image(systemName: "chevron.right")
+                                .font(.system(size: 10, weight: .bold))
+                                .foregroundStyle(.black)
+                        )
+                }
+                .padding(16)
+            }
+            .clipShape(RoundedRectangle(cornerRadius: 8))
+            .shadow(color: .black.opacity(0.12), radius: 6, x: 0, y: 2)
+    }
+}
+
+// MARK: - Series product card with local asset image (full-bleed colored card)
+
+private struct SeriesLocalImageProductCard: View {
+    let item: CommerceItem
+    let localAsset: String
+    var backgroundColor: Color = Color(hex: 0xF6F6F6)
+    let onTap: () -> Void
+
+    private var bulletPoints: [String] {
+        guard let desc = item.productDescription, !desc.isEmpty else { return [] }
+        let lines = desc.components(separatedBy: .newlines)
+            .map { $0.trimmingCharacters(in: .whitespaces) }
+            .filter { !$0.isEmpty }
+        return Array(lines.prefix(3))
+    }
+
+    private var buyButtons: [(text: String, url: URL?)] {
+        if let sources = item.sources, !sources.isEmpty {
+            return Array(sources.prefix(3)).map { source in
+                let price = source.dealPriceFormatted ?? source.priceFormatted ?? ""
+                let merchant = source.merchantName
+                let text = price.isEmpty ? "From \(merchant)" : "\(price) from \(merchant)"
+                return (text: text, url: source.dealAffiliateUrl ?? source.affiliateUrl)
             }
         }
-        .frame(width: 303, height: 594)
-        .clipped()
-        .overlay {
-            LinearGradient(
-                colors: [.clear, .clear, .black.opacity(0.5)],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-        }
-        .overlay(alignment: .bottomLeading) {
-            HStack(alignment: .bottom) {
-                Text(series.title)
-                    .font(.nytFranklin(.bold, size: 31))
-                    .tracking(-0.5)
-                    .lineSpacing(34 - 31)
-                    .foregroundStyle(.white)
-                    .lineLimit(4)
+        return [(text: "View Details", url: nil)]
+    }
 
-                Spacer(minLength: 8)
+    var body: some View {
+        VStack(spacing: 0) {
+            ZStack(alignment: .topTrailing) {
+                Image(localAsset)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .padding(24)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 340)
 
-                Circle()
-                    .fill(.white)
-                    .frame(width: 24, height: 24)
-                    .overlay(
-                        Image(systemName: "chevron.right")
-                            .font(.system(size: 10, weight: .bold))
-                            .foregroundStyle(.black)
-                    )
+                VStack(spacing: 8) {
+                    Image(systemName: "bell.fill")
+                        .font(.system(size: 12, weight: .medium))
+                        .foregroundStyle(.primary)
+                        .frame(width: 32, height: 32)
+                        .background(.ultraThinMaterial, in: Circle())
+
+                    Image(systemName: "bookmark")
+                        .font(.system(size: 12, weight: .medium))
+                        .foregroundStyle(.primary)
+                        .frame(width: 32, height: 32)
+                        .background(.ultraThinMaterial, in: Circle())
+                }
+                .padding(.top, 16)
+                .padding(.trailing, 16)
+            }
+
+            VStack(alignment: .leading, spacing: 12) {
+                Text(item.displayMerchant ?? item.productTitle)
+                    .font(.nytFranklin(.medium, size: 12))
+                    .foregroundStyle(Color(hex: 0x363636))
+
+                Text(item.productTitle)
+                    .font(.nytFranklin(.bold, size: 20))
+                    .foregroundStyle(.black)
+                    .lineSpacing(6)
+                    .lineLimit(3)
+                    .multilineTextAlignment(.leading)
+
+                if !bulletPoints.isEmpty {
+                    VStack(alignment: .leading, spacing: 4) {
+                        ForEach(bulletPoints, id: \.self) { bullet in
+                            Text("• \(bullet)")
+                                .font(.nytFranklin(.medium, size: 14))
+                                .foregroundStyle(.black)
+                        }
+                    }
+                }
+
+                Spacer()
+
+                VStack(spacing: 8) {
+                    ForEach(Array(buyButtons.enumerated()), id: \.offset) { _, button in
+                        Button {
+                            onTap()
+                        } label: {
+                            Text(button.text)
+                                .font(.nytFranklin(.bold, size: 14))
+                                .foregroundStyle(.white)
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 39)
+                                .background(Color.black)
+                                .clipShape(RoundedRectangle(cornerRadius: 4))
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
             }
             .padding(16)
         }
+        .frame(height: 640)
+        .background(backgroundColor)
         .clipShape(RoundedRectangle(cornerRadius: 8))
         .shadow(color: .black.opacity(0.12), radius: 6, x: 0, y: 2)
+        .contentShape(Rectangle())
+        .onTapGesture { onTap() }
     }
 }
 

@@ -222,28 +222,59 @@ struct SeriesData: Identifiable {
     let id: String
     let title: String
     let heroImageURL: URL?
+    /// Bundled asset name for the hero image (takes priority over heroImageURL).
+    let heroImageAsset: String?
     let articleURL: URL
     let products: [CommerceItem]
+    /// Maps product IDs to bundled asset names for local image display.
+    let localImageOverrides: [Int: String]
+    /// Maps product IDs to hex background colors for the image area.
+    let productBackgrounds: [Int: UInt]
 
     static let headphones = SeriesData(
         id: "series-headphones",
         title: "How to choose the best headphones for you",
         heroImageURL: URL(string: "https://cdn.thewirecutter.com/wp-content/media/2025/04/headphones-2048px-8797.jpg"),
+        heroImageAsset: "SeriesImages/SonyXM5",
         articleURL: URL(string: "https://www.nytimes.com/wirecutter/reviews/best-headphones/")!,
         products: [
             CommerceItem(
                 articleId: 90001,
                 articleTitle: "Best Headphones",
                 articleUrl: URL(string: "https://www.nytimes.com/wirecutter/reviews/best-headphones/")!,
-                productId: 900010,
+                productId: 900001,
+                productTitle: "The best Bluetooth wireless headphones",
+                productDescription: "Lightweight and comfortable\nGreat battery life (30-50 hours)\nIPX5 water resistant",
+                images: nil,
+                hasDealData: false,
+                sources: [
+                    CommerceSource(merchantName: "Walmart", affiliateUrl: nil, priceFormatted: "$150", priceRaw: 15000, dealAffiliateUrl: nil, promoCode: nil, promoEffect: nil, dealPriceFormatted: nil, streetPriceFormatted: nil),
+                ],
+                imageUrl: nil,
+                merchantName: "JBL",
+                affiliateUrl: nil,
+                priceFormatted: nil,
+                pickTypeId: nil,
+                ribbon: nil,
+                categoryName: "Electronics",
+                categorySlug: "electronics",
+                articleHeroImageURL: nil,
+                isShopifyProduct: false,
+                shopifyVariantId: nil
+            ),
+            CommerceItem(
+                articleId: 90001,
+                articleTitle: "Best Headphones",
+                articleUrl: URL(string: "https://www.nytimes.com/wirecutter/reviews/best-headphones/")!,
+                productId: 900002,
                 productTitle: "The best wireless noise-cancelling headphones",
-                productDescription: "Lightweight and comfortable\nExcellent noise cancellation\n30-hour battery life",
-                images: [URL(string: "https://cdn.thewirecutter.com/wp-content/media/2024/12/noise-canceling-headphones-2048px-0808-2x1-1.jpg")!],
+                productDescription: "Lightweight and comfortable\nGreat noise reduction\nHigh price tag",
+                images: nil,
                 hasDealData: false,
                 sources: [
-                    CommerceSource(merchantName: "Amazon", affiliateUrl: nil, priceFormatted: "$348", priceRaw: 34800, dealAffiliateUrl: nil, promoCode: nil, promoEffect: nil, dealPriceFormatted: nil, streetPriceFormatted: nil),
-                    CommerceSource(merchantName: "Walmart", affiliateUrl: nil, priceFormatted: "$348", priceRaw: 34800, dealAffiliateUrl: nil, promoCode: nil, promoEffect: nil, dealPriceFormatted: nil, streetPriceFormatted: nil),
-                    CommerceSource(merchantName: "Best Buy", affiliateUrl: nil, priceFormatted: "$348", priceRaw: 34800, dealAffiliateUrl: nil, promoCode: nil, promoEffect: nil, dealPriceFormatted: nil, streetPriceFormatted: nil),
+                    CommerceSource(merchantName: "Amazon", affiliateUrl: nil, priceFormatted: "$458", priceRaw: 45800, dealAffiliateUrl: nil, promoCode: nil, promoEffect: nil, dealPriceFormatted: nil, streetPriceFormatted: nil),
+                    CommerceSource(merchantName: "Walmart", affiliateUrl: nil, priceFormatted: "$458", priceRaw: 45800, dealAffiliateUrl: nil, promoCode: nil, promoEffect: nil, dealPriceFormatted: nil, streetPriceFormatted: nil),
+                    CommerceSource(merchantName: "Best Buy", affiliateUrl: nil, priceFormatted: "$458", priceRaw: 45800, dealAffiliateUrl: nil, promoCode: nil, promoEffect: nil, dealPriceFormatted: nil, streetPriceFormatted: nil),
                 ],
                 imageUrl: nil,
                 merchantName: "Sony",
@@ -261,17 +292,18 @@ struct SeriesData: Identifiable {
                 articleId: 90001,
                 articleTitle: "Best Headphones",
                 articleUrl: URL(string: "https://www.nytimes.com/wirecutter/reviews/best-headphones/")!,
-                productId: 900020,
-                productTitle: "The best for Apple users",
-                productDescription: "Seamless Apple ecosystem integration\nPremium build quality\nSpatial audio support",
-                images: [URL(string: "https://cdn.thewirecutter.com/wp-content/media/2024/12/noise-canceling-headphones-2048px-9832.jpg")!],
+                productId: 900003,
+                productTitle: "The best noise-cancelling earbuds",
+                productDescription: "Excellent noise cancellation in a small package\nBest noise-reducing microphones we've tested\nIP55 water and dust resistant",
+                images: nil,
                 hasDealData: false,
                 sources: [
-                    CommerceSource(merchantName: "Amazon", affiliateUrl: nil, priceFormatted: "$449", priceRaw: 44900, dealAffiliateUrl: nil, promoCode: nil, promoEffect: nil, dealPriceFormatted: nil, streetPriceFormatted: nil),
-                    CommerceSource(merchantName: "Apple", affiliateUrl: nil, priceFormatted: "$549", priceRaw: 54900, dealAffiliateUrl: nil, promoCode: nil, promoEffect: nil, dealPriceFormatted: nil, streetPriceFormatted: nil),
+                    CommerceSource(merchantName: "Amazon", affiliateUrl: nil, priceFormatted: "$170", priceRaw: 17000, dealAffiliateUrl: nil, promoCode: nil, promoEffect: nil, dealPriceFormatted: nil, streetPriceFormatted: nil),
+                    CommerceSource(merchantName: "Walmart", affiliateUrl: nil, priceFormatted: "$170", priceRaw: 17000, dealAffiliateUrl: nil, promoCode: nil, promoEffect: nil, dealPriceFormatted: nil, streetPriceFormatted: nil),
+                    CommerceSource(merchantName: "Best Buy", affiliateUrl: nil, priceFormatted: "$170", priceRaw: 17000, dealAffiliateUrl: nil, promoCode: nil, promoEffect: nil, dealPriceFormatted: nil, streetPriceFormatted: nil),
                 ],
                 imageUrl: nil,
-                merchantName: "Apple",
+                merchantName: "Soundcore",
                 affiliateUrl: nil,
                 priceFormatted: nil,
                 pickTypeId: nil,
@@ -286,17 +318,18 @@ struct SeriesData: Identifiable {
                 articleId: 90001,
                 articleTitle: "Best Headphones",
                 articleUrl: URL(string: "https://www.nytimes.com/wirecutter/reviews/best-headphones/")!,
-                productId: 900030,
-                productTitle: "The best noise-cancelling headphones on a budget",
-                productDescription: "Still excellent noise cancellation\nComfortable for long listening\nPrevious-gen at a lower price",
-                images: [URL(string: "https://cdn.thewirecutter.com/wp-content/media/2024/12/noise-canceling-headphones-2048px-0792-2x1-1.jpg")!],
+                productId: 900004,
+                productTitle: "The best bone-conduction headphones",
+                productDescription: "Leaves ears uncovered for awareness\nBetter bass than other bone-conduction pairs\n12-hour battery life",
+                images: nil,
                 hasDealData: false,
                 sources: [
-                    CommerceSource(merchantName: "Amazon", affiliateUrl: nil, priceFormatted: "$228", priceRaw: 22800, dealAffiliateUrl: nil, promoCode: nil, promoEffect: nil, dealPriceFormatted: nil, streetPriceFormatted: nil),
-                    CommerceSource(merchantName: "Walmart", affiliateUrl: nil, priceFormatted: "$248", priceRaw: 24800, dealAffiliateUrl: nil, promoCode: nil, promoEffect: nil, dealPriceFormatted: nil, streetPriceFormatted: nil),
+                    CommerceSource(merchantName: "Amazon", affiliateUrl: nil, priceFormatted: "$180", priceRaw: 18000, dealAffiliateUrl: nil, promoCode: nil, promoEffect: nil, dealPriceFormatted: nil, streetPriceFormatted: nil),
+                    CommerceSource(merchantName: "Walmart", affiliateUrl: nil, priceFormatted: "$180", priceRaw: 18000, dealAffiliateUrl: nil, promoCode: nil, promoEffect: nil, dealPriceFormatted: nil, streetPriceFormatted: nil),
+                    CommerceSource(merchantName: "REI", affiliateUrl: nil, priceFormatted: "$180", priceRaw: 18000, dealAffiliateUrl: nil, promoCode: nil, promoEffect: nil, dealPriceFormatted: nil, streetPriceFormatted: nil),
                 ],
                 imageUrl: nil,
-                merchantName: "Sony",
+                merchantName: "Shokz",
                 affiliateUrl: nil,
                 priceFormatted: nil,
                 pickTypeId: nil,
@@ -307,6 +340,44 @@ struct SeriesData: Identifiable {
                 isShopifyProduct: false,
                 shopifyVariantId: nil
             ),
+            CommerceItem(
+                articleId: 90001,
+                articleTitle: "Best Headphones",
+                articleUrl: URL(string: "https://www.nytimes.com/wirecutter/reviews/best-headphones/")!,
+                productId: 900005,
+                productTitle: "The best clip-on earbuds",
+                productDescription: "Lightweight clip-on design\nSolid bass response with EQ app\n10-hour battery life, IP55 rated",
+                images: nil,
+                hasDealData: false,
+                sources: [
+                    CommerceSource(merchantName: "Amazon", affiliateUrl: nil, priceFormatted: "$56", priceRaw: 5600, dealAffiliateUrl: nil, promoCode: nil, promoEffect: nil, dealPriceFormatted: nil, streetPriceFormatted: nil),
+                ],
+                imageUrl: nil,
+                merchantName: "EarFun",
+                affiliateUrl: nil,
+                priceFormatted: nil,
+                pickTypeId: nil,
+                ribbon: nil,
+                categoryName: "Electronics",
+                categorySlug: "electronics",
+                articleHeroImageURL: nil,
+                isShopifyProduct: false,
+                shopifyVariantId: nil
+            ),
+        ],
+        localImageOverrides: [
+            900001: "SeriesImages/JBLTourOne",
+            900002: "SeriesImages/SonyXM5",
+            900003: "SeriesImages/SoundcoreEarbuds",
+            900004: "SeriesImages/ShokzOpenRun",
+            900005: "SeriesImages/EarFunClip",
+        ],
+        productBackgrounds: [
+            900001: 0x8BC78B,
+            900002: 0xC5E4E7,
+            900003: 0x3366CC,
+            900004: 0xD4E8ED,
+            900005: 0xD0E4EA,
         ]
     )
 }
