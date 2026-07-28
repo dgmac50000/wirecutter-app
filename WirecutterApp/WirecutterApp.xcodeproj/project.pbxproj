@@ -26,6 +26,8 @@
 		B40C1A2D2B0F000100000033 /* NYTFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40C1A2D2B0F000200000033 /* NYTFont.swift */; };
 		B40C1A2D2B0F000100000034 /* PersonProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40C1A2D2B0F000200000034 /* PersonProfile.swift */; };
 		B40C1A2D2B0F000100000035 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40C1A2D2B0F000200000035 /* ProfileView.swift */; };
+		B40C1A2D2B0F00010000003B /* EditorialMomentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40C1A2D2B0F00020000003B /* EditorialMomentView.swift */; };
+		B40C1A2D2B0F00010000003C /* Watchlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40C1A2D2B0F00020000003C /* Watchlist.swift */; };
 		B40C1A2D2B0F000100000036 /* BrowseStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40C1A2D2B0F000200000036 /* BrowseStackView.swift */; };
 		B40C1A2D2B0F000100000037 /* AvatarStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40C1A2D2B0F000200000037 /* AvatarStyle.swift */; };
 		B40C1A2D2B0F000100000038 /* RecentlyViewedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40C1A2D2B0F000200000038 /* RecentlyViewedStore.swift */; };
@@ -65,6 +67,8 @@
 		B40C1A2D2B0F000200000033 /* NYTFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NYTFont.swift; sourceTree = "<group>"; };
 		B40C1A2D2B0F000200000034 /* PersonProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonProfile.swift; sourceTree = "<group>"; };
 		B40C1A2D2B0F000200000035 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		B40C1A2D2B0F00020000003B /* EditorialMomentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorialMomentView.swift; sourceTree = "<group>"; };
+		B40C1A2D2B0F00020000003C /* Watchlist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Watchlist.swift; sourceTree = "<group>"; };
 		B40C1A2D2B0F000200000036 /* BrowseStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseStackView.swift; sourceTree = "<group>"; };
 		B40C1A2D2B0F000200000037 /* AvatarStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarStyle.swift; sourceTree = "<group>"; };
 		B40C1A2D2B0F000200000038 /* RecentlyViewedStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentlyViewedStore.swift; sourceTree = "<group>"; };
@@ -137,6 +141,8 @@
 				B40C1A2D2B0F000200000033 /* NYTFont.swift */,
 				B40C1A2D2B0F000200000034 /* PersonProfile.swift */,
 				B40C1A2D2B0F000200000035 /* ProfileView.swift */,
+				B40C1A2D2B0F00020000003B /* EditorialMomentView.swift */,
+				B40C1A2D2B0F00020000003C /* Watchlist.swift */,
 				B40C1A2D2B0F000200000036 /* BrowseStackView.swift */,
 				B40C1A2D2B0F000200000037 /* AvatarStyle.swift */,
 				B40C1A2D2B0F000200000038 /* RecentlyViewedStore.swift */,
@@ -239,6 +245,8 @@
 				B40C1A2D2B0F000100000033 /* NYTFont.swift in Sources */,
 				B40C1A2D2B0F000100000034 /* PersonProfile.swift in Sources */,
 				B40C1A2D2B0F000100000035 /* ProfileView.swift in Sources */,
+				B40C1A2D2B0F00010000003B /* EditorialMomentView.swift in Sources */,
+				B40C1A2D2B0F00010000003C /* Watchlist.swift in Sources */,
 				B40C1A2D2B0F000100000036 /* BrowseStackView.swift in Sources */,
 				B40C1A2D2B0F000100000037 /* AvatarStyle.swift in Sources */,
 				B40C1A2D2B0F000100000038 /* RecentlyViewedStore.swift in Sources */,

@@ -1,8 +1,28 @@
 import SwiftUI
+import UIKit
+
+/// Equal-width price filters for the home feed.
+enum FeedPriceFilter: String, CaseIterable, Identifiable {
+    case under50
+    case fiftyToHundred
+    case overHundred
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .under50: return "Under $50"
+        case .fiftyToHundred: return "$50 - $100"
+        case .overHundred: return "$100+"
+        }
+    }
+}
 
 struct CommerceListView: View {
     var people: [PersonProfile] = PersonProfileStore.prototypes
     var onSelectPerson: (PersonProfile) -> Void = { _ in }
+    var onSelectEditorial: (WatchlistEditorialMoment) -> Void = { _ in }
+    var onViewAllWatchlist: () -> Void = {}
     var onSearch: () -> Void = {}
 
     @State private var items: [CommerceItem] = []
@@ -13,17 +33,69 @@ struct CommerceListView: View {
     @State private var quickViewItem: CommerceItem?
     @State private var plusVisible = false
     @State private var separatorVisible = false
-    @State private var visibleAvatarNames: Set<String> = []
+    @State private var visibleWatchlistIDs: Set<String> = []
+    /// Watchlist items opened this session — shown at 70% opacity.
+    @State private var visitedWatchlistIDs: Set<String> = WatchlistInteractionStore.sessionVisitedIDs
     @State private var didPlayPeopleEntrance = false
     @State private var showPeopleRow = true
     @State private var headerHeight: CGFloat = 56
     @State private var peopleRowMeasuredHeight: CGFloat = 78
+    @State private var selectedFeedFilter: FeedPriceFilter? = nil
+    @State private var buyNowOnly = false
+    @State private var buyNowClusterWidth: CGFloat = 130
+    /// UIKit bridge so filter swaps can restore contentOffset after LazyVStack relayout.
+    @State private var feedScrollBridge = FeedScrollViewBridge()
+    /// Suppresses avatar-row show/hide while filter restores are bouncing the offset.
+    @State private var feedChromeScrollLocked = false
+    @State private var scrollOffsetY: CGFloat = 0
+    @State private var upcomingSectionHeight: CGFloat = 180
+    /// Cached Upcoming cards — rebuilt when the feed loads (not on every scroll frame).
+    @State private var upcomingEventCards: [UpcomingEventCard] = []
+    /// Sequenced home entrance after the people-row animation.
+    @State private var upcomingRevealed = false
+    @State private var filtersRevealed = false
+    @State private var visibleFeedProductIDs: Set<Int> = []
+    @State private var feedRevealComplete = false
+    @State private var didStartContentEntrance = false
+    /// True while feed + gift-guide heroes + first images are loading.
+    @State private var isPreparingHome = true
+    /// Multi-profile Upcoming card → choose who you're shopping for.
+    @State private var profilePickerCard: UpcomingEventCard?
+    /// Dynamically ordered watchlist (editorial + gift profiles + View all).
+    @State private var watchlistEntries: [WatchlistEntry] = WatchlistStore.placeholderEntries
+    /// Cached editorials so in-session reordering does not require a network round-trip.
+    @State private var watchlistEditorials: [WatchlistEditorialMoment] = []
+    @Environment(\.scenePhase) private var scenePhase
+
+    /// Matches the plus↔avatars hairline in the watchlist row.
+    private let homeChromeBorderColor = Color(hex: 0xEEEEEE)
+
+    private let feedFilters = FeedPriceFilter.allCases
+    private let feedFilterLazySpacing: CGFloat = 16
+    private let feedFilterPillSpacing: CGFloat = 8
+    /// Fade after the Buy-from-NYT separator; pills begin at the end of this zone.
+    private let buyFromNYTFadeWidth: CGFloat = 12
+    /// Minimum distance from the top of the screen to the sticky filter bar.
+    private let stickyFilterMinTopInset: CGFloat = 16
+    /// Stick slightly before the row reaches its resting pin position.
+    private let stickyFilterLeadDistance: CGFloat = 48
 
     private var shuffledProducts: [CommerceItem] {
         var all = items + shopifyProducts
         var rng = SeededRandomNumberGenerator(seed: UInt64(all.count))
         all.shuffle(using: &rng)
         return all
+    }
+
+    private var filteredProducts: [CommerceItem] {
+        var products = shuffledProducts
+        if buyNowOnly {
+            products = products.filter(\.isWirecutterStoreProduct)
+        }
+        if let selectedFeedFilter {
+            products = products.filter { matchesFeedFilter($0, selectedFeedFilter) }
+        }
+        return products
     }
 
     /// Clears the floating tab capsule when scrolled to the end (safe area is ignored
@@ -43,6 +115,22 @@ struct CommerceListView: View {
         collapsedHomeChromeHeight + max(peopleRowMeasuredHeight, 0)
     }
 
+    /// Pin under the live chrome (search + profiles when visible) so the sticky
+    /// pills travel with the profiles row as it expands and collapses.
+    private var stickyFilterTopInset: CGFloat {
+        max(homeChromeHeight, stickyFilterMinTopInset)
+    }
+
+    /// Content Y where the inline filter row begins.
+    private var filterRowContentTop: CGFloat {
+        expandedHomeChromeHeight + upcomingSectionHeight + feedFilterLazySpacing
+    }
+
+    private var areFiltersStuck: Bool {
+        // Compare against the stable pin (search bar), and trip a bit early.
+        scrollOffsetY >= filterRowContentTop - stickyFilterTopInset - stickyFilterLeadDistance
+    }
+
     var body: some View {
         ZStack(alignment: .top) {
             Group {
@@ -59,7 +147,7 @@ struct CommerceListView: View {
                     .padding(.top, expandedHomeChromeHeight)
                 } else {
                     ScrollView {
-                        LazyVStack(spacing: 16) {
+                        LazyVStack(spacing: feedFilterLazySpacing) {
                             // Under-chrome spacer stays solid white (matches nav). The
                             // white → feed-gray fade runs only across the visible specialty
                             // row so it isn't diluted under the overlay.
@@ -70,21 +158,45 @@ struct CommerceListView: View {
 
                                 upcomingRow
                                     .frame(maxWidth: .infinity, alignment: .leading)
+                                    .opacity(upcomingRevealed ? 1 : 0)
+                                    .offset(y: upcomingRevealed ? 0 : 10)
+                                    .allowsHitTesting(upcomingRevealed)
+                                    .accessibilityHidden(!upcomingRevealed)
                                     .background { FeedEntranceGradient() }
+                                    .background {
+                                        GeometryReader { geo in
+                                            Color.clear.preference(
+                                                key: UpcomingSectionHeightKey.self,
+                                                value: geo.size.height
+                                            )
+                                        }
+                                    }
                             }
+
+                            feedFilterRow
+                                .opacity(filtersRevealed && !areFiltersStuck ? 1 : 0)
+                                .offset(y: filtersRevealed ? 0 : 10)
+                                .allowsHitTesting(filtersRevealed && !areFiltersStuck)
+                                .accessibilityHidden(!filtersRevealed || areFiltersStuck)
 
                             if isLoading {
                                 ghostFeedContent
-                            } else if shuffledProducts.isEmpty {
+                                    .opacity(0)
+                                    .accessibilityHidden(true)
+                            } else if filteredProducts.isEmpty {
                                 VStack(spacing: 12) {
                                     Image(systemName: "tray")
                                         .font(.largeTitle)
                                         .foregroundStyle(.secondary)
-                                    Text("No products found")
+                                    Text(
+                                        selectedFeedFilter.map { "No products in \($0.title)" }
+                                            ?? "No products found"
+                                    )
                                         .foregroundStyle(.secondary)
                                 }
                                 .frame(maxWidth: .infinity)
                                 .padding(.top, 40)
+                                .opacity(feedRevealComplete ? 1 : 0)
                             } else {
                                 ForEach(Array(shuffledProducts.enumerated()), id: \.element.id) { index, item in
                                     if index == 8 {
@@ -105,19 +217,52 @@ struct CommerceListView: View {
                             }
                         }
                         .padding(.bottom, tabBarContentInset)
+                        .onPreferenceChange(UpcomingSectionHeightKey.self) { height in
+                            if height > 0 { upcomingSectionHeight = height }
+                        }
+                        .background {
+                            FeedScrollViewBinder(bridge: feedScrollBridge)
+                        }
                     }
-                    .modifier(FeedScrollPeopleChromeModifier(showPeopleRow: $showPeopleRow))
+                    .modifier(
+                        FeedScrollPeopleChromeModifier(
+                            showPeopleRow: $showPeopleRow,
+                            scrollOffsetY: $scrollOffsetY,
+                            isLocked: feedChromeScrollLocked
+                        )
+                    )
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(PageChrome.feedBackground)
 
-            // Search + avatars overlay the feed; height collapse clips the avatar row.
+            // Feed-layer sticky filters. When stuck, sit above chrome so pills receive
+            // taps; the clear spacer passes hits through to the search bar.
+            stickyFeedFilters
+                .zIndex(areFiltersStuck ? 3 : 1)
+
+            // Search + watchlist overlay the feed; height collapse clips the watchlist.
             homeChrome
                 .frame(height: homeChromeHeight, alignment: .top)
                 .frame(maxWidth: .infinity, alignment: .top)
                 .clipped()
+                // Keep hit-testing within the visible chrome bounds (not clipped children).
+                .contentShape(Rectangle())
                 .background(Color(.systemBackground))
+                .overlay(alignment: .bottom) {
+                    // Tracks the expanding/collapsing nav unit (same color as plus↔avatar rule).
+                    homeChromeBorderColor
+                        .frame(height: 1)
+                        .frame(maxWidth: .infinity)
+                        .allowsHitTesting(false)
+                }
+                .zIndex(2)
+
+            if isPreparingHome {
+                homePreparingOverlay
+                    .zIndex(4)
+                    .transition(.opacity)
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(PageChrome.feedBackground)
@@ -143,9 +288,55 @@ struct CommerceListView: View {
             .presentationDetents([.large])
             .presentationDragIndicator(.hidden)
         }
-        .task {
-            await loadFeed()
+        .sheet(item: $profilePickerCard) { card in
+            UpcomingProfilePickerSheet(
+                card: card,
+                onSelect: { profile in
+                    profilePickerCard = nil
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                        onSelectPerson(profile)
+                    }
+                }
+            )
+            .presentationDetents([.medium])
+            .presentationDragIndicator(.visible)
         }
+        .task {
+            await prepareHomeAndAnimate()
+        }
+        .onChange(of: scenePhase) { _, phase in
+            switch phase {
+            case .background:
+                WatchlistInteractionStore.markAppBackgrounded()
+            case .active:
+                guard WatchlistInteractionStore.consumePendingSessionRefresh() else { return }
+                Task { await refreshWatchlistForNewSession() }
+            default:
+                break
+            }
+        }
+    }
+
+    /// Collective loader while feed data + hero/product images warm up.
+    private var homePreparingOverlay: some View {
+        VStack(spacing: 0) {
+            Color.clear
+                .frame(height: expandedHomeChromeHeight)
+
+            VStack(spacing: 14) {
+                ProgressView()
+                    .controlSize(.regular)
+                    .tint(Color(hex: 0x333333))
+                Text("Loading picks…")
+                    .font(.nytFranklin(.medium, size: 14))
+                    .foregroundStyle(Color(hex: 0x666666))
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(PageChrome.feedBackground)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Loading picks")
     }
 
     // MARK: - Home chrome (search + avatars as one unit)
@@ -163,6 +354,10 @@ struct CommerceListView: View {
                 }
 
             peopleRow
+                // Collapsed avatars stay in the layout for measurement/clipping, but must
+                // not intercept taps while invisible.
+                .allowsHitTesting(showPeopleRow)
+                .accessibilityHidden(!showPeopleRow)
                 .background {
                     GeometryReader { geo in
                         Color.clear.preference(
@@ -198,7 +393,7 @@ struct CommerceListView: View {
         .background(Color(.systemBackground))
     }
 
-    // MARK: - People Row (avatar placeholders)
+    // MARK: - Watchlist (editorial moments + gift profiles)
 
     private var peopleRow: some View {
         ScrollView(.horizontal, showsIndicators: false) {
@@ -206,18 +401,18 @@ struct CommerceListView: View {
                 addPersonButton
                     .opacity(plusVisible ? 1 : 0)
 
-                Color(hex: 0xEEEEEE)
+                homeChromeBorderColor
                     .frame(width: 1, height: 40)
                     .padding(.horizontal, 12)
                     .opacity(separatorVisible ? 1 : 0)
 
                 HStack(alignment: .top, spacing: 6) {
-                    ForEach(people) { person in
-                        personAvatar(person)
-                            .opacity(visibleAvatarNames.contains(person.name) ? 1 : 0)
-                            .offset(y: visibleAvatarNames.contains(person.name) ? 0 : 10)
+                    ForEach(watchlistEntries) { entry in
+                        watchlistItem(entry)
+                            .opacity(watchlistItemOpacity(for: entry))
+                            .offset(y: visibleWatchlistIDs.contains(entry.id) ? 0 : 10)
                             .onTapGesture {
-                                onSelectPerson(person)
+                                handleWatchlistTap(entry)
                             }
                     }
                 }
@@ -230,13 +425,162 @@ struct CommerceListView: View {
         .padding(.top, 10)
         .padding(.bottom, 8)
         .background(Color(.systemBackground))
-        .onAppear {
-            guard !didPlayPeopleEntrance else { return }
-            didPlayPeopleEntrance = true
-            Task { @MainActor in
-                await playPeopleEntrance()
+    }
+
+    @ViewBuilder
+    private func watchlistItem(_ entry: WatchlistEntry) -> some View {
+        switch entry {
+        case .editorial(let moment):
+            watchlistEditorialItem(moment)
+        case .person(let person):
+            personAvatar(
+                person,
+                showAlertDot: shouldShowWatchlistAlertDot(for: person, entryID: entry.id)
+            )
+        case .viewAll:
+            watchlistViewAllItem
+        }
+    }
+
+    private func watchlistItemOpacity(for entry: WatchlistEntry) -> Double {
+        guard visibleWatchlistIDs.contains(entry.id) else { return 0 }
+        if case .viewAll = entry { return 1 }
+        // Prefer the in-memory session store so dims survive view recreation.
+        if WatchlistInteractionStore.hasVisitedThisSession(entry.id)
+            || visitedWatchlistIDs.contains(entry.id) {
+            return 0.7
+        }
+        return 1
+    }
+
+    private func shouldShowWatchlistAlertDot(for person: PersonProfile, entryID: String) -> Bool {
+        if WatchlistInteractionStore.hasVisitedThisSession(entryID)
+            || visitedWatchlistIDs.contains(entryID) {
+            return false
+        }
+        return WatchlistEventCompletionStore.hasActiveUrgentEvent(person)
+    }
+
+    private func handleWatchlistTap(_ entry: WatchlistEntry) {
+        WatchlistInteractionStore.recordInteraction()
+        switch entry {
+        case .editorial(let moment):
+            markWatchlistVisited(entry)
+            onSelectEditorial(moment)
+        case .person(let person):
+            WatchlistInteractionStore.recordPersonOpen(person)
+            markWatchlistVisited(entry)
+            onSelectPerson(person)
+        case .viewAll:
+            onViewAllWatchlist()
+        }
+    }
+
+    private func markWatchlistVisited(_ entry: WatchlistEntry) {
+        WatchlistInteractionStore.recordSessionVisit(entry.id)
+        withAnimation(.easeOut(duration: 0.25)) {
+            // Accumulate — never replace with a fresh set (that can drop prior visits).
+            visitedWatchlistIDs.insert(entry.id)
+            visitedWatchlistIDs.formUnion(WatchlistInteractionStore.sessionVisitedIDs)
+            rebuildWatchlistOrderPreservingVisibility()
+        }
+    }
+
+    /// Re-applies session visit pinning without a network fetch.
+    private func rebuildWatchlistOrderPreservingVisibility() {
+        let next = WatchlistBuilder.build(
+            people: people,
+            editorials: watchlistEditorials,
+            sessionVisitOrder: WatchlistInteractionStore.sessionVisitOrder,
+            seed: UInt64(people.count &* 31 &+ watchlistEditorials.count)
+        )
+        watchlistEntries = next
+        visibleWatchlistIDs.formUnion(next.map(\.id))
+    }
+
+    /// Cold return from background: clear in-session dims, restore red dots, refresh editorials.
+    private func refreshWatchlistForNewSession() async {
+        WatchlistInteractionStore.beginSession()
+        visitedWatchlistIDs = []
+        let loaded = await WatchlistStore.loadEntries(people: people)
+        watchlistEditorials = loaded.editorials
+        watchlistEntries = loaded.entries
+        visibleWatchlistIDs = Set(loaded.entries.map(\.id))
+
+        var urls: [URL] = []
+        for entry in loaded.entries {
+            if case .editorial(let moment) = entry, let thumb = moment.thumbnailURL {
+                urls.append(thumb)
             }
         }
+        await prefetchImages(urls)
+    }
+
+    private func watchlistEditorialItem(_ moment: WatchlistEditorialMoment) -> some View {
+        VStack(spacing: 6) {
+            Group {
+                if let url = moment.thumbnailURL {
+                    AsyncImage(url: url) { phase in
+                        switch phase {
+                        case .success(let image):
+                            image
+                                .resizable()
+                                .scaledToFill()
+                        case .failure, .empty:
+                            Color(hex: 0xEEEEEE)
+                        @unknown default:
+                            Color(hex: 0xEEEEEE)
+                        }
+                    }
+                } else {
+                    Color(hex: 0xEEEEEE)
+                }
+            }
+            .frame(width: 40, height: 40)
+            .clipShape(Circle())
+            .overlay {
+                Circle()
+                    .stroke(Color(hex: 0xEEEEEE), lineWidth: 1)
+            }
+            .accessibilityLabel("\(moment.label) editorial highlight")
+
+            Text(moment.label)
+                .font(.nytFranklin(.medium, size: 12))
+                .foregroundStyle(Color(.label))
+                .multilineTextAlignment(.center)
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
+        }
+        .frame(width: 52)
+        .contentShape(Rectangle())
+    }
+
+    private var watchlistViewAllItem: some View {
+        VStack(spacing: 6) {
+            ZStack {
+                Circle()
+                    .fill(Color(hex: 0xEEEEEE))
+                    .frame(width: 40, height: 40)
+
+                Image(systemName: "arrow.right")
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundStyle(Color(.label))
+            }
+            .overlay {
+                Circle()
+                    .stroke(Color(hex: 0xEEEEEE), lineWidth: 1)
+            }
+            .accessibilityLabel("View all watchlist")
+
+            Text("View all")
+                .font(.nytFranklin(.medium, size: 12))
+                .foregroundStyle(Color(.label))
+                .multilineTextAlignment(.center)
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
+        }
+        .frame(width: 52)
+        .contentShape(Rectangle())
     }
 
     private func playPeopleEntrance() async {
@@ -254,14 +598,120 @@ struct CommerceListView: View {
             separatorVisible = true
         }
 
-        // Wait for the separator fade to finish, then pause before avatars.
+        // Wait for the separator fade to finish, then pause before watchlist items.
         try? await Task.sleep(for: .seconds(duration + pauseBeforeAvatars))
 
-        for person in people {
+        for entry in watchlistEntries {
             withAnimation(.easeOut(duration: duration)) {
-                visibleAvatarNames.insert(person.name)
+                visibleWatchlistIDs.insert(entry.id)
             }
             try? await Task.sleep(for: .seconds(stagger))
+        }
+
+        // Let the last avatar finish rising before the next section fades in.
+        try? await Task.sleep(for: .seconds(duration * 0.5))
+    }
+
+    /// Upcoming → filter pills → feed, only after the people row has finished.
+    private func playHomeContentEntrance() async {
+        guard !didStartContentEntrance else { return }
+        didStartContentEntrance = true
+
+        let duration: TimeInterval = 0.4
+        let pauseBetweenSections: TimeInterval = 0.06
+
+        withAnimation(.easeOut(duration: duration)) {
+            upcomingRevealed = true
+        }
+        try? await Task.sleep(for: .seconds(duration * 0.5 + pauseBetweenSections))
+
+        withAnimation(.easeOut(duration: duration)) {
+            filtersRevealed = true
+        }
+        try? await Task.sleep(for: .seconds(duration * 0.5 + pauseBetweenSections))
+
+        await playFeedEntrance()
+    }
+
+    private func playFeedEntrance() async {
+        let duration: TimeInterval = 0.4
+        let stagger: TimeInterval = 0.08
+        let staggeredCount = 8
+        let products = filteredProducts
+
+        for item in products.prefix(staggeredCount) {
+            withAnimation(.easeOut(duration: duration)) {
+                visibleFeedProductIDs.insert(item.id)
+            }
+            try? await Task.sleep(for: .seconds(stagger))
+        }
+
+        withAnimation(.easeOut(duration: duration)) {
+            for item in products.dropFirst(staggeredCount) {
+                visibleFeedProductIDs.insert(item.id)
+            }
+            feedRevealComplete = true
+        }
+    }
+
+    // MARK: - Home prepare (data + imagery, then staged entrance)
+
+    /// Load feed + gift-guide heroes, prefetch images into URLCache, then run the
+    /// people → upcoming → pills → feed entrance sequence.
+    private func prepareHomeAndAnimate() async {
+        // Keep local dims aligned with the process-wide session store (survives view churn).
+        visitedWatchlistIDs.formUnion(WatchlistInteractionStore.sessionVisitedIDs)
+
+        if didPlayPeopleEntrance {
+            if !watchlistEditorials.isEmpty {
+                rebuildWatchlistOrderPreservingVisibility()
+            }
+            return
+        }
+
+        await loadFeed()
+
+        var urls: [URL] = upcomingEventCards.compactMap(\.heroImageURL)
+        for entry in watchlistEntries {
+            if case .editorial(let moment) = entry, let thumb = moment.thumbnailURL {
+                urls.append(thumb)
+            }
+        }
+        for item in shuffledProducts.prefix(8) {
+            if let url = item.displayImageUrl {
+                urls.append(url)
+            }
+        }
+        await prefetchImages(urls)
+
+        withAnimation(.easeOut(duration: 0.3)) {
+            isPreparingHome = false
+        }
+        // Brief beat after the loader fades before the people row starts.
+        try? await Task.sleep(for: .seconds(0.1))
+
+        guard !didPlayPeopleEntrance else { return }
+        didPlayPeopleEntrance = true
+        await playPeopleEntrance()
+        await playHomeContentEntrance()
+    }
+
+    /// Warm URLCache (and decode) so AsyncImage paints immediately on reveal.
+    private func prefetchImages(_ urls: [URL]) async {
+        let unique = Array(Set(urls))
+        guard !unique.isEmpty else { return }
+
+        await withTaskGroup(of: Void.self) { group in
+            for url in unique {
+                group.addTask {
+                    var request = URLRequest(url: url)
+                    request.cachePolicy = .returnCacheDataElseLoad
+                    request.timeoutInterval = 12
+                    guard let (data, _) = try? await URLSession.shared.data(for: request) else { return }
+                    // Force decode so the first paint isn’t stalled on the main thread.
+                    _ = UIImage(data: data)
+                }
+            }
         }
     }
 
@@ -286,7 +736,7 @@ struct CommerceListView: View {
         .frame(width: 52)
     }
 
-    private func personAvatar(_ person: PersonProfile) -> some View {
+    private func personAvatar(_ person: PersonProfile, showAlertDot: Bool = true) -> some View {
         VStack(spacing: 6) {
             Image(AvatarStyle.assetName(for: person.name))
                 .resizable()
@@ -295,7 +745,7 @@ struct CommerceListView: View {
                 .frame(width: 40, height: 40)
                 .clipShape(Circle())
                 .overlay(alignment: .topTrailing) {
-                    if person.hasUpcomingEvent(within: 21) {
+                    if showAlertDot, person.hasUpcomingEvent(within: 21) {
                         Circle()
                             .fill(Color(hex: 0xAE0115))
                             .frame(width: 10, height: 10)
@@ -320,6 +770,209 @@ struct CommerceListView: View {
         .contentShape(Rectangle())
     }
 
+    // MARK: - Feed filters
+
+    private var stickyFeedFilters: some View {
+        VStack(spacing: 0) {
+            Color.clear
+                .frame(height: stickyFilterTopInset)
+                // Don't block the search bar when this layer sits above chrome.
+                .allowsHitTesting(false)
+
+            feedFilterRow
+                .padding(.top, 10)
+                .padding(.bottom, 28)
+                .frame(maxWidth: .infinity)
+                .fixedSize(horizontal: false, vertical: true)
+                .contentShape(Rectangle())
+                .background {
+                    GeometryReader { geo in
+                        // Solid through the pill row, then fade from the bottom edge
+                        // of the pills to the bottom of this sticky feed layer.
+                        let fadeStart = max(geo.size.height - 28, 1) / max(geo.size.height, 1)
+                        LinearGradient(
+                            stops: [
+                                .init(color: PageChrome.feedBackground.opacity(1), location: 0),
+                                .init(color: PageChrome.feedBackground.opacity(1), location: fadeStart),
+                                .init(color: PageChrome.feedBackground.opacity(0), location: 1),
+                            ],
+                            startPoint: .top,
+                            endPoint: .bottom
+                        )
+                    }
+                }
+        }
+        // Keep intrinsic height — this overlay lives in a full-screen ZStack, and
+        // expanding children would paint the feed-gray background over the whole UI.
+        .fixedSize(horizontal: false, vertical: true)
+        .frame(maxWidth: .infinity, alignment: .top)
+        .opacity(areFiltersStuck && filtersRevealed ? 1 : 0)
+        .offset(y: filtersRevealed ? 0 : 10)
+        .allowsHitTesting(areFiltersStuck && filtersRevealed)
+        .accessibilityHidden(!(areFiltersStuck && filtersRevealed))
+    }
+
+    private var feedFilterRow: some View {
+        ZStack(alignment: .leading) {
+            // Price pills scroll underneath the fixed Buy Now cluster.
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: feedFilterPillSpacing) {
+                    Color.clear
+                        .frame(width: max(buyNowClusterWidth, 1))
+
+                    ForEach(feedFilters) { filter in
+                        priceFilterPill(filter)
+                    }
+                }
+                .padding(.trailing, PageChrome.horizontalMargin)
+                .padding(.vertical, 4)
+            }
+            .fixedSize(horizontal: false, vertical: true)
+
+            // Fixed leading chrome: solid feed gray through the separator, then
+            // a 100% → 0% fade so pills ease out underneath.
+            HStack(spacing: 0) {
+                HStack(spacing: 0) {
+                    buyNowSwitch
+                        .padding(.leading, PageChrome.horizontalMargin)
+                        .padding(.trailing, 12)
+
+                    Color(hex: 0xD6D6D6)
+                        .frame(width: 1, height: 40)
+                }
+                .background(PageChrome.feedBackground)
+
+                LinearGradient(
+                    colors: [
+                        PageChrome.feedBackground.opacity(1),
+                        PageChrome.feedBackground.opacity(0),
+                    ],
+                    startPoint: .leading,
+                    endPoint: .trailing
+                )
+                .frame(width: buyFromNYTFadeWidth)
+                .allowsHitTesting(false)
+            }
+            .zIndex(1)
+            .background {
+                GeometryReader { geo in
+                    Color.clear.preference(
+                        key: BuyNowClusterWidthKey.self,
+                        value: geo.size.width
+                    )
+                }
+            }
+        }
+        .fixedSize(horizontal: false, vertical: true)
+        .onPreferenceChange(BuyNowClusterWidthKey.self) { width in
+            if width > 0 { buyNowClusterWidth = width }
+        }
+    }
+
+    private func priceFilterPill(_ filter: FeedPriceFilter) -> some View {
+        let isSelected = selectedFeedFilter == filter
+        return Button {
+            preserveFeedChromeAcrossFilterChange {
+                selectedFeedFilter = isSelected ? nil : filter
+            }
+        } label: {
+            Text(filter.title)
+                .font(.nytFranklin(.medium, size: 13))
+                .foregroundStyle(isSelected ? Color.white : Color(.label))
+                .lineLimit(1)
+                .padding(.vertical, 8)
+                .padding(.horizontal, 12)
+                .background(isSelected ? Color.black : Color.white)
+                .overlay {
+                    Capsule()
+                        .stroke(
+                            isSelected ? Color.black : Color(hex: 0xCCCCCC),
+                            lineWidth: 1
+                        )
+                }
+                .clipShape(Capsule())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(filter.title)
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
+    }
+
+    private var buyNowSwitch: some View {
+        HStack(spacing: 0) {
+            Toggle("", isOn: buyNowOnlyBinding)
+                .labelsHidden()
+                .tint(Color.black)
+                .controlSize(.mini)
+
+            Text("Buy from NYT")
+                .font(.nytFranklin(size: 14, weight: .semibold))
+                .foregroundStyle(Color(hex: 0x333333))
+                .fixedSize()
+                .padding(.leading, 12)
+        }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Buy from NYT")
+        .accessibilityValue(buyNowOnly ? "On" : "Off")
+    }
+
+    /// Keeps feed scroll offset + avatar-row visibility stable across LazyVStack swaps.
+    private var buyNowOnlyBinding: Binding<Bool> {
+        Binding(
+            get: { buyNowOnly },
+            set: { newValue in
+                preserveFeedChromeAcrossFilterChange {
+                    buyNowOnly = newValue
+                }
+            }
+        )
+    }
+
+    private func preserveFeedChromeAcrossFilterChange(_ updates: () -> Void) {
+        // Near the top, UIKit offset restores fight SwiftUI layout and snap the feed
+        // ~32pt. Only preserve when stuck (where LazyVStack jump-to-top actually hurts).
+        guard areFiltersStuck else {
+            var transaction = Transaction()
+            transaction.disablesAnimations = true
+            withTransaction(transaction, updates)
+            return
+        }
+
+        let peopleVisible = showPeopleRow
+        let peopleBinding = $showPeopleRow
+        let lockBinding = $feedChromeScrollLocked
+
+        lockBinding.wrappedValue = true
+        feedScrollBridge.preserveOffsetAcross(updates)
+
+        let reassertPeople = {
+            if peopleBinding.wrappedValue != peopleVisible {
+                var transaction = Transaction()
+                transaction.disablesAnimations = true
+                withTransaction(transaction) {
+                    peopleBinding.wrappedValue = peopleVisible
+                }
+            }
+        }
+        reassertPeople()
+        DispatchQueue.main.async(execute: reassertPeople)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.08) {
+            reassertPeople()
+            lockBinding.wrappedValue = false
+        }
+    }
+
+    private func matchesFeedFilter(_ item: CommerceItem, _ filter: FeedPriceFilter) -> Bool {
+        guard let dollars = item.priceInDollars else { return false }
+        switch filter {
+        case .under50:
+            return dollars < 50
+        case .fiftyToHundred:
+            return dollars >= 50 && dollars <= 100
+        case .overHundred:
+            return dollars > 100
+        }
+    }
+
     // MARK: - Upcoming Row
 
     private var upcomingRow: some View {
@@ -330,12 +983,14 @@ struct CommerceListView: View {
                 .padding(.horizontal, 20)
 
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 16) {
-                    ForEach(0..<4, id: \.self) { _ in
-                        upcomingCard
+                HStack(alignment: .top, spacing: 16) {
+                    ForEach(upcomingEventCards) { card in
+                        upcomingEventCard(card)
+                            // Force a fresh AsyncImage when the hero URL arrives.
+                            .id("\(card.id)-\(card.heroImageURL?.absoluteString ?? "none")")
                     }
                 }
-                // Extra vertical padding so card shadows aren't clipped.
+                // Top padding clears the avatar tag; bottom padding clears card shadows.
                 .padding(.horizontal, 20)
                 .padding(.top, 2)
                 .padding(.bottom, 10)
@@ -345,18 +1000,159 @@ struct CommerceListView: View {
         .padding(.bottom, 4)
     }
 
-    private var upcomingCard: some View {
-        RoundedRectangle(cornerRadius: 10, style: .continuous)
-            .fill(Color(.systemGray6))
-            .frame(width: 250, height: 144)
-            .background {
-                // Approximates box-shadow: 0 2px 5px 4px rgba(36,50,66,0.1)
-                RoundedRectangle(cornerRadius: 14, style: .continuous)
-                    .fill(Color(red: 36 / 255, green: 50 / 255, blue: 66 / 255).opacity(0.1))
-                    .blur(radius: 5)
-                    .padding(-4)
-                    .offset(y: 2)
+    private func upcomingEventCard(_ card: UpcomingEventCard) -> some View {
+        Button {
+            handleUpcomingCardTap(card)
+        } label: {
+            VStack(alignment: .leading, spacing: 0) {
+                // Specialty cards keep an empty tag-sized row so heroes share a baseline
+                // with personalized cards that show profile tags.
+                if card.isSpecialty {
+                    upcomingEventTagPlaceholder
+                } else {
+                    upcomingEventTag(card)
+                }
+
+                upcomingEventHero(card)
+                    .frame(width: 250, height: 144)
+                    .clipped()
+                    .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                    .background {
+                        // Approximates box-shadow: 0 2px 5px 4px rgba(36,50,66,0.1)
+                        RoundedRectangle(cornerRadius: 14, style: .continuous)
+                            .fill(Color(red: 36 / 255, green: 50 / 255, blue: 66 / 255).opacity(0.1))
+                            .blur(radius: 5)
+                            .padding(-4)
+                            .offset(y: 2)
+                    }
+                    .padding(.top, 8)
+
+                VStack(alignment: .leading, spacing: 8) {
+                    if !card.isSpecialty {
+                        Text(card.countdownLabel())
+                            .font(.nytFranklin(.medium, size: 11))
+                            .tracking(1.1) // 10% of 11px
+                            .foregroundStyle(Color(hex: 0x333333))
+                            .textCase(.uppercase)
+                            .lineLimit(1)
+                    }
+
+                    Text(card.eventTitle)
+                        .font(.nytFranklin(size: card.isSpecialty ? 20 : 16, weight: .semibold))
+                        .foregroundStyle(Color(.label))
+                        .lineLimit(2)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .frame(width: 250, alignment: .leading)
+                .padding(.top, 12)
             }
+        }
+        .buttonStyle(.plain)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(card.accessibilityLabel)
+        .accessibilityHint(upcomingAccessibilityHint(card))
+    }
+
+    private func upcomingAccessibilityHint(_ card: UpcomingEventCard) -> String {
+        if card.isSpecialty {
+            return "Opens \(card.eventTitle) coverage"
+        }
+        if card.profiles.count > 1 {
+            return "Opens a list of people to shop for"
+        }
+        return "Opens \(card.profiles.first?.name ?? "profile")"
+    }
+
+    private func handleUpcomingCardTap(_ card: UpcomingEventCard) {
+        if card.isSpecialty, let articleURL = card.articleURL {
+            onSelectEditorial(
+                WatchlistEditorialMoment(
+                    id: card.id,
+                    label: card.eventTitle,
+                    articleURL: articleURL,
+                    thumbnailURL: card.heroImageURL
+                )
+            )
+            return
+        }
+        if card.profiles.count == 1, let profile = card.profiles.first {
+            onSelectPerson(profile)
+        } else if card.profiles.count > 1 {
+            profilePickerCard = card
+        }
+    }
+
+    private func upcomingEventTag(_ card: UpcomingEventCard) -> some View {
+        HStack(spacing: 6) {
+            overlappingProfileAvatars(Array(card.profiles.prefix(3)))
+
+            Text(card.tagLabel)
+                .font(.nytFranklin(size: 16, weight: .semibold))
+                .foregroundStyle(Color(hex: 0x333333))
+                .lineLimit(1)
+        }
+    }
+
+    /// Invisible stand-in matching profile-tag height so specialty heroes align.
+    private var upcomingEventTagPlaceholder: some View {
+        HStack(spacing: 6) {
+            Color.clear
+                .frame(width: 16, height: 16)
+
+            Text(" ")
+                .font(.nytFranklin(size: 16, weight: .semibold))
+                .hidden()
+        }
+        .accessibilityHidden(true)
+    }
+
+    private func overlappingProfileAvatars(_ profiles: [PersonProfile]) -> some View {
+        HStack(spacing: -6) {
+            ForEach(Array(profiles.enumerated()), id: \.element.id) { index, profile in
+                Image(AvatarStyle.assetName(for: profile.name))
+                    .resizable()
+                    .renderingMode(.original)
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 16, height: 16)
+                    .background(AvatarStyle.backgroundColor(for: profile.name))
+                    .clipShape(Circle())
+                    .overlay {
+                        Circle()
+                            .stroke(Color.white, lineWidth: 1)
+                    }
+                    .zIndex(Double(profiles.count - index))
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func upcomingEventHero(_ card: UpcomingEventCard) -> some View {
+        if let url = card.heroImageURL {
+            AsyncImage(url: url) { phase in
+                switch phase {
+                case .success(let image):
+                    image
+                        .resizable()
+                        .scaledToFill()
+                case .failure:
+                    upcomingHeroPlaceholder
+                case .empty:
+                    upcomingHeroPlaceholder
+                        .overlay { ProgressView().scaleEffect(0.8) }
+                @unknown default:
+                    upcomingHeroPlaceholder
+                }
+            }
+            .frame(width: 250, height: 144)
+            .clipped()
+        } else {
+            upcomingHeroPlaceholder
+                .frame(width: 250, height: 144)
+        }
+    }
+
+    private var upcomingHeroPlaceholder: some View {
+        Color(hex: 0xEEEEEE)
     }
 
     /// Matches bottom tab icon size (24×24), outlined (~2pt stroke via weight).
@@ -418,13 +1214,46 @@ struct CommerceListView: View {
 
     private func loadFeed() async {
         do {
-            let result = try await APIClient.shared.fetchCommerceFeed()
-            withAnimation(.easeOut(duration: 0.35)) {
-                items = result.products
-                shopifyProducts = result.shopifyProducts
-                isLoading = false
-            }
+            async let feedTask = APIClient.shared.fetchCommerceFeed()
+            async let heroesTask = GiftGuideHeroCatalog.loadHeroes()
+            async let watchlistTask = WatchlistStore.loadEntries(people: people)
+            async let specialtyTask = UpcomingSpecialtyCatalog.loadLeadCard()
+
+            let result = try await feedTask
+            let heroes = await heroesTask
+            let watchlist = await watchlistTask
+            let specialty = await specialtyTask
+            let peopleSnapshot = people
+            let cards = UpcomingEventsBuilder.cards(
+                from: peopleSnapshot,
+                giftGuideHeroes: heroes,
+                limit: 4,
+                specialtyLead: specialty
+            )
+            items = result.products
+            shopifyProducts = result.shopifyProducts
+            upcomingEventCards = cards
+            watchlistEditorials = watchlist.editorials
+            watchlistEntries = watchlist.entries
+            visitedWatchlistIDs.formUnion(WatchlistInteractionStore.sessionVisitedIDs)
+            isLoading = false
         } catch {
+            // Still try to show Upcoming heroes / watchlist if the commerce feed fails.
+            async let heroesTask = GiftGuideHeroCatalog.loadHeroes()
+            async let watchlistTask = WatchlistStore.loadEntries(people: people)
+            async let specialtyTask = UpcomingSpecialtyCatalog.loadLeadCard()
+            let heroes = await heroesTask
+            let specialty = await specialtyTask
+            let watchlist = await watchlistTask
+            watchlistEditorials = watchlist.editorials
+            watchlistEntries = watchlist.entries
+            visitedWatchlistIDs.formUnion(WatchlistInteractionStore.sessionVisitedIDs)
+            upcomingEventCards = UpcomingEventsBuilder.cards(
+                from: people,
+                giftGuideHeroes: heroes,
+                limit: 4,
+                specialtyLead: specialty
+            )
             errorMessage = error.localizedDescription
             isLoading = false
         }
@@ -1027,7 +1856,7 @@ struct AskSheetView: View {
                         .frame(width: 16, height: 16)
                         .foregroundStyle(Color(hex: 0x5B69EB))
                     Text("Wirecutter Finder")
-                        .font(.nytFranklin(size: 14, weight: .semibold))
+                        .font(.nytFranklin(size: 14, weight: .medium))
                 }
 
                 Text(text)
@@ -1122,11 +1951,87 @@ private struct HomePeopleRowHeightKey: PreferenceKey {
     }
 }
 
+private struct BuyNowClusterWidthKey: PreferenceKey {
+    static var defaultValue: CGFloat = 0
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = max(value, nextValue())
+    }
+}
+
+private struct UpcomingSectionHeightKey: PreferenceKey {
+    static var defaultValue: CGFloat = 0
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = max(value, nextValue())
+    }
+}
+
 // MARK: - Feed scroll ↔ people chrome
+
+/// Holds a weak reference to the feed's UIScrollView so filter changes can restore offset.
+private final class FeedScrollViewBridge {
+    weak var scrollView: UIScrollView?
+
+    func preserveOffsetAcross(_ updates: () -> Void) {
+        let y = scrollView?.contentOffset.y ?? 0
+        var transaction = Transaction()
+        transaction.disablesAnimations = true
+        withTransaction(transaction, updates)
+        restoreOffset(y)
+        // LazyVStack often finishes laying out one run-loop later and zeroes offset again.
+        DispatchQueue.main.async { [weak self] in
+            self?.restoreOffset(y)
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) { [weak self] in
+            self?.restoreOffset(y)
+        }
+    }
+
+    private func restoreOffset(_ y: CGFloat) {
+        guard let scrollView else { return }
+        let maxY = max(scrollView.contentSize.height - scrollView.bounds.height, 0)
+        let clamped = min(max(y, 0), maxY)
+        guard abs(scrollView.contentOffset.y - clamped) > 0.5 else { return }
+        scrollView.setContentOffset(CGPoint(x: scrollView.contentOffset.x, y: clamped), animated: false)
+    }
+}
+
+/// Walks up from a content-hosted UIView to bind the enclosing UIScrollView.
+private struct FeedScrollViewBinder: UIViewRepresentable {
+    let bridge: FeedScrollViewBridge
+
+    func makeUIView(context: Context) -> UIView {
+        let view = UIView(frame: .zero)
+        view.isUserInteractionEnabled = false
+        view.backgroundColor = .clear
+        return view
+    }
+
+    func updateUIView(_ uiView: UIView, context: Context) {
+        DispatchQueue.main.async {
+            bridge.scrollView = uiView.enclosingScrollView()
+        }
+    }
+}
+
+private extension UIView {
+    func enclosingScrollView() -> UIScrollView? {
+        var current: UIView? = self
+        while let view = current {
+            if let scrollView = view as? UIScrollView {
+                return scrollView
+            }
+            current = view.superview
+        }
+        return nil
+    }
+}
 
 /// Collapses the avatar extension of home chrome while scrolling down; restores on scroll up.
 private struct FeedScrollPeopleChromeModifier: ViewModifier {
     @Binding var showPeopleRow: Bool
+    @Binding var scrollOffsetY: CGFloat
+    /// When true (e.g. mid filter restore), ignore offset teleports that would expand the row.
+    var isLocked: Bool
     @State private var lastOffsetY: CGFloat = 0
     @State private var accumulatedDelta: CGFloat = 0
     @State private var lockScrollHandlingUntil: Date = .distantPast
@@ -1135,6 +2040,8 @@ private struct FeedScrollPeopleChromeModifier: ViewModifier {
     private let hideAfterScrollDown: CGFloat = 36
     private let showAfterScrollUp: CGFloat = 24
     private let lockDuration: TimeInterval = 0.5
+    /// Deltas larger than this are treated as programmatic jumps, not finger scrolls.
+    private let teleportThreshold: CGFloat = 80
 
     func body(content: Content) -> some View {
         if #available(iOS 18.0, *) {
@@ -1142,7 +2049,15 @@ private struct FeedScrollPeopleChromeModifier: ViewModifier {
                 .onScrollGeometryChange(for: CGFloat.self) { geometry in
                     geometry.contentOffset.y
                 } action: { _, newOffsetY in
+                    scrollOffsetY = newOffsetY
                     handleScroll(offsetY: newOffsetY)
+                }
+                .onChange(of: isLocked) { _, locked in
+                    if !locked {
+                        // Resync baseline so unlocking doesn't look like a fling.
+                        lastOffsetY = scrollOffsetY
+                        accumulatedDelta = 0
+                    }
                 }
         } else {
             content
@@ -1152,6 +2067,17 @@ private struct FeedScrollPeopleChromeModifier: ViewModifier {
     private func handleScroll(offsetY: CGFloat) {
         let delta = offsetY - lastOffsetY
         lastOffsetY = offsetY
+
+        if isLocked {
+            accumulatedDelta = 0
+            return
+        }
+
+        // Ignore programmatic offset restores (filter swaps) that jump by hundreds of points.
+        if abs(delta) >= teleportThreshold {
+            accumulatedDelta = 0
+            return
+        }
 
         // contentOffset.y is ~0 at top and increases as the user scrolls down.
         if offsetY < topRevealThreshold {
@@ -1185,6 +2111,72 @@ private struct FeedScrollPeopleChromeModifier: ViewModifier {
             showPeopleRow = visible
         }
         lockScrollHandlingUntil = Date().addingTimeInterval(lockDuration)
+    }
+}
+
+// MARK: - Upcoming multi-profile picker
+
+/// Bottom sheet listing gift profiles for a shared Upcoming event (e.g. Christmas).
+private struct UpcomingProfilePickerSheet: View {
+    let card: UpcomingEventCard
+    var onSelect: (PersonProfile) -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Text("Who are you shopping for?")
+                .font(.nytFranklin(size: 18, weight: .semibold))
+                .foregroundStyle(Color(.label))
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal, 20)
+                .padding(.top, 8)
+                .padding(.bottom, 4)
+
+            Text(card.eventTitle)
+                .font(.nytFranklin(.medium, size: 14))
+                .foregroundStyle(Color(hex: 0x666666))
+                .padding(.horizontal, 20)
+                .padding(.bottom, 16)
+
+            ScrollView {
+                VStack(spacing: 0) {
+                    ForEach(card.profiles) { profile in
+                        Button {
+                            onSelect(profile)
+                        } label: {
+                            HStack(spacing: 14) {
+                                Image(AvatarStyle.assetName(for: profile.name))
+                                    .resizable()
+                                    .renderingMode(.original)
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 44, height: 44)
+                                    .clipShape(Circle())
+
+                                Text(profile.name)
+                                    .font(.nytFranklin(size: 16, weight: .medium))
+                                    .foregroundStyle(Color(.label))
+
+                                Spacer(minLength: 0)
+
+                                Image(systemName: "chevron.right")
+                                    .font(.system(size: 13, weight: .medium))
+                                    .foregroundStyle(Color(hex: 0x999999))
+                            }
+                            .padding(.horizontal, 20)
+                            .padding(.vertical, 14)
+                            .contentShape(Rectangle())
+                        }
+                        .buttonStyle(.plain)
+
+                        if profile.id != card.profiles.last?.id {
+                            Divider()
+                                .padding(.leading, 78)
+                        }
+                    }
+                }
+            }
+        }
+        .padding(.top, 12)
+        .background(Color(.systemBackground))
     }
 }
 

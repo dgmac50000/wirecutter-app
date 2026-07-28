@@ -79,7 +79,7 @@ struct OnboardingView: View {
                     withAnimation { currentStep = 1 }
                 } label: {
                     Text("Get started")
-                        .font(.nytFranklin(size: 17, weight: .semibold))
+                        .font(.nytFranklin(size: 17, weight: .medium))
                         .foregroundStyle(.white)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 16)
@@ -275,7 +275,7 @@ struct OnboardingView: View {
                     onComplete()
                 } label: {
                     Text("Start exploring")
-                        .font(.nytFranklin(size: 17, weight: .semibold))
+                        .font(.nytFranklin(size: 17, weight: .medium))
                         .foregroundStyle(.white)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 16)
@@ -299,7 +299,7 @@ struct OnboardingView: View {
                         withAnimation { currentStep -= 1 }
                     } label: {
                         Image(systemName: "chevron.left")
-                            .font(.system(size: 16, weight: .semibold))
+                            .font(.system(size: 16, weight: .medium))
                             .foregroundStyle(Color(.label))
                             .frame(width: 44, height: 44)
                             .background(Color(.systemGray6))
@@ -313,7 +313,7 @@ struct OnboardingView: View {
                     onNext()
                 } label: {
                     Text("Continue")
-                        .font(.nytFranklin(size: 17, weight: .semibold))
+                        .font(.nytFranklin(size: 17, weight: .medium))
                         .foregroundStyle(.white)
                         .padding(.horizontal, 32)
                         .padding(.vertical, 14)
