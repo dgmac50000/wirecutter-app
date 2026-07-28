@@ -4,7 +4,7 @@ import SwiftUI
 struct WirecutterAppApp: App {
     var body: some Scene {
         WindowGroup {
-            CommerceListView()
+            MainTabView()
         }
     }
 }

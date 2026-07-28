@@ -1,25 +1,23 @@
 import SwiftUI
 
 struct CommerceListView: View {
+    var people: [PersonProfile] = PersonProfileStore.prototypes
+    var onSelectPerson: (PersonProfile) -> Void = { _ in }
+    var onSearch: () -> Void = {}
+
     @State private var items: [CommerceItem] = []
     @State private var shopifyProducts: [CommerceItem] = []
     @State private var isLoading = true
     @State private var errorMessage: String?
     @State private var safariItem: IdentifiableURL?
     @State private var quickViewItem: CommerceItem?
-    @State private var selectedFilter: String = "For you"
-    @State private var showHeader = true
-    @State private var lastScrollOffset: CGFloat = 0
-    @State private var showAsk = false
-
-    private let filters: [(name: String, icon: String?)] = [
-        ("For you", nil),
-        ("My Lists", nil),
-        ("Prime Day", "tag.fill"),
-        ("Gifts", nil),
-        ("Sleep", nil),
-        ("Home", nil),
-    ]
+    @State private var plusVisible = false
+    @State private var separatorVisible = false
+    @State private var visibleAvatarNames: Set<String> = []
+    @State private var didPlayPeopleEntrance = false
+    @State private var showPeopleRow = true
+    @State private var headerHeight: CGFloat = 56
+    @State private var peopleRowMeasuredHeight: CGFloat = 78
 
     private var shuffledProducts: [CommerceItem] {
         var all = items + shopifyProducts
@@ -28,20 +26,27 @@ struct CommerceListView: View {
         return all
     }
 
+    /// Clears the floating tab capsule when scrolled to the end (safe area is ignored
+    /// so the feed can pass underneath the bar).
+    private let tabBarContentInset: CGFloat = 100
+
+    /// Visible (possibly collapsed) chrome height — drives the overlay clip only.
+    private var homeChromeHeight: CGFloat {
+        showPeopleRow ? expandedHomeChromeHeight : collapsedHomeChromeHeight
+    }
+
+    private var collapsedHomeChromeHeight: CGFloat { max(headerHeight, 1) }
+
+    /// Full chrome height used for feed top padding. Stays constant during snap so the
+    /// feed only moves from user scrolling, not from the nav collapse animation.
+    private var expandedHomeChromeHeight: CGFloat {
+        collapsedHomeChromeHeight + max(peopleRowMeasuredHeight, 0)
+    }
+
     var body: some View {
-        VStack(spacing: 0) {
-            if showHeader {
-                headerView
-                    .transition(.move(edge: .top).combined(with: .opacity))
-            }
-
-            filterRow
-
+        ZStack(alignment: .top) {
             Group {
-                if isLoading {
-                    ProgressView("Loading deals…")
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                } else if let error = errorMessage {
+                if let error = errorMessage {
                     VStack(spacing: 12) {
                         Image(systemName: "exclamationmark.triangle")
                             .font(.largeTitle)
@@ -51,60 +56,66 @@ struct CommerceListView: View {
                             .multilineTextAlignment(.center)
                     }
                     .padding()
-                } else if shuffledProducts.isEmpty {
-                    VStack(spacing: 12) {
-                        Image(systemName: "tray")
-                            .font(.largeTitle)
-                            .foregroundStyle(.secondary)
-                        Text("No products found")
-                            .foregroundStyle(.secondary)
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .padding(.top, expandedHomeChromeHeight)
                 } else {
                     ScrollView {
                         LazyVStack(spacing: 16) {
-                            ForEach(Array(shuffledProducts.enumerated()), id: \.element.id) { index, item in
-                                ProductCardView(
-                                    item: item,
-                                    onTap: { quickViewItem = item },
-                                    showAddToList: index % 5 == 4
-                                )
-                                .padding(.horizontal, 20)
+                            // Under-chrome spacer stays solid white (matches nav). The
+                            // white → feed-gray fade runs only across the visible specialty
+                            // row so it isn't diluted under the overlay.
+                            VStack(alignment: .leading, spacing: 0) {
+                                PageChrome.feedEntranceStart
+                                    .frame(height: expandedHomeChromeHeight)
+                                    .frame(maxWidth: .infinity)
+
+                                upcomingRow
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .background { FeedEntranceGradient() }
+                            }
+
+                            if isLoading {
+                                ghostFeedContent
+                            } else if shuffledProducts.isEmpty {
+                                VStack(spacing: 12) {
+                                    Image(systemName: "tray")
+                                        .font(.largeTitle)
+                                        .foregroundStyle(.secondary)
+                                    Text("No products found")
+                                        .foregroundStyle(.secondary)
+                                }
+                                .frame(maxWidth: .infinity)
+                                .padding(.top, 40)
+                            } else {
+                                ForEach(Array(shuffledProducts.enumerated()), id: \.element.id) { index, item in
+                                    ProductCardView(
+                                        item: item,
+                                        onTap: { quickViewItem = item },
+                                        showAddToList: index % 5 == 4
+                                    )
+                                    .padding(.horizontal, 20)
+                                    .transition(.opacity.combined(with: .move(edge: .bottom)))
+                                }
                             }
                         }
-                        .padding(.vertical, 16)
-                        .background(
-                            GeometryReader { geo in
-                                Color.clear
-                                    .preference(key: ScrollOffsetPreferenceKey.self, value: geo.frame(in: .named("scroll")).minY)
-                            }
-                        )
+                        .padding(.bottom, tabBarContentInset)
                     }
-                    .coordinateSpace(name: "scroll")
-                    .onPreferenceChange(ScrollOffsetPreferenceKey.self) { offset in
-                        let delta = offset - lastScrollOffset
-                        if abs(delta) > 10 {
-                            withAnimation(.easeInOut(duration: 0.25)) {
-                                showHeader = delta > 0
-                            }
-                            lastScrollOffset = offset
-                        }
-                    }
+                    .modifier(FeedScrollPeopleChromeModifier(showPeopleRow: $showPeopleRow))
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color(.systemGroupedBackground))
+            .background(PageChrome.feedBackground)
+
+            // Search + avatars overlay the feed; height collapse clips the avatar row.
+            homeChrome
+                .frame(height: homeChromeHeight, alignment: .top)
+                .frame(maxWidth: .infinity, alignment: .top)
+                .clipped()
+                .background(Color(.systemBackground))
         }
-        .overlay(alignment: .bottom) {
-            persistentSearchBar
-                .padding(.horizontal, 20)
-                .padding(.bottom, 16)
-        }
-        .background(Color(.systemBackground))
-        .sheet(isPresented: $showAsk) {
-            AskSheetView()
-                .presentationDetents([.large])
-        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(PageChrome.feedBackground)
+        // Let the feed extend under the floating tab bar; bottom inset keeps end content clear.
+        .ignoresSafeArea(.container, edges: .bottom)
         .sheet(item: $safariItem) { item in
             SafariView(url: item.url)
                 .ignoresSafeArea()
@@ -130,22 +141,48 @@ struct CommerceListView: View {
         }
     }
 
-    // MARK: - Header (hides on scroll)
+    // MARK: - Home chrome (search + avatars as one unit)
+
+    private var homeChrome: some View {
+        VStack(spacing: 0) {
+            headerView
+                .background {
+                    GeometryReader { geo in
+                        Color.clear.preference(
+                            key: HomeHeaderHeightKey.self,
+                            value: geo.size.height
+                        )
+                    }
+                }
+
+            peopleRow
+                .background {
+                    GeometryReader { geo in
+                        Color.clear.preference(
+                            key: HomePeopleRowHeightKey.self,
+                            value: geo.size.height
+                        )
+                    }
+                }
+        }
+        .frame(maxWidth: .infinity, alignment: .top)
+        .onPreferenceChange(HomeHeaderHeightKey.self) { height in
+            if height > 0 { headerHeight = height }
+        }
+        .onPreferenceChange(HomePeopleRowHeightKey.self) { height in
+            if height > 0 { peopleRowMeasuredHeight = height }
+        }
+    }
+
+    // MARK: - Header (search + actions)
 
     private var headerView: some View {
-        HStack(alignment: .center) {
-            Image("WirecutterLogo")
-                .resizable()
-                .renderingMode(.original)
-                .aspectRatio(contentMode: .fit)
-                .frame(height: 22)
+        HStack(alignment: .center, spacing: 16) {
+            persistentSearchBar
 
-            Spacer()
-
-            HStack(spacing: 8) {
-                headerActionButton(icon: "person.fill")
-                headerActionButton(icon: "bell.fill")
-                headerActionButton(icon: "cart.fill")
+            HStack(spacing: 16) {
+                headerActionButton(icon: "bell")
+                headerActionButton(icon: "cart")
             }
         }
         .padding(.horizontal, 20)
@@ -154,63 +191,185 @@ struct CommerceListView: View {
         .background(Color(.systemBackground))
     }
 
-    // MARK: - Filter Row (always visible, horizontal scroll)
+    // MARK: - People Row (avatar placeholders)
 
-    private var filterRow: some View {
+    private var peopleRow: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 8) {
-                ForEach(filters, id: \.name) { filter in
-                    filterPill(title: filter.name, icon: filter.icon, isSelected: selectedFilter == filter.name)
-                        .onTapGesture {
-                            withAnimation(.easeInOut(duration: 0.2)) {
-                                selectedFilter = filter.name
+            HStack(alignment: .top, spacing: 0) {
+                addPersonButton
+                    .opacity(plusVisible ? 1 : 0)
+
+                Color(hex: 0xEEEEEE)
+                    .frame(width: 1, height: 40)
+                    .padding(.horizontal, 12)
+                    .opacity(separatorVisible ? 1 : 0)
+
+                HStack(alignment: .top, spacing: 6) {
+                    ForEach(people) { person in
+                        personAvatar(person)
+                            .opacity(visibleAvatarNames.contains(person.name) ? 1 : 0)
+                            .offset(y: visibleAvatarNames.contains(person.name) ? 0 : 10)
+                            .onTapGesture {
+                                onSelectPerson(person)
                             }
-                        }
+                    }
                 }
             }
             .padding(.horizontal, 20)
+            // Room for the upcoming-event badge (extends past the avatar bounds).
+            .padding(.top, 6)
+            .padding(.trailing, 4)
         }
-        .padding(.vertical, 8)
+        .padding(.top, 10)
+        .padding(.bottom, 8)
         .background(Color(.systemBackground))
+        .onAppear {
+            guard !didPlayPeopleEntrance else { return }
+            didPlayPeopleEntrance = true
+            Task { @MainActor in
+                await playPeopleEntrance()
+            }
+        }
     }
 
+    private func playPeopleEntrance() async {
+        let duration: TimeInterval = 0.4
+        let stagger: TimeInterval = 0.1
+        let pauseBeforeAvatars: TimeInterval = 0.5
+
+        withAnimation(.easeOut(duration: duration)) {
+            plusVisible = true
+        }
+
+        try? await Task.sleep(for: .seconds(stagger))
+
+        withAnimation(.easeOut(duration: duration)) {
+            separatorVisible = true
+        }
+
+        // Wait for the separator fade to finish, then pause before avatars.
+        try? await Task.sleep(for: .seconds(duration + pauseBeforeAvatars))
+
+        for person in people {
+            withAnimation(.easeOut(duration: duration)) {
+                visibleAvatarNames.insert(person.name)
+            }
+            try? await Task.sleep(for: .seconds(stagger))
+        }
+    }
+
+    private var addPersonButton: some View {
+        VStack(spacing: 6) {
+            ZStack {
+                Circle()
+                    .fill(Color.black)
+                    .frame(width: 40, height: 40)
+                    .shadow(color: Color.black.opacity(0.12), radius: 6, x: 0, y: 2)
+
+                Image(systemName: "plus")
+                    .font(.system(size: 16, weight: .semibold))
+                    .foregroundStyle(.white)
+            }
+
+            // Reserve label height so avatars align with the add control.
+            Text(" ")
+                .font(.nytFranklin(.medium, size: 12))
+                .hidden()
+        }
+        .frame(width: 52)
+    }
+
+    private func personAvatar(_ person: PersonProfile) -> some View {
+        VStack(spacing: 6) {
+            Image(AvatarStyle.assetName(for: person.name))
+                .resizable()
+                .renderingMode(.original)
+                .aspectRatio(contentMode: .fill)
+                .frame(width: 40, height: 40)
+                .clipShape(Circle())
+                .overlay(alignment: .topTrailing) {
+                    if person.hasUpcomingEvent(within: 21) {
+                        Circle()
+                            .fill(Color(hex: 0xAE0115))
+                            .frame(width: 10, height: 10)
+                            .overlay {
+                                Circle()
+                                    .stroke(Color(.systemBackground), lineWidth: 1)
+                            }
+                            .offset(x: 2, y: -2)
+                            .accessibilityLabel("Upcoming event")
+                    }
+                }
+                .accessibilityLabel("\(person.name) avatar")
+
+            Text(person.name)
+                .font(.nytFranklin(.medium, size: 12))
+                .foregroundStyle(Color(.label))
+                .multilineTextAlignment(.center)
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
+        }
+        .frame(width: 52)
+        .contentShape(Rectangle())
+    }
+
+    // MARK: - Upcoming Row
+
+    private var upcomingRow: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Upcoming")
+                .font(.nytFranklin(.bold, size: 18))
+                .foregroundStyle(Color(.label))
+                .padding(.horizontal, 20)
+
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 16) {
+                    ForEach(0..<4, id: \.self) { _ in
+                        upcomingCard
+                    }
+                }
+                // Extra vertical padding so card shadows aren't clipped.
+                .padding(.horizontal, 20)
+                .padding(.top, 2)
+                .padding(.bottom, 10)
+            }
+        }
+        .padding(.top, 8)
+        .padding(.bottom, 4)
+    }
+
+    private var upcomingCard: some View {
+        RoundedRectangle(cornerRadius: 10, style: .continuous)
+            .fill(Color(.systemGray6))
+            .frame(width: 250, height: 144)
+            .background {
+                // Approximates box-shadow: 0 2px 5px 4px rgba(36,50,66,0.1)
+                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    .fill(Color(red: 36 / 255, green: 50 / 255, blue: 66 / 255).opacity(0.1))
+                    .blur(radius: 5)
+                    .padding(-4)
+                    .offset(y: 2)
+            }
+    }
+
+    /// Matches bottom tab icon size (24×24), outlined (~2pt stroke via weight).
     private func headerActionButton(icon: String) -> some View {
         Button { } label: {
             Image(systemName: icon)
-                .font(.system(size: 12, weight: .semibold))
+                .font(.system(size: 18, weight: .medium))
+                .symbolRenderingMode(.monochrome)
                 .foregroundStyle(Color(.label))
-                .frame(width: 32, height: 32)
-                .background(Color(.systemGray5))
-                .clipShape(Circle())
+                .frame(width: 24, height: 24)
+                .contentShape(Rectangle())
         }
-    }
-
-    private func filterPill(title: String, icon: String?, isSelected: Bool) -> some View {
-        HStack(spacing: 4) {
-            if let icon = icon {
-                Image(systemName: icon)
-                    .font(.system(size: 10))
-                    .foregroundStyle(Color(.label))
-            }
-            Text(title)
-                .font(.system(size: 12, weight: .semibold))
-                .foregroundStyle(Color(.label))
-        }
-        .padding(.horizontal, 10)
-        .padding(.vertical, 6)
-        .background(isSelected ? Color(.systemGray5) : Color(.systemBackground))
-        .overlay(
-            RoundedRectangle(cornerRadius: 999)
-                .stroke(isSelected ? Color.clear : Color(.systemGray4), lineWidth: 1)
-        )
-        .clipShape(Capsule())
+        .buttonStyle(.plain)
     }
 
     // MARK: - Persistent Search Bar
 
     private var persistentSearchBar: some View {
         Button {
-            showAsk = true
+            onSearch()
         } label: {
             HStack(spacing: 6) {
                 Image("NYTAIIcon")
@@ -218,21 +377,34 @@ struct CommerceListView: View {
                     .frame(width: 18, height: 18)
                     .foregroundStyle(Color(hex: 0x5B69EB))
                 Text("Search Wirecutter")
-                    .font(.custom("NYTVFranklin-Medium", fixedSize: 14))
-                    .foregroundStyle(Color(hex: 0x222222))
+                    .font(.nytFranklin(.medium, size: 14))
+                    .foregroundStyle(Color(hex: 0x979797))
                 Spacer()
             }
             .padding(.horizontal, 14)
-            .padding(.vertical, 10)
+            .frame(height: 40)
             .background(Color(.systemBackground))
             .overlay(
                 Capsule()
-                    .stroke(Color(hex: 0xDFDFDF), lineWidth: 1)
+                    .stroke(Color(hex: 0xCCCCCC), lineWidth: 1)
             )
             .clipShape(Capsule())
-            .shadow(color: .black.opacity(0.08), radius: 8, x: 0, y: 2)
         }
         .buttonStyle(.plain)
+    }
+
+    // MARK: - Ghost Feed
+
+    private var ghostFeedContent: some View {
+        Group {
+            ForEach(0..<4, id: \.self) { index in
+                GhostProductCard()
+                    .padding(.horizontal, 20)
+                    .opacity(1.0 - Double(index) * 0.12)
+            }
+        }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel("Loading products")
     }
 
     // MARK: - Load Feed
@@ -240,9 +412,11 @@ struct CommerceListView: View {
     private func loadFeed() async {
         do {
             let result = try await APIClient.shared.fetchCommerceFeed()
-            items = result.products
-            shopifyProducts = result.shopifyProducts
-            isLoading = false
+            withAnimation(.easeOut(duration: 0.35)) {
+                items = result.products
+                shopifyProducts = result.shopifyProducts
+                isLoading = false
+            }
         } catch {
             errorMessage = error.localizedDescription
             isLoading = false
@@ -250,12 +424,81 @@ struct CommerceListView: View {
     }
 }
 
+// MARK: - Ghost / skeleton card
+
+struct GhostProductCard: View {
+    @State private var pulse = false
+
+    var body: some View {
+        VStack(spacing: 0) {
+            // Image ghost
+            RoundedRectangle(cornerRadius: 0)
+                .fill(Color(hex: 0xEEEEEE))
+                .frame(maxWidth: .infinity)
+                .frame(height: 280)
+                .overlay(alignment: .topTrailing) {
+                    Circle()
+                        .fill(Color(hex: 0xE4E4E4))
+                        .frame(width: 24, height: 24)
+                        .padding(.top, 13)
+                        .padding(.trailing, 12)
+                }
+
+            // Info ghost
+            VStack(alignment: .leading, spacing: 20) {
+                VStack(alignment: .leading, spacing: 12) {
+                    ghostBar(width: 72, height: 10)
+                    ghostBar(width: nil, height: 18)
+                    ghostBar(width: 220, height: 18)
+                    VStack(alignment: .leading, spacing: 8) {
+                        ghostBar(width: nil, height: 12)
+                        ghostBar(width: 180, height: 12)
+                        ghostBar(width: 140, height: 12)
+                    }
+                    .padding(.top, 4)
+                }
+
+                VStack(spacing: 8) {
+                    RoundedRectangle(cornerRadius: 4)
+                        .fill(Color(hex: 0xE6E6E6))
+                        .frame(height: 39)
+                    RoundedRectangle(cornerRadius: 4)
+                        .fill(Color(hex: 0xEDEDED))
+                        .frame(height: 39)
+                }
+            }
+            .padding(.horizontal, 16)
+            .padding(.top, 8)
+            .padding(.bottom, 12)
+        }
+        .background(Color.white)
+        .clipShape(RoundedRectangle(cornerRadius: 8))
+        .shadow(color: .black.opacity(0.06), radius: 6, x: 0, y: 2)
+        .opacity(pulse ? 0.55 : 1.0)
+        .animation(
+            .easeInOut(duration: 1.1).repeatForever(autoreverses: true),
+            value: pulse
+        )
+        .onAppear { pulse = true }
+        .allowsHitTesting(false)
+    }
+
+    private func ghostBar(width: CGFloat?, height: CGFloat) -> some View {
+        RoundedRectangle(cornerRadius: 3)
+            .fill(Color(hex: 0xE8E8E8))
+            .frame(width: width, height: height)
+            .frame(maxWidth: width == nil ? .infinity : nil, alignment: .leading)
+    }
+}
+
 // MARK: - Product Card (unified full-width card)
 
-private struct ProductCardView: View {
+struct ProductCardView: View {
     let item: CommerceItem
     let onTap: () -> Void
-    let showAddToList: Bool
+    var showAddToList: Bool = false
+    var isSaved: Bool = false
+    var onBookmarkTap: (() -> Void)? = nil
 
     private var hasBullets: Bool { !bulletPoints.isEmpty }
 
@@ -325,13 +568,19 @@ private struct ProductCardView: View {
                             image
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
                                 .padding(12)
                         case .failure:
                             Image(systemName: "photo")
                                 .font(.largeTitle)
                                 .foregroundStyle(Color(.systemGray3))
                         case .empty:
-                            ProgressView()
+                            Color(hex: 0xEEEEEE)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 4)
+                                        .fill(Color(hex: 0xE4E4E4))
+                                        .frame(width: 64, height: 64)
+                                )
                         @unknown default:
                             EmptyView()
                         }
@@ -339,19 +588,13 @@ private struct ProductCardView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
 
-                Circle()
-                    .fill(.white)
-                    .frame(width: 24, height: 24)
-                    .overlay(
-                        Image(systemName: "bookmark")
-                            .font(.system(size: 12, weight: .medium))
-                            .foregroundStyle(.black)
-                    )
+                bookmarkButton
                     .padding(.top, 13)
                     .padding(.trailing, 12)
             }
             .frame(maxWidth: .infinity)
             .frame(height: 280)
+            .clipped()
             .overlay(alignment: .bottom) {
                 HStack(spacing: 4) {
                     Circle().fill(Color.black).frame(width: 6, height: 6)
@@ -365,11 +608,11 @@ private struct ProductCardView: View {
             VStack(alignment: .leading, spacing: 20) {
                 VStack(alignment: .leading, spacing: 12) {
                     Text(item.displayMerchant ?? item.productTitle)
-                        .font(.custom("NYTVFranklin-Medium", fixedSize: 12))
+                        .font(.nytFranklin(.medium, size: 12))
                         .foregroundStyle(Color(hex: 0x666666))
 
                     Text(item.productTitle)
-                        .font(.custom("NYTVFranklin-Bold", fixedSize: 20))
+                        .font(.nytFranklin(.bold, size: 20))
                         .foregroundStyle(.black)
                         .lineSpacing(6)
                         .lineLimit(3)
@@ -379,7 +622,7 @@ private struct ProductCardView: View {
                         VStack(alignment: .leading, spacing: 4) {
                             ForEach(bulletPoints, id: \.self) { bullet in
                                 Text("• \(bullet)")
-                                    .font(.custom("NYTVFranklin-Medium", fixedSize: 14))
+                                    .font(.nytFranklin(.medium, size: 14))
                                     .foregroundStyle(.black)
                             }
                         }
@@ -392,7 +635,7 @@ private struct ProductCardView: View {
                             onTap()
                         } label: {
                             Text(button.text)
-                                .font(.custom("NYTVFranklin-Bold", fixedSize: 14))
+                                .font(.nytFranklin(.bold, size: 14))
                                 .foregroundStyle(.white)
                                 .frame(maxWidth: .infinity)
                                 .frame(height: 39)
@@ -432,11 +675,36 @@ private struct ProductCardView: View {
         .contentShape(Rectangle())
         .onTapGesture { onTap() }
     }
+
+    @ViewBuilder
+    private var bookmarkButton: some View {
+        let icon = Image(systemName: isSaved ? "bookmark.fill" : "bookmark")
+            .font(.system(size: 12, weight: .medium))
+            .foregroundStyle(.black)
+
+        let badge = Circle()
+            .fill(.white)
+            .frame(width: 24, height: 24)
+            .overlay(icon)
+
+        if let onBookmarkTap {
+            Button {
+                onBookmarkTap()
+            } label: {
+                badge
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel(isSaved ? "Remove from saved" : "Save")
+        } else {
+            badge
+                .accessibilityHidden(true)
+        }
+    }
 }
 
 // MARK: - Ask AI Sheet
 
-private struct AskSheetView: View {
+struct AskSheetView: View {
     @State private var query = ""
     @State private var isLoading = false
     @State private var response: String?
@@ -484,7 +752,7 @@ private struct AskSheetView: View {
     private var promptContent: some View {
         VStack(alignment: .leading, spacing: 24) {
             Text("Wirecutter Finder")
-                .font(.custom("NYTKarnak-Medium", fixedSize: 32))
+                .font(.nytFranklin(.bold, size: 32))
                 .foregroundStyle(Color.black)
 
             VStack(alignment: .leading, spacing: 24) {
@@ -499,7 +767,7 @@ private struct AskSheetView: View {
                                 .frame(width: 21, height: 20)
                                 .foregroundStyle(Color(hex: 0x5B69EB))
                             Text(prompt)
-                                .font(.custom("NYTVFranklin-Medium", fixedSize: 16))
+                                .font(.nytFranklin(.medium, size: 16))
                                 .foregroundStyle(Color(hex: 0x191919))
                         }
                         .padding(.horizontal, 15)
@@ -519,7 +787,7 @@ private struct AskSheetView: View {
         HStack(spacing: 12) {
             ProgressView()
             Text("Finding recommendations…")
-                .font(.system(size: 15))
+                .font(.nytFranklin(size: 15))
                 .foregroundStyle(.secondary)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -537,11 +805,11 @@ private struct AskSheetView: View {
                         .frame(width: 16, height: 16)
                         .foregroundStyle(Color(hex: 0x5B69EB))
                     Text("Wirecutter Finder")
-                        .font(.system(size: 14, weight: .semibold))
+                        .font(.nytFranklin(size: 14, weight: .semibold))
                 }
 
                 Text(text)
-                    .font(.system(size: 16, weight: .regular, design: .serif))
+                    .font(.nytFranklin(size: 16, weight: .regular))
                     .lineSpacing(8)
             }
             .padding(16)
@@ -561,7 +829,7 @@ private struct AskSheetView: View {
                 .foregroundStyle(Color(hex: 0x5B69EB))
             TextField("I need something with SPF for a beach trip.", text: $query)
                 .textFieldStyle(.plain)
-                .font(.custom("NYTVFranklin-Medium", fixedSize: 14))
+                .font(.nytFranklin(.medium, size: 14))
                 .foregroundStyle(Color(hex: 0x222222))
                 .submitLabel(.send)
                 .onSubmit { performAsk() }
@@ -615,12 +883,86 @@ private struct AskSheetView: View {
 }
 
 
-// MARK: - Scroll Offset Preference Key
 
-private struct ScrollOffsetPreferenceKey: PreferenceKey {
+// MARK: - Home chrome measurement
+
+private struct HomeHeaderHeightKey: PreferenceKey {
     static var defaultValue: CGFloat = 0
     static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
-        value = nextValue()
+        value = max(value, nextValue())
+    }
+}
+
+private struct HomePeopleRowHeightKey: PreferenceKey {
+    static var defaultValue: CGFloat = 0
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = max(value, nextValue())
+    }
+}
+
+// MARK: - Feed scroll ↔ people chrome
+
+/// Collapses the avatar extension of home chrome while scrolling down; restores on scroll up.
+private struct FeedScrollPeopleChromeModifier: ViewModifier {
+    @Binding var showPeopleRow: Bool
+    @State private var lastOffsetY: CGFloat = 0
+    @State private var accumulatedDelta: CGFloat = 0
+    @State private var lockScrollHandlingUntil: Date = .distantPast
+
+    private let topRevealThreshold: CGFloat = 20
+    private let hideAfterScrollDown: CGFloat = 36
+    private let showAfterScrollUp: CGFloat = 24
+    private let lockDuration: TimeInterval = 0.5
+
+    func body(content: Content) -> some View {
+        if #available(iOS 18.0, *) {
+            content
+                .onScrollGeometryChange(for: CGFloat.self) { geometry in
+                    geometry.contentOffset.y
+                } action: { _, newOffsetY in
+                    handleScroll(offsetY: newOffsetY)
+                }
+        } else {
+            content
+        }
+    }
+
+    private func handleScroll(offsetY: CGFloat) {
+        let delta = offsetY - lastOffsetY
+        lastOffsetY = offsetY
+
+        // contentOffset.y is ~0 at top and increases as the user scrolls down.
+        if offsetY < topRevealThreshold {
+            accumulatedDelta = 0
+            setPeopleRowVisible(true)
+            return
+        }
+
+        guard Date() >= lockScrollHandlingUntil else { return }
+        guard abs(delta) > 0.5 else { return }
+
+        // Accumulate movement in the current direction; reset on reversal.
+        if accumulatedDelta == 0 || (accumulatedDelta > 0) == (delta > 0) {
+            accumulatedDelta += delta
+        } else {
+            accumulatedDelta = delta
+        }
+
+        if accumulatedDelta >= hideAfterScrollDown {
+            accumulatedDelta = 0
+            setPeopleRowVisible(false)
+        } else if accumulatedDelta <= -showAfterScrollUp {
+            accumulatedDelta = 0
+            setPeopleRowVisible(true)
+        }
+    }
+
+    private func setPeopleRowVisible(_ visible: Bool) {
+        guard showPeopleRow != visible else { return }
+        withAnimation(.spring(response: 0.32, dampingFraction: 0.66, blendDuration: 0.1)) {
+            showPeopleRow = visible
+        }
+        lockScrollHandlingUntil = Date().addingTimeInterval(lockDuration)
     }
 }
 
@@ -633,7 +975,7 @@ struct IdentifiableURL: Identifiable {
 
 // MARK: - Seeded RNG for stable shuffle
 
-private struct SeededRandomNumberGenerator: RandomNumberGenerator {
+struct SeededRandomNumberGenerator: RandomNumberGenerator {
     var state: UInt64
     init(seed: UInt64) { state = seed == 0 ? 1 : seed }
     mutating func next() -> UInt64 {

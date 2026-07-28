@@ -48,11 +48,11 @@ struct ProductQuickView: View {
         HStack(alignment: .top, spacing: 12) {
             VStack(alignment: .leading, spacing: 2) {
                 Text("Quick view")
-                    .font(.system(size: 14, weight: .medium))
+                    .font(.nytFranklin(size: 14, weight: .medium))
                     .foregroundStyle(.secondary)
 
                 Text(item.productTitle)
-                    .font(.system(size: 22, weight: .heavy))
+                    .font(.nytFranklin(size: 22, weight: .heavy))
                     .tracking(-0.5)
                     .lineLimit(2)
                     .fixedSize(horizontal: false, vertical: true)
@@ -84,8 +84,8 @@ struct ProductQuickView: View {
                         image
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(maxWidth: .infinity)
-                            .frame(maxHeight: 335)
+                            .frame(maxWidth: .infinity, maxHeight: 335)
+                            .clipped()
                     case .failure:
                         imagePlaceholder
                     case .empty:
@@ -114,7 +114,7 @@ struct ProductQuickView: View {
                     case .success(let image):
                         image
                             .resizable()
-                            .aspectRatio(contentMode: .fill)
+                            .aspectRatio(contentMode: .fit)
                             .frame(width: 109, height: 100)
                             .clipped()
                     default:
@@ -129,7 +129,7 @@ struct ProductQuickView: View {
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(item.articleTitle)
-                    .font(.custom("NYTVFranklin-Bold", fixedSize: 16))
+                    .font(.nytFranklin(size: 16, weight: .bold))
                     .lineLimit(2)
                     .fixedSize(horizontal: false, vertical: true)
                     .foregroundStyle(.primary)
@@ -191,7 +191,7 @@ struct ProductQuickView: View {
                 Image(systemName: "apple.logo")
                     .font(.system(size: 16, weight: .semibold))
                 Text("Pay")
-                    .font(.system(size: 18, weight: .semibold))
+                    .font(.nytFranklin(size: 18, weight: .semibold))
             }
             .foregroundStyle(.white)
             .frame(maxWidth: .infinity)
@@ -225,18 +225,18 @@ struct ProductQuickView: View {
                     .foregroundStyle(.green)
 
                 Text("Order Confirmed")
-                    .font(.system(size: 22, weight: .bold))
+                    .font(.nytFranklin(size: 22, weight: .bold))
                     .foregroundStyle(.primary)
 
                 Text(item.productTitle)
-                    .font(.system(size: 15))
+                    .font(.nytFranklin(size: 15))
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
                     .lineLimit(2)
 
                 if let price = item.displayPrice {
                     Text(price)
-                        .font(.system(size: 18, weight: .semibold))
+                        .font(.nytFranklin(size: 18, weight: .semibold))
                         .foregroundStyle(.primary)
                 }
             }
@@ -256,7 +256,7 @@ struct ProductQuickView: View {
             }
         } label: {
             Text("\(price ?? "") from \(merchant)")
-                .font(.system(size: 16, weight: .bold))
+                .font(.nytFranklin(size: 16, weight: .bold))
                 .foregroundStyle(.white)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 10)
@@ -273,7 +273,7 @@ struct ProductQuickView: View {
         Group {
             if let desc = item.productDescription, !desc.isEmpty {
                 Text(desc)
-                    .font(.custom("NYTVFranklin-Medium", fixedSize: 16))
+                    .font(.nytFranklin(size: 16, weight: .regular))
                     .foregroundStyle(.primary)
                     .lineSpacing(4)
                     .fixedSize(horizontal: false, vertical: true)
