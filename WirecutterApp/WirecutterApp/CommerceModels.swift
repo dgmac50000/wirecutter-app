@@ -241,6 +241,101 @@ struct AssistantPersona: Identifiable {
     }
 }
 
+// MARK: - Series (editorial carousel)
+
+struct SeriesData: Identifiable {
+    let id: String
+    let title: String
+    let heroImageURL: URL?
+    let articleURL: URL
+    let products: [CommerceItem]
+
+    static let headphones = SeriesData(
+        id: "series-headphones",
+        title: "How to choose the best headphones for you",
+        heroImageURL: URL(string: "https://cdn.thewirecutter.com/wp-content/media/2025/04/headphones-2048px-8797.jpg"),
+        articleURL: URL(string: "https://www.nytimes.com/wirecutter/reviews/best-headphones/")!,
+        products: [
+            CommerceItem(
+                articleId: 90001,
+                articleTitle: "Best Headphones",
+                articleUrl: URL(string: "https://www.nytimes.com/wirecutter/reviews/best-headphones/")!,
+                productId: 900010,
+                productTitle: "The best wireless noise-cancelling headphones",
+                productDescription: "Lightweight and comfortable\nExcellent noise cancellation\n30-hour battery life",
+                images: [URL(string: "https://cdn.thewirecutter.com/wp-content/media/2024/12/noise-canceling-headphones-2048px-0808-2x1-1.jpg")!],
+                hasDealData: false,
+                sources: [
+                    CommerceSource(merchantName: "Amazon", affiliateUrl: nil, priceFormatted: "$348", priceRaw: 34800, dealAffiliateUrl: nil, promoCode: nil, promoEffect: nil, dealPriceFormatted: nil, streetPriceFormatted: nil),
+                    CommerceSource(merchantName: "Walmart", affiliateUrl: nil, priceFormatted: "$348", priceRaw: 34800, dealAffiliateUrl: nil, promoCode: nil, promoEffect: nil, dealPriceFormatted: nil, streetPriceFormatted: nil),
+                    CommerceSource(merchantName: "Best Buy", affiliateUrl: nil, priceFormatted: "$348", priceRaw: 34800, dealAffiliateUrl: nil, promoCode: nil, promoEffect: nil, dealPriceFormatted: nil, streetPriceFormatted: nil),
+                ],
+                imageUrl: nil,
+                merchantName: "Sony",
+                affiliateUrl: nil,
+                priceFormatted: nil,
+                pickTypeId: nil,
+                ribbon: nil,
+                categoryName: "Electronics",
+                categorySlug: "electronics",
+                articleHeroImageURL: nil,
+                isShopifyProduct: false,
+                shopifyVariantId: nil
+            ),
+            CommerceItem(
+                articleId: 90001,
+                articleTitle: "Best Headphones",
+                articleUrl: URL(string: "https://www.nytimes.com/wirecutter/reviews/best-headphones/")!,
+                productId: 900020,
+                productTitle: "The best for Apple users",
+                productDescription: "Seamless Apple ecosystem integration\nPremium build quality\nSpatial audio support",
+                images: [URL(string: "https://cdn.thewirecutter.com/wp-content/media/2024/12/noise-canceling-headphones-2048px-9832.jpg")!],
+                hasDealData: false,
+                sources: [
+                    CommerceSource(merchantName: "Amazon", affiliateUrl: nil, priceFormatted: "$449", priceRaw: 44900, dealAffiliateUrl: nil, promoCode: nil, promoEffect: nil, dealPriceFormatted: nil, streetPriceFormatted: nil),
+                    CommerceSource(merchantName: "Apple", affiliateUrl: nil, priceFormatted: "$549", priceRaw: 54900, dealAffiliateUrl: nil, promoCode: nil, promoEffect: nil, dealPriceFormatted: nil, streetPriceFormatted: nil),
+                ],
+                imageUrl: nil,
+                merchantName: "Apple",
+                affiliateUrl: nil,
+                priceFormatted: nil,
+                pickTypeId: nil,
+                ribbon: nil,
+                categoryName: "Electronics",
+                categorySlug: "electronics",
+                articleHeroImageURL: nil,
+                isShopifyProduct: false,
+                shopifyVariantId: nil
+            ),
+            CommerceItem(
+                articleId: 90001,
+                articleTitle: "Best Headphones",
+                articleUrl: URL(string: "https://www.nytimes.com/wirecutter/reviews/best-headphones/")!,
+                productId: 900030,
+                productTitle: "The best noise-cancelling headphones on a budget",
+                productDescription: "Still excellent noise cancellation\nComfortable for long listening\nPrevious-gen at a lower price",
+                images: [URL(string: "https://cdn.thewirecutter.com/wp-content/media/2024/12/noise-canceling-headphones-2048px-0792-2x1-1.jpg")!],
+                hasDealData: false,
+                sources: [
+                    CommerceSource(merchantName: "Amazon", affiliateUrl: nil, priceFormatted: "$228", priceRaw: 22800, dealAffiliateUrl: nil, promoCode: nil, promoEffect: nil, dealPriceFormatted: nil, streetPriceFormatted: nil),
+                    CommerceSource(merchantName: "Walmart", affiliateUrl: nil, priceFormatted: "$248", priceRaw: 24800, dealAffiliateUrl: nil, promoCode: nil, promoEffect: nil, dealPriceFormatted: nil, streetPriceFormatted: nil),
+                ],
+                imageUrl: nil,
+                merchantName: "Sony",
+                affiliateUrl: nil,
+                priceFormatted: nil,
+                pickTypeId: nil,
+                ribbon: nil,
+                categoryName: "Electronics",
+                categorySlug: "electronics",
+                articleHeroImageURL: nil,
+                isShopifyProduct: false,
+                shopifyVariantId: nil
+            ),
+        ]
+    )
+}
+
 enum FeedMode: String, CaseIterable, Identifiable {
     case forYou = "For You"
     case assistant = "Assistant"

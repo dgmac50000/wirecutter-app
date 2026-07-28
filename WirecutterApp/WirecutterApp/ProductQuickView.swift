@@ -14,8 +14,8 @@ struct ProductQuickView: View {
                 header
                 heroImage
                 productTile
+                editorialOverview
                 buyButtons
-                ledeText
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
@@ -47,7 +47,7 @@ struct ProductQuickView: View {
     private var header: some View {
         HStack(alignment: .top, spacing: 12) {
             VStack(alignment: .leading, spacing: 2) {
-                Text("Quick view")
+                Text("Deep Dive")
                     .font(.nytFranklin(size: 14, weight: .medium))
                     .foregroundStyle(.secondary)
 
@@ -128,12 +128,18 @@ struct ProductQuickView: View {
             }
 
             VStack(alignment: .leading, spacing: 4) {
-                Text(item.productTitle)
+                Text(item.articleTitle)
                     .font(.nytFranklin(size: 16, weight: .bold))
-                    .tracking(-0.5)
                     .lineLimit(2)
                     .fixedSize(horizontal: false, vertical: true)
                     .foregroundStyle(.primary)
+
+                Link(destination: item.articleUrl) {
+                    Text("Show full review")
+                        .font(.custom("NYTVFranklin-Medium", fixedSize: 14))
+                        .underline()
+                        .foregroundStyle(.primary)
+                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
@@ -170,6 +176,7 @@ struct ProductQuickView: View {
                     url: item.affiliateUrl
                 )
             }
+
         }
         .padding(.horizontal, 20)
         .padding(.bottom, 24)
@@ -261,18 +268,18 @@ struct ProductQuickView: View {
         .disabled(url == nil)
     }
 
-    // MARK: - Lede Text
+    // MARK: - Editorial Overview
 
-    private var ledeText: some View {
+    private var editorialOverview: some View {
         Group {
-            if let description = item.productDescription {
-                Text(description)
-                    .font(.nytFranklin(size: 18, weight: .regular))
-                    .lineSpacing(12)
+            if let desc = item.productDescription, !desc.isEmpty {
+                Text(desc)
+                    .font(.nytFranklin(size: 16, weight: .regular))
                     .foregroundStyle(.primary)
+                    .lineSpacing(4)
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(.horizontal, 20)
-                    .padding(.bottom, 40)
+                    .padding(.bottom, 20)
             }
         }
     }

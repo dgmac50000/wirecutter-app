@@ -18901,6 +18901,158 @@
       "articleHeroImageURL": null,
       "isShopifyProduct": false,
       "shopifyVariantId": null
+    },
+    {
+      "articleId": 90001,
+      "articleTitle": "Best Headphones",
+      "articleUrl": "https://www.nytimes.com/wirecutter/reviews/best-headphones/",
+      "productId": 900010,
+      "productTitle": "Sony WH-1000XM5",
+      "productDescription": "Lightweight and comfortable\nExcellent noise cancellation\n30-hour battery life",
+      "images": [
+        "https://cdn.thewirecutter.com/wp-content/media/2024/12/noise-canceling-headphones-2048px-0808-2x1-1.jpg"
+      ],
+      "hasDealData": false,
+      "sources": [
+        {
+          "merchantName": "Amazon",
+          "affiliateUrl": null,
+          "priceFormatted": "$348",
+          "priceRaw": 34800,
+          "dealAffiliateUrl": null,
+          "promoCode": null,
+          "promoEffect": null,
+          "dealPriceFormatted": null,
+          "streetPriceFormatted": null
+        },
+        {
+          "merchantName": "Walmart",
+          "affiliateUrl": null,
+          "priceFormatted": "$348",
+          "priceRaw": 34800,
+          "dealAffiliateUrl": null,
+          "promoCode": null,
+          "promoEffect": null,
+          "dealPriceFormatted": null,
+          "streetPriceFormatted": null
+        },
+        {
+          "merchantName": "Best Buy",
+          "affiliateUrl": null,
+          "priceFormatted": "$348",
+          "priceRaw": 34800,
+          "dealAffiliateUrl": null,
+          "promoCode": null,
+          "promoEffect": null,
+          "dealPriceFormatted": null,
+          "streetPriceFormatted": null
+        }
+      ],
+      "imageUrl": "https://cdn.thewirecutter.com/wp-content/media/2024/12/noise-canceling-headphones-2048px-0808-2x1-1.jpg",
+      "merchantName": "Amazon",
+      "affiliateUrl": null,
+      "priceFormatted": "$348",
+      "pickTypeId": null,
+      "ribbon": null,
+      "categoryName": "Electronics",
+      "categorySlug": "electronics",
+      "articleHeroImageURL": "https://cdn.thewirecutter.com/wp-content/media/2025/04/headphones-2048px-8797.jpg",
+      "isShopifyProduct": false,
+      "shopifyVariantId": null
+    },
+    {
+      "articleId": 90001,
+      "articleTitle": "Best Headphones",
+      "articleUrl": "https://www.nytimes.com/wirecutter/reviews/best-headphones/",
+      "productId": 900020,
+      "productTitle": "Apple AirPods Max",
+      "productDescription": "Seamless Apple ecosystem integration\nPremium build quality\nSpatial audio support",
+      "images": [
+        "https://cdn.thewirecutter.com/wp-content/media/2024/12/noise-canceling-headphones-2048px-9832.jpg"
+      ],
+      "hasDealData": false,
+      "sources": [
+        {
+          "merchantName": "Amazon",
+          "affiliateUrl": null,
+          "priceFormatted": "$449",
+          "priceRaw": 44900,
+          "dealAffiliateUrl": null,
+          "promoCode": null,
+          "promoEffect": null,
+          "dealPriceFormatted": null,
+          "streetPriceFormatted": null
+        },
+        {
+          "merchantName": "Apple",
+          "affiliateUrl": null,
+          "priceFormatted": "$549",
+          "priceRaw": 54900,
+          "dealAffiliateUrl": null,
+          "promoCode": null,
+          "promoEffect": null,
+          "dealPriceFormatted": null,
+          "streetPriceFormatted": null
+        }
+      ],
+      "imageUrl": "https://cdn.thewirecutter.com/wp-content/media/2024/12/noise-canceling-headphones-2048px-9832.jpg",
+      "merchantName": "Amazon",
+      "affiliateUrl": null,
+      "priceFormatted": "$449",
+      "pickTypeId": null,
+      "ribbon": null,
+      "categoryName": "Electronics",
+      "categorySlug": "electronics",
+      "articleHeroImageURL": "https://cdn.thewirecutter.com/wp-content/media/2025/04/headphones-2048px-8797.jpg",
+      "isShopifyProduct": false,
+      "shopifyVariantId": null
+    },
+    {
+      "articleId": 90001,
+      "articleTitle": "Best Headphones",
+      "articleUrl": "https://www.nytimes.com/wirecutter/reviews/best-headphones/",
+      "productId": 900030,
+      "productTitle": "Sony WH-1000XM4",
+      "productDescription": "Still excellent noise cancellation\nComfortable for long listening\nPrevious-gen at a lower price",
+      "images": [
+        "https://cdn.thewirecutter.com/wp-content/media/2024/12/noise-canceling-headphones-2048px-0792-2x1-1.jpg"
+      ],
+      "hasDealData": false,
+      "sources": [
+        {
+          "merchantName": "Amazon",
+          "affiliateUrl": null,
+          "priceFormatted": "$228",
+          "priceRaw": 22800,
+          "dealAffiliateUrl": null,
+          "promoCode": null,
+          "promoEffect": null,
+          "dealPriceFormatted": null,
+          "streetPriceFormatted": null
+        },
+        {
+          "merchantName": "Walmart",
+          "affiliateUrl": null,
+          "priceFormatted": "$248",
+          "priceRaw": 24800,
+          "dealAffiliateUrl": null,
+          "promoCode": null,
+          "promoEffect": null,
+          "dealPriceFormatted": null,
+          "streetPriceFormatted": null
+        }
+      ],
+      "imageUrl": "https://cdn.thewirecutter.com/wp-content/media/2024/12/noise-canceling-headphones-2048px-0792-2x1-1.jpg",
+      "merchantName": "Amazon",
+      "affiliateUrl": null,
+      "priceFormatted": "$228",
+      "pickTypeId": null,
+      "ribbon": null,
+      "categoryName": "Electronics",
+      "categorySlug": "electronics",
+      "articleHeroImageURL": "https://cdn.thewirecutter.com/wp-content/media/2025/04/headphones-2048px-8797.jpg",
+      "isShopifyProduct": false,
+      "shopifyVariantId": null
     }
   ],
   "scrapedAt": "2026-07-23T19:42:47.245177+00:00"

@@ -198,13 +198,21 @@ struct CommerceListView: View {
                                 .padding(.top, 40)
                                 .opacity(feedRevealComplete ? 1 : 0)
                             } else {
-                                ForEach(filteredProducts) { item in
-                                    let revealed = feedRevealComplete || visibleFeedProductIDs.contains(item.id)
-                                    ProductCardView(item: item, onTap: { quickViewItem = item })
-                                        .padding(.horizontal, 20)
-                                        .opacity(revealed ? 1 : 0)
-                                        .offset(y: revealed ? 0 : 10)
-                                        .allowsHitTesting(revealed)
+                                ForEach(Array(shuffledProducts.enumerated()), id: \.element.id) { index, item in
+                                    if index == 8 {
+                                        SeriesCardView(
+                                            series: .headphones,
+                                            onProductTap: { quickViewItem = $0 }
+                                        )
+                                    }
+
+                                    ProductCardView(
+                                        item: item,
+                                        onTap: { quickViewItem = item },
+                                        onDeepDive: { quickViewItem = item }
+                                    )
+                                    .padding(.horizontal, 20)
+                                    .transition(.opacity.combined(with: .move(edge: .bottom)))
                                 }
                             }
                         }
@@ -277,7 +285,7 @@ struct CommerceListView: View {
                     quickViewItem = nil
                 }
             )
-            .presentationDetents([.medium, .large])
+            .presentationDetents([.large])
             .presentationDragIndicator(.hidden)
         }
         .sheet(item: $profilePickerCard) { card in
@@ -1319,13 +1327,35 @@ struct GhostProductCard: View {
     }
 }
 
-// MARK: - Product Card (unified full-width card)
+// MARK: - Product Card (Default + Specialty variants)
 
 struct ProductCardView: View {
     let item: CommerceItem
     let onTap: () -> Void
+    var onDeepDive: (() -> Void)? = nil
     var isSaved: Bool = false
     var onBookmarkTap: (() -> Void)? = nil
+
+    var isSpecialty: Bool {
+        if let sources = item.sources {
+            for source in sources {
+                if let priceStr = source.priceFormatted ?? source.dealPriceFormatted,
+                   let price = Self.extractPrice(from: priceStr), price >= 250 {
+                    return true
+                }
+            }
+        }
+        if let priceStr = item.priceFormatted,
+           let price = Self.extractPrice(from: priceStr), price >= 250 {
+            return true
+        }
+        return false
+    }
+
+    private static func extractPrice(from str: String) -> Double? {
+        let cleaned = str.replacingOccurrences(of: "[^0-9.]", with: "", options: .regularExpression)
+        return Double(cleaned)
+    }
 
     private var hasBullets: Bool { !bulletPoints.isEmpty }
 
@@ -1359,9 +1389,11 @@ struct ProductCardView: View {
         }
     }
 
+    var maxBuyButtons: Int = 2
+
     private var buyButtons: [(text: String, url: URL?)] {
         if let sources = item.sources, !sources.isEmpty {
-            return Array(sources.prefix(2)).map { source in
+            return Array(sources.prefix(maxBuyButtons)).map { source in
                 let price = source.dealPriceFormatted ?? source.priceFormatted ?? ""
                 let merchant = source.merchantName
                 let text = price.isEmpty ? "From \(merchant)" : "\(price) from \(merchant)"
@@ -1383,91 +1415,19 @@ struct ProductCardView: View {
     }
 
     var body: some View {
+        if isSpecialty {
+            specialtyCard
+        } else {
+            defaultCard
+        }
+    }
+
+    // MARK: - Default Card
+
+    private var defaultCard: some View {
         VStack(spacing: 0) {
-            // Image area
-            ZStack(alignment: .topTrailing) {
-                Color(hex: 0xF6F6F6)
-
-                if let imageUrl = item.displayImageUrl {
-                    AsyncImage(url: imageUrl) { phase in
-                        switch phase {
-                        case .success(let image):
-                            image
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                                .padding(12)
-                        case .failure:
-                            Image(systemName: "photo")
-                                .font(.largeTitle)
-                                .foregroundStyle(Color(.systemGray3))
-                        case .empty:
-                            Color(hex: 0xEEEEEE)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 4)
-                                        .fill(Color(hex: 0xE4E4E4))
-                                        .frame(width: 64, height: 64)
-                                )
-                        @unknown default:
-                            EmptyView()
-                        }
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                }
-
-                bookmarkButton
-                    .padding(.top, 13)
-                    .padding(.trailing, 12)
-            }
-            .frame(maxWidth: .infinity)
-            .frame(height: 280)
-            .clipped()
-
-            // Info section
-            VStack(alignment: .leading, spacing: 20) {
-                VStack(alignment: .leading, spacing: 12) {
-                    Text(item.displayMerchant ?? item.productTitle)
-                        .font(.nytFranklin(.medium, size: 12))
-                        .foregroundStyle(Color(hex: 0x666666))
-
-                    Text(item.productTitle)
-                        .font(.nytFranklin(.bold, size: 20))
-                        .foregroundStyle(.black)
-                        .lineSpacing(6)
-                        .lineLimit(3)
-                        .multilineTextAlignment(.leading)
-
-                    if hasBullets {
-                        VStack(alignment: .leading, spacing: 4) {
-                            ForEach(bulletPoints, id: \.self) { bullet in
-                                Text("• \(bullet)")
-                                    .font(.nytFranklin(.medium, size: 14))
-                                    .foregroundStyle(.black)
-                            }
-                        }
-                    }
-                }
-
-                VStack(spacing: 8) {
-                    ForEach(Array(buyButtons.enumerated()), id: \.offset) { _, button in
-                        Button {
-                            onTap()
-                        } label: {
-                            Text(button.text)
-                                .font(.nytFranklin(.bold, size: 14))
-                                .foregroundStyle(.white)
-                                .frame(maxWidth: .infinity)
-                                .frame(height: 39)
-                                .background(Color.black)
-                                .clipShape(RoundedRectangle(cornerRadius: 4))
-                        }
-                        .buttonStyle(.plain)
-                    }
-                }
-            }
-            .padding(.horizontal, 16)
-            .padding(.top, 8)
-            .padding(.bottom, 12)
+            imageArea
+            infoSection
         }
         .background(Color.white)
         .clipShape(RoundedRectangle(cornerRadius: 8))
@@ -1476,29 +1436,320 @@ struct ProductCardView: View {
         .onTapGesture { onTap() }
     }
 
-    @ViewBuilder
-    private var bookmarkButton: some View {
-        let icon = Image(systemName: isSaved ? "bookmark.fill" : "bookmark")
-            .font(.system(size: 12, weight: .medium))
-            .foregroundStyle(.black)
+    private static let specialtyImageOverrides: [Int: String] = [
+        73792: "SpecialtyImages/AwayCarryOn",
+    ]
 
-        let badge = Circle()
-            .fill(.white)
-            .frame(width: 24, height: 24)
-            .overlay(icon)
+    // MARK: - Specialty Card (full-bleed hero)
 
-        if let onBookmarkTap {
-            Button {
-                onBookmarkTap()
-            } label: {
-                badge
+    private var specialtyCard: some View {
+        specialtyImage
+            .frame(height: 594)
+            .frame(maxWidth: .infinity)
+            .clipped()
+            .overlay {
+                LinearGradient(
+                    colors: [.clear, .clear, .black.opacity(0.5)],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
             }
-            .buttonStyle(.plain)
-            .accessibilityLabel(isSaved ? "Remove from saved" : "Save")
+            .overlay(alignment: .bottomLeading) {
+                VStack(alignment: .leading, spacing: 20) {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(item.displayMerchant?.uppercased() ?? item.productTitle.uppercased())
+                            .font(.nytFranklin(.bold, size: 11))
+                            .tracking(1.1)
+                            .foregroundStyle(.white)
+
+                        Text(item.productTitle)
+                            .font(.nytFranklin(.bold, size: 31))
+                            .tracking(-0.5)
+                            .lineSpacing(2)
+                            .foregroundStyle(.white)
+                            .lineLimit(3)
+
+                        if let firstBullet = bulletPoints.first {
+                            Text(firstBullet)
+                                .font(.nytFranklin(.medium, size: 16))
+                                .foregroundStyle(.white)
+                                .lineLimit(2)
+                        }
+                    }
+
+                    Button {
+                        onDeepDive?()
+                    } label: {
+                        Text("See the Research")
+                            .font(.nytFranklin(.bold, size: 14))
+                            .foregroundStyle(.black)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 39)
+                            .background(Color.white)
+                            .clipShape(RoundedRectangle(cornerRadius: 4))
+                    }
+                    .buttonStyle(.plain)
+                }
+                .padding(16)
+            }
+            .overlay(alignment: .topTrailing) {
+                actionButtons
+                    .padding(.top, 16)
+                    .padding(.trailing, 16)
+            }
+            .clipShape(RoundedRectangle(cornerRadius: 8))
+            .shadow(color: .black.opacity(0.12), radius: 6, x: 0, y: 2)
+            .contentShape(Rectangle())
+    }
+
+    @ViewBuilder
+    private var specialtyImage: some View {
+        if let localAsset = Self.specialtyImageOverrides[item.productId] {
+            Image(localAsset)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+        } else if let imageUrl = item.displayImageUrl {
+            AsyncImage(url: imageUrl) { phase in
+                switch phase {
+                case .success(let image):
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                case .failure:
+                    Color(hex: 0x222222)
+                case .empty:
+                    Color(hex: 0x222222)
+                        .overlay(ProgressView().tint(.white))
+                @unknown default:
+                    Color(hex: 0x222222)
+                }
+            }
         } else {
-            badge
-                .accessibilityHidden(true)
+            Color(hex: 0x222222)
         }
+    }
+
+    // MARK: - Image Area (default card only)
+
+    private var imageArea: some View {
+        ZStack(alignment: .topTrailing) {
+            Color(hex: 0xF6F6F6)
+
+            if let imageUrl = item.displayImageUrl {
+                AsyncImage(url: imageUrl) { phase in
+                    switch phase {
+                    case .success(let image):
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .padding(12)
+                    case .failure:
+                        Image(systemName: "photo")
+                            .font(.largeTitle)
+                            .foregroundStyle(Color(.systemGray3))
+                    case .empty:
+                        Color(hex: 0xEEEEEE)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 4)
+                                    .fill(Color(hex: 0xE4E4E4))
+                                    .frame(width: 64, height: 64)
+                            )
+                    @unknown default:
+                        EmptyView()
+                    }
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
+
+            actionButtons
+                .padding(.top, 20)
+                .padding(.trailing, 15)
+        }
+        .frame(maxWidth: .infinity)
+        .frame(height: 280)
+        .clipShape(
+            UnevenRoundedRectangle(
+                topLeadingRadius: 8,
+                bottomLeadingRadius: 0,
+                bottomTrailingRadius: 0,
+                topTrailingRadius: 8
+            )
+        )
+        .overlay(alignment: .bottom) {
+            HStack(spacing: 4) {
+                Circle().fill(Color.black).frame(width: 6, height: 6)
+                Circle().fill(Color(hex: 0xCCCCCC)).frame(width: 4, height: 4)
+                Circle().fill(Color(hex: 0xCCCCCC)).frame(width: 4, height: 4)
+            }
+            .padding(.bottom, 12)
+        }
+    }
+
+    // MARK: - Action Buttons (bell + bookmark)
+
+    private var actionButtons: some View {
+        VStack(spacing: 8) {
+            Circle()
+                .fill(.white)
+                .frame(width: 24, height: 24)
+                .overlay(
+                    Image(systemName: "bell.fill")
+                        .font(.system(size: 12, weight: .medium))
+                        .foregroundStyle(.black)
+                )
+
+            if let onBookmarkTap {
+                Button {
+                    onBookmarkTap()
+                } label: {
+                    Circle()
+                        .fill(.white)
+                        .frame(width: 24, height: 24)
+                        .overlay(
+                            Image(systemName: isSaved ? "bookmark.fill" : "bookmark")
+                                .font(.system(size: 12, weight: .medium))
+                                .foregroundStyle(.black)
+                        )
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel(isSaved ? "Remove from saved" : "Save")
+            } else {
+                Circle()
+                    .fill(.white)
+                    .frame(width: 24, height: 24)
+                    .overlay(
+                        Image(systemName: isSaved ? "bookmark.fill" : "bookmark")
+                            .font(.system(size: 12, weight: .medium))
+                            .foregroundStyle(.black)
+                    )
+            }
+        }
+    }
+
+    // MARK: - Info Section (default card only)
+
+    private var infoSection: some View {
+        VStack(alignment: .leading, spacing: 20) {
+            VStack(alignment: .leading, spacing: 12) {
+                Text(item.displayMerchant ?? item.productTitle)
+                    .font(.nytFranklin(.medium, size: 12))
+                    .foregroundStyle(Color(hex: 0x666666))
+
+                Text(item.productTitle)
+                    .font(.nytFranklin(.bold, size: 20))
+                    .foregroundStyle(.black)
+                    .lineSpacing(6)
+                    .lineLimit(3)
+                    .multilineTextAlignment(.leading)
+
+                if hasBullets {
+                    VStack(alignment: .leading, spacing: 4) {
+                        ForEach(bulletPoints, id: \.self) { bullet in
+                            Text("• \(bullet)")
+                                .font(.nytFranklin(.medium, size: 14))
+                                .foregroundStyle(.black)
+                        }
+                    }
+                }
+            }
+
+            VStack(spacing: 8) {
+                ForEach(Array(buyButtons.enumerated()), id: \.offset) { _, button in
+                    Button {
+                        onTap()
+                    } label: {
+                        Text(button.text)
+                            .font(.nytFranklin(.bold, size: 14))
+                            .foregroundStyle(.white)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 39)
+                            .background(Color.black)
+                            .clipShape(RoundedRectangle(cornerRadius: 4))
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+        }
+        .padding(.horizontal, 16)
+        .padding(.top, 8)
+        .padding(.bottom, 12)
+    }
+}
+
+// MARK: - Series Card (editorial carousel)
+
+struct SeriesCardView: View {
+    let series: SeriesData
+    let onProductTap: (CommerceItem) -> Void
+
+    var body: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 16) {
+                seriesIntroCard
+
+                ForEach(series.products) { product in
+                    ProductCardView(
+                        item: product,
+                        onTap: { onProductTap(product) },
+                        maxBuyButtons: 3
+                    )
+                    .frame(width: 303)
+                }
+            }
+            .padding(.horizontal, 20)
+        }
+    }
+
+    private var seriesIntroCard: some View {
+        AsyncImage(url: series.heroImageURL) { phase in
+            switch phase {
+            case .success(let image):
+                image
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+            case .failure:
+                Color(hex: 0x222222)
+            case .empty:
+                Color(hex: 0x222222)
+                    .overlay(ProgressView().tint(.white))
+            @unknown default:
+                Color(hex: 0x222222)
+            }
+        }
+        .frame(width: 303, height: 594)
+        .clipped()
+        .overlay {
+            LinearGradient(
+                colors: [.clear, .clear, .black.opacity(0.5)],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+        }
+        .overlay(alignment: .bottomLeading) {
+            HStack(alignment: .bottom) {
+                Text(series.title)
+                    .font(.nytFranklin(.bold, size: 31))
+                    .tracking(-0.5)
+                    .lineSpacing(34 - 31)
+                    .foregroundStyle(.white)
+                    .lineLimit(4)
+
+                Spacer(minLength: 8)
+
+                Circle()
+                    .fill(.white)
+                    .frame(width: 24, height: 24)
+                    .overlay(
+                        Image(systemName: "chevron.right")
+                            .font(.system(size: 10, weight: .bold))
+                            .foregroundStyle(.black)
+                    )
+            }
+            .padding(16)
+        }
+        .clipShape(RoundedRectangle(cornerRadius: 8))
+        .shadow(color: .black.opacity(0.12), radius: 6, x: 0, y: 2)
     }
 }
 
