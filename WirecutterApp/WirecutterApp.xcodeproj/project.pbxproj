@@ -21,6 +21,16 @@
 		B40C1A2D2B0F00010000000C /* ArticlePageFeedParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40C1A2D2B0F00020000000C /* ArticlePageFeedParser.swift */; };
 		B40C1A2D2B0F00010000000D /* GeminiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40C1A2D2B0F00020000000D /* GeminiClient.swift */; };
 		B40C1A2D2B0F000100000030 /* ShopifyClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40C1A2D2B0F000200000030 /* ShopifyClient.swift */; };
+		B40C1A2D2B0F000100000031 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40C1A2D2B0F000200000031 /* MainTabView.swift */; };
+		B40C1A2D2B0F000100000032 /* GlassTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40C1A2D2B0F000200000032 /* GlassTabBar.swift */; };
+		B40C1A2D2B0F000100000033 /* NYTFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40C1A2D2B0F000200000033 /* NYTFont.swift */; };
+		B40C1A2D2B0F000100000034 /* PersonProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40C1A2D2B0F000200000034 /* PersonProfile.swift */; };
+		B40C1A2D2B0F000100000035 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40C1A2D2B0F000200000035 /* ProfileView.swift */; };
+		B40C1A2D2B0F000100000036 /* BrowseStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40C1A2D2B0F000200000036 /* BrowseStackView.swift */; };
+		B40C1A2D2B0F000100000037 /* AvatarStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40C1A2D2B0F000200000037 /* AvatarStyle.swift */; };
+		B40C1A2D2B0F000100000038 /* RecentlyViewedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40C1A2D2B0F000200000038 /* RecentlyViewedStore.swift */; };
+		B40C1A2D2B0F000100000039 /* SavedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40C1A2D2B0F000200000039 /* SavedStore.swift */; };
+		B40C1A2D2B0F00010000003A /* SavesStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40C1A2D2B0F00020000003A /* SavesStackView.swift */; };
 		B40C1A2D2B0F00010000000E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B40C1A2D2B0F00020000000E /* Assets.xcassets */; };
 		B40C1A2D2B0F00010000000F /* GeminiConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = B40C1A2D2B0F00020000000F /* GeminiConfig.plist */; };
 		B40C1A2D2B0F000100000010 /* products.json in Resources */ = {isa = PBXBuildFile; fileRef = B40C1A2D2B0F000200000010 /* products.json */; };
@@ -50,6 +60,16 @@
 		B40C1A2D2B0F00020000000C /* ArticlePageFeedParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticlePageFeedParser.swift; sourceTree = "<group>"; };
 		B40C1A2D2B0F00020000000D /* GeminiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeminiClient.swift; sourceTree = "<group>"; };
 		B40C1A2D2B0F000200000030 /* ShopifyClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopifyClient.swift; sourceTree = "<group>"; };
+		B40C1A2D2B0F000200000031 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		B40C1A2D2B0F000200000032 /* GlassTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlassTabBar.swift; sourceTree = "<group>"; };
+		B40C1A2D2B0F000200000033 /* NYTFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NYTFont.swift; sourceTree = "<group>"; };
+		B40C1A2D2B0F000200000034 /* PersonProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonProfile.swift; sourceTree = "<group>"; };
+		B40C1A2D2B0F000200000035 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		B40C1A2D2B0F000200000036 /* BrowseStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseStackView.swift; sourceTree = "<group>"; };
+		B40C1A2D2B0F000200000037 /* AvatarStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarStyle.swift; sourceTree = "<group>"; };
+		B40C1A2D2B0F000200000038 /* RecentlyViewedStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentlyViewedStore.swift; sourceTree = "<group>"; };
+		B40C1A2D2B0F000200000039 /* SavedStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedStore.swift; sourceTree = "<group>"; };
+		B40C1A2D2B0F00020000003A /* SavesStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavesStackView.swift; sourceTree = "<group>"; };
 		B40C1A2D2B0F00020000000E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B40C1A2D2B0F00020000000F /* GeminiConfig.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = GeminiConfig.plist; sourceTree = "<group>"; };
 		B40C1A2D2B0F000200000010 /* products.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = products.json; sourceTree = "<group>"; };
@@ -112,6 +132,16 @@
 			isa = PBXGroup;
 			children = (
 				B40C1A2D2B0F000200000001 /* WirecutterAppApp.swift */,
+				B40C1A2D2B0F000200000031 /* MainTabView.swift */,
+				B40C1A2D2B0F000200000032 /* GlassTabBar.swift */,
+				B40C1A2D2B0F000200000033 /* NYTFont.swift */,
+				B40C1A2D2B0F000200000034 /* PersonProfile.swift */,
+				B40C1A2D2B0F000200000035 /* ProfileView.swift */,
+				B40C1A2D2B0F000200000036 /* BrowseStackView.swift */,
+				B40C1A2D2B0F000200000037 /* AvatarStyle.swift */,
+				B40C1A2D2B0F000200000038 /* RecentlyViewedStore.swift */,
+				B40C1A2D2B0F000200000039 /* SavedStore.swift */,
+				B40C1A2D2B0F00020000003A /* SavesStackView.swift */,
 				B40C1A2D2B0F000200000002 /* CommerceListView.swift */,
 				B40C1A2D2B0F000200000003 /* CommerceModels.swift */,
 				B40C1A2D2B0F000200000004 /* APIClient.swift */,
@@ -204,6 +234,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				B40C1A2D2B0F000100000001 /* WirecutterAppApp.swift in Sources */,
+				B40C1A2D2B0F000100000031 /* MainTabView.swift in Sources */,
+				B40C1A2D2B0F000100000032 /* GlassTabBar.swift in Sources */,
+				B40C1A2D2B0F000100000033 /* NYTFont.swift in Sources */,
+				B40C1A2D2B0F000100000034 /* PersonProfile.swift in Sources */,
+				B40C1A2D2B0F000100000035 /* ProfileView.swift in Sources */,
+				B40C1A2D2B0F000100000036 /* BrowseStackView.swift in Sources */,
+				B40C1A2D2B0F000100000037 /* AvatarStyle.swift in Sources */,
+				B40C1A2D2B0F000100000038 /* RecentlyViewedStore.swift in Sources */,
+				B40C1A2D2B0F000100000039 /* SavedStore.swift in Sources */,
+				B40C1A2D2B0F00010000003A /* SavesStackView.swift in Sources */,
 				B40C1A2D2B0F000100000002 /* CommerceListView.swift in Sources */,
 				B40C1A2D2B0F000100000003 /* CommerceModels.swift in Sources */,
 				B40C1A2D2B0F000100000004 /* APIClient.swift in Sources */,

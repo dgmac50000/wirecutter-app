@@ -71,7 +71,7 @@ struct GenaiSearchView: View {
                     .font(.title2)
                     .foregroundStyle(.secondary)
                 Text(error)
-                    .font(.subheadline)
+                    .font(.nytFranklin(size: 15))
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
             }
@@ -92,7 +92,7 @@ struct GenaiSearchView: View {
                 .font(.system(size: 40))
                 .foregroundStyle(.tertiary)
             Text("Ask about products, recommendations, or comparisons")
-                .font(.subheadline)
+                .font(.nytFranklin(size: 15))
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
         }
@@ -105,13 +105,13 @@ struct GenaiSearchView: View {
     private func answerSection(_ answer: SearchAnswer) -> some View {
         VStack(alignment: .leading, spacing: 8) {
             Label("Answer", systemImage: "sparkles")
-                .font(.headline)
+                .font(.nytFranklin(size: 17, weight: .semibold))
             Text(answer.text)
-                .font(.body)
+                .font(.nytFranklin(size: 17))
                 .fixedSize(horizontal: false, vertical: true)
             if !answer.citations.isEmpty {
                 Text("Sources: \(answer.citations.map { String($0) }.joined(separator: ", "))")
-                    .font(.caption)
+                    .font(.nytFranklin(size: 12))
                     .foregroundStyle(.secondary)
             }
         }
@@ -127,7 +127,7 @@ struct GenaiSearchView: View {
         VStack(alignment: .leading, spacing: 12) {
             if articles.isEmpty { EmptyView() } else {
                 Text("Articles")
-                    .font(.headline)
+                    .font(.nytFranklin(size: 17, weight: .semibold))
 
                 ForEach(articles) { article in
                     Button {
@@ -138,7 +138,8 @@ struct GenaiSearchView: View {
                                 AsyncImage(url: imageUrl) { phase in
                                     if case .success(let img) = phase {
                                         img.resizable()
-                                            .aspectRatio(contentMode: .fill)
+                                            .aspectRatio(contentMode: .fit)
+                                            .frame(width: 70, height: 70)
                                     } else {
                                         Color(.systemGray5)
                                     }
@@ -149,25 +150,25 @@ struct GenaiSearchView: View {
 
                             VStack(alignment: .leading, spacing: 4) {
                                 Text(article.title)
-                                    .font(.subheadline)
+                                    .font(.nytFranklin(size: 15))
                                     .fontWeight(.semibold)
                                     .foregroundStyle(.primary)
                                     .lineLimit(2)
                                 if let summary = article.summary {
                                     Text(summary)
-                                        .font(.caption)
+                                        .font(.nytFranklin(size: 12))
                                         .foregroundStyle(.secondary)
                                         .lineLimit(2)
                                 }
                                 if let date = article.publishedDate {
                                     Text(date)
-                                        .font(.caption2)
+                                        .font(.nytFranklin(size: 11))
                                         .foregroundStyle(.tertiary)
                                 }
                             }
                             Spacer()
                             Image(systemName: "chevron.right")
-                                .font(.caption)
+                                .font(.system(size: 12, weight: .semibold))
                                 .foregroundStyle(.tertiary)
                         }
                         .padding(12)
@@ -185,7 +186,7 @@ struct GenaiSearchView: View {
         VStack(alignment: .leading, spacing: 12) {
             if products.isEmpty { EmptyView() } else {
                 Text("Products")
-                    .font(.headline)
+                    .font(.nytFranklin(size: 17, weight: .semibold))
 
                 ForEach(products) { product in
                     Button {
@@ -196,19 +197,18 @@ struct GenaiSearchView: View {
                         HStack {
                             VStack(alignment: .leading, spacing: 4) {
                                 Text(product.name)
-                                    .font(.subheadline)
+                                    .font(.nytFranklin(size: 15))
                                     .fontWeight(.semibold)
                                     .foregroundStyle(.primary)
                                     .lineLimit(2)
                                 HStack(spacing: 8) {
                                     if let price = product.priceFormatted {
                                         Text(price)
-                                            .font(.subheadline)
-                                            .fontWeight(.bold)
+                                            .font(.nytFranklin(size: 15, weight: .bold))
                                     }
                                     if let merchant = product.merchantName {
                                         Text("at \(merchant)")
-                                            .font(.caption)
+                                            .font(.nytFranklin(size: 12))
                                             .foregroundStyle(.secondary)
                                     }
                                 }

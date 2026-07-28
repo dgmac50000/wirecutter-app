@@ -4,15 +4,15 @@
 <dict>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Fonts/NYTFranklinCWMedium.otf</string>
-		<string>Fonts/NYTStockBold.otf</string>
-		<string>Fonts/NYTStockFractionBold.otf</string>
-		<string>Fonts/NYTStockFractionRegular.otf</string>
-		<string>Fonts/NYTStockRegular.otf</string>
-		<string>Fonts/NYTVFranklinBold.otf</string>
-		<string>Fonts/NYTVFranklinLight.otf</string>
-		<string>Fonts/NYTVFranklinMedium.otf</string>
-		<string>Fonts/NYTKarnak-Medium.otf</string>
+		<string>NYTFranklinCWMedium.otf</string>
+		<string>NYTStockBold.otf</string>
+		<string>NYTStockFractionBold.otf</string>
+		<string>NYTStockFractionRegular.otf</string>
+		<string>NYTStockRegular.otf</string>
+		<string>NYTVFranklinBold.otf</string>
+		<string>NYTVFranklinLight.otf</string>
+		<string>NYTVFranklinMedium.otf</string>
+		<string>NYTKarnak-Medium.otf</string>
 	</array>
 </dict>
 </plist>
