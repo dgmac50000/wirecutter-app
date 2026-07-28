@@ -1,0 +1,5715 @@
+{
+  "name": "Coffee Lovers",
+  "icon": "\u2615",
+  "description": "Coffee enthusiasts and home baristas",
+  "result_count": 252,
+  "results": [
+    {
+      "product_name": "Brew 9 Cup Coffee Maker",
+      "brand": "OXO",
+      "category": "Kitchen & Dining",
+      "relevance_score": 103,
+      "articles": 6,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "How Often Do I Really Need to Clean My Coffee Maker?",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "top pick",
+          "full_text": "top pick",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "coffee tastes better than coffee from nearly all of the other drip coffee makers we tested",
+          "full_text": "coffee tastes better than coffee from nearly all of the other drip coffee makers we tested",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Coffee Maker",
+      "brand": "AeroPress",
+      "category": "Kitchen & Dining",
+      "relevance_score": 54,
+      "articles": 5,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "The 38 Best Gifts for Coffee Lovers",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "invented in 2005 by Alan Alder to brew pour-over coffee, sans the fussy process",
+          "full_text": "invented in 2005 by Alan Alder to brew pour-over coffee, sans the fussy process",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "add ground coffee and hot water to the tube-like chamber. After two minutes, plunge the coffee through a paper filter for a bright, smooth brew free of any particulates",
+          "full_text": "add ground coffee and hot water to the tube-like chamber. After two minutes, plunge the coffee through a paper filter for a bright, smooth brew free of any particulates",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Good Grips Cold Brew Coffee Maker",
+      "brand": "OXO",
+      "category": "Kitchen & Dining",
+      "relevance_score": 43,
+      "articles": 2,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "It's a low-tech kitchen gadget, but it makes better cold-brew concentrate than any other method we've tried, and a cup costs cents instead of dollars",
+          "full_text": "It's a low-tech kitchen gadget, but it makes better cold-brew concentrate than any other method we've tried, and a cup costs cents instead of dollars",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "I've found it even makes good cold brew from beans that I don't like as hot coffee",
+          "full_text": "I've found it even makes good cold brew from beans that I don't like as hot coffee",
+          "weight": 2
+        },
+        {
+          "type": "article_title",
+          "text": "The Best Cold-Brew Coffee Maker",
+          "weight": 5
+        }
+      ]
+    },
+    {
+      "product_name": "Nanopresso",
+      "brand": "Wacaco",
+      "category": "Kitchen & Dining",
+      "relevance_score": 42,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "Can You Really Make Espresso With the Handpresso and Nanopresso?",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "capsule-shaped device works by adding water to one end and loading a filter basket full of grounds into the other end",
+          "full_text": "capsule-shaped device works by adding water to one end and loading a filter basket full of grounds into the other end",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "press a little pump on the side of the device over the course of about 30 pumps",
+          "full_text": "press a little pump on the side of the device over the course of about 30 pumps",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Wild Hybrid",
+      "brand": "Handpresso",
+      "category": "Kitchen & Dining",
+      "relevance_score": 37,
+      "articles": 2,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "It\u2019s Coffee Week at Wirecutter",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "portable, manual espresso maker",
+          "full_text": "portable, manual espresso maker",
+          "weight": 2
+        },
+        {
+          "type": "article_title",
+          "text": "Can You Really Make Espresso With the Handpresso and Nanopresso?",
+          "weight": 5
+        }
+      ]
+    },
+    {
+      "product_name": "Moccamaster KBT",
+      "brand": "Technivorm",
+      "category": "Kitchen & Dining",
+      "relevance_score": 36,
+      "articles": 2,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "If You Prefer Chic to Cheap, Try the Technivorm Moccamaster Coffee Maker",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "not the most high tech",
+          "full_text": "not the most high tech",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "doesn't have a bunch of preset functions or features like an auto-brew program",
+          "full_text": "doesn't have a bunch of preset functions or features like an auto-brew program",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Coffee",
+      "brand": "Death Wish",
+      "category": "Kitchen & Dining",
+      "relevance_score": 36,
+      "articles": 2,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "It\u2019s Coffee Week at Wirecutter",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "extra-caffeinated, extra-strong brew from Saratoga Springs, New York",
+          "full_text": "extra-caffeinated, extra-strong brew from Saratoga Springs, New York",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "Most of our testers were not fans",
+          "full_text": "Most of our testers were not fans",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Coffee Subscription",
+      "brand": "Atlas Coffee Club",
+      "category": "Kitchen & Dining",
+      "relevance_score": 36,
+      "articles": 3,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "spotlights coffees from countries like Nicaragua, Peru, and India",
+          "full_text": "spotlights coffees from countries like Nicaragua, Peru, and India",
+          "weight": 2
+        },
+        {
+          "type": "article_title",
+          "text": "Our Favorite Coffee Subscriptions",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "each month's coffee comes from a different country, including destinations as diverse as India, Nicaragua, and Peru",
+          "full_text": "each month's coffee comes from a different country, including destinations as diverse as India, Nicaragua, and Peru",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Original",
+      "brand": "AeroPress",
+      "category": "Kitchen & Dining",
+      "relevance_score": 31,
+      "articles": 2,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "Can You Really Make Espresso With the Handpresso and Nanopresso?",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "gives you a lot more room to play around with amounts of coffee and water",
+          "full_text": "gives you a lot more room to play around with amounts of coffee and water",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "can find simple AeroPress recipes for everything from something approximating an espresso to a strong 10-ounce cup of coffee",
+          "full_text": "can find simple AeroPress recipes for everything from something approximating an espresso to a strong 10-ounce cup of coffee",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Classic Evo Pro",
+      "brand": "Gaggia",
+      "category": "Kitchen & Dining",
+      "relevance_score": 30,
+      "articles": 2,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "Even Mediocre Home Baristas Can Make Good Espresso With This Unintimidating Machine",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "budget pick in our guide to the best home espresso machines",
+          "full_text": "budget pick in our guide to the best home espresso machines",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "three buttons look simple, but pressing them at the right time will elevate your espresso and milk",
+          "full_text": "three buttons look simple, but pressing them at the right time will elevate your espresso and milk",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Cold Brew Coffee Maker",
+      "brand": "OXO",
+      "category": "Kitchen & Dining",
+      "relevance_score": 29,
+      "articles": 3,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "Iced Coffee at Home: Cold-Brew Coffee Makers vs. DIY",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "allows you to achieve caffeination with little fuss",
+          "full_text": "allows you to achieve caffeination with little fuss",
+          "weight": 2
+        },
+        {
+          "type": "article_title",
+          "text": "The Best Single-Serve Coffee Maker (Isn\u2019t a Keurig)",
+          "weight": 5
+        }
+      ]
+    },
+    {
+      "product_name": "Moka Express",
+      "brand": "Bialetti",
+      "category": "Electronics & Tech",
+      "relevance_score": 28,
+      "articles": 3,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "uncomplicated to use, unlike traditional espresso machines",
+          "full_text": "uncomplicated to use, unlike traditional espresso machines",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "forgiving; other than leaving it on the stove too long and burning your coffee, there are very few ways to mess up",
+          "full_text": "forgiving; other than leaving it on the stove too long and burning your coffee, there are very few ways to mess up",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "flavor of the beverage is richer than the results from most of the other moka pots tested, and much more so than coffee from a French press or a drip coffee maker",
+          "full_text": "flavor of the beverage is richer than the results from most of the other moka pots tested, and much more so than coffee from a French press or a drip coffee maker",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Wave 185 Dripper",
+      "brand": "Kalita",
+      "category": "Kitchen & Dining",
+      "relevance_score": 27,
+      "articles": 3,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "5 Cheap(ish) Things to Upgrade Your Coffee Experience",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "consistently makes great coffee, even if you're not an expert",
+          "full_text": "consistently makes great coffee, even if you're not an expert",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "easy to use and consistently makes great-tasting coffee, capturing the more nuanced flavors of your beans",
+          "full_text": "easy to use and consistently makes great-tasting coffee, capturing the more nuanced flavors of your beans",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "9-Cup Coffee Maker",
+      "brand": "OXO Brew",
+      "category": "Kitchen & Dining",
+      "relevance_score": 27,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "Why the OXO 9-Cup Has Been Our Favorite Coffee Maker Since 2016",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "delivers coffee that tastes like the result of an intricate, precise process",
+          "full_text": "delivers coffee that tastes like the result of an intricate, precise process",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "requires only the push of a button",
+          "full_text": "requires only the push of a button",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Bambino Plus",
+      "brand": "Breville",
+      "category": "Kitchen & Dining",
+      "relevance_score": 25,
+      "articles": 4,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "The Best Home Espresso Machine",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "solid machine",
+          "full_text": "solid machine",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "straightforward to use",
+          "full_text": "straightforward to use",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Barista Touch",
+      "brand": "Breville",
+      "category": "Kitchen & Dining",
+      "relevance_score": 24,
+      "articles": 3,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "These Breville Machines Will Bring Out Your Inner Barista",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "speedy, surprisingly easy-to-use espresso machine that I turn to on my most harried mornings",
+          "full_text": "speedy, surprisingly easy-to-use espresso machine that I turn to on my most harried mornings",
+          "weight": 2
+        },
+        {
+          "type": "article_title",
+          "text": "These Breville Machines Will Bring Out Your Inner Barista",
+          "weight": 5
+        }
+      ]
+    },
+    {
+      "product_name": "Wave",
+      "brand": "Kalita",
+      "category": "Kitchen & Dining",
+      "relevance_score": 24,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "I Used to Own a Coffee Shop. This Is My Go-to Pour-Over Dripper.",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "sturdier than the Chemex and less labor-intensive than the Hario Woodneck",
+          "full_text": "sturdier than the Chemex and less labor-intensive than the Hario Woodneck",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "more portable and a lot easier to clean than either of them",
+          "full_text": "more portable and a lot easier to clean than either of them",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Klassic All-in-One Pour-Over",
+      "brand": "Cafflano",
+      "category": "Kitchen & Dining",
+      "relevance_score": 23,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "I Never Vacation Without This All-in-One Coffee Maker",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "all-in-one devices tend not to do any one thing extremely well. That's true of the Cafflano Klassic \u2014 but it does three things pretty well",
+          "full_text": "all-in-one devices tend not to do any one thing extremely well. That's true of the Cafflano Klassic \u2014 but it does three things pretty well",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "handily beats stuff from a sad pod coffee maker in a hotel kitchenette, instant coffee, or the antediluvian ground coffee from a previous tenant and the cheapo drip coffee maker you might find at an Airbnb",
+          "full_text": "handily beats stuff from a sad pod coffee maker in a hotel kitchenette, instant coffee, or the antediluvian ground coffee from a previous tenant and the cheapo drip coffee maker you might find at an Airbnb",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Best Sellers Subscription",
+      "brand": "Trade Coffee",
+      "category": "Kitchen & Dining",
+      "relevance_score": 23,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "Our Favorite Coffee Subscriptions",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "offers lots of options: choose from light-, medium-, and dark-roast subscriptions, plans focusing on best-selling coffees, single-origin, espresso, and decaf beans",
+          "full_text": "offers lots of options: choose from light-, medium-, and dark-roast subscriptions, plans focusing on best-selling coffees, single-origin, espresso, and decaf beans",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "create a subscription by taking a quiz",
+          "full_text": "create a subscription by taking a quiz",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "AeroPress",
+      "brand": "AeroPress",
+      "category": "Kitchen & Dining",
+      "relevance_score": 23,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "Our Favorite Things for Making and Drinking Coffee on the Go",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "one-stop coffee-brewing method that makes it a little easier to caffeinate while traveling",
+          "full_text": "one-stop coffee-brewing method that makes it a little easier to caffeinate while traveling",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "brewing chamber, the plunger, the seal (attached to the plunger), and the filter cap are all you need for a compact travel accessory",
+          "full_text": "brewing chamber, the plunger, the seal (attached to the plunger), and the filter cap are all you need for a compact travel accessory",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Dual Pod Plus Coffee Maker",
+      "brand": "Instant Pot",
+      "category": "Kitchen & Dining",
+      "relevance_score": 23,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "Brews both K-Cups and Original line Nespresso capsules",
+          "full_text": "Brews both K-Cups and Original line Nespresso capsules",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "Makes fine espresso but needs a break between cups",
+          "full_text": "Makes fine espresso but needs a break between cups",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "Bold mode supposedly brews coffee or espresso longer for more intense flavor",
+          "full_text": "Bold mode supposedly brews coffee or espresso longer for more intense flavor",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Go Travel Coffee Press",
+      "brand": "AeroPress",
+      "category": "Kitchen & Dining",
+      "relevance_score": 21,
+      "articles": 3,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "The AeroPress is a Fast, Portable, No-Frills Tool for Making Terrific Coffee",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "easier to bring all the accessories (stirrer, scoop, and filters) with you",
+          "full_text": "easier to bring all the accessories (stirrer, scoop, and filters) with you",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "comes in an adorable compact container that doubles as a cup",
+          "full_text": "comes in an adorable compact container that doubles as a cup",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Oracle Jet",
+      "brand": "Breville",
+      "category": "Kitchen & Dining",
+      "relevance_score": 21,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "The Best Home Espresso Machine",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "espresso machine and countertop barista in one gleaming package",
+          "full_text": "espresso machine and countertop barista in one gleaming package",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "guides you through every step of the espresso-making process",
+          "full_text": "guides you through every step of the espresso-making process",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "K-Duo Hot & Iced Single Serve & Carafe Coffee Maker (Gen 2)",
+      "brand": "Keurig",
+      "category": "Kitchen & Dining",
+      "relevance_score": 21,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "Keurig and drip coffee machine in one",
+          "full_text": "Keurig and drip coffee machine in one",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "Glass carafe can make up to 12 cups of coffee",
+          "full_text": "Glass carafe can make up to 12 cups of coffee",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "Heating plate automatically turns on after brewing",
+          "full_text": "Heating plate automatically turns on after brewing",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Dark Roast Vietnamese Coffee Kit",
+      "brand": "Nguyen Coffee Supply",
+      "category": "Kitchen & Dining",
+      "relevance_score": 21,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "The 38 Best Gifts for Coffee Lovers",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "kit has everything they need to brew many cups of Vietnamese coffee: a phin filter, a glass mug, instructions for brewing, and three bags of coffee (either ground or whole)",
+          "full_text": "kit has everything they need to brew many cups of Vietnamese coffee: a phin filter, a glass mug, instructions for brewing, and three bags of coffee (either ground or whole)",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "not for impatient, on-the-go caffeinators; the drip-style brewer requires several pours of hot water, and it takes a few minutes for the water to seep through the grounds and filter each time",
+          "full_text": "not for impatient, on-the-go caffeinators; the drip-style brewer requires several pours of hot water, and it takes a few minutes for the water to seep through the grounds and filter each time",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "P3 French Press",
+      "brand": "Espro",
+      "category": "Kitchen & Dining",
+      "relevance_score": 20,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "The Best Coffee Makers",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "produces consistently clean, bright, flavorful coffee",
+          "full_text": "produces consistently clean, bright, flavorful coffee",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "has a bucket-shaped double filter with finer mesh",
+          "full_text": "has a bucket-shaped double filter with finer mesh",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Nel Drip Pot",
+      "brand": "Unspecified",
+      "category": "Kitchen & Dining",
+      "relevance_score": 20,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "The Best Coffee I\u2019ve Ever Tasted Comes out of a Dirty Sock",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "uses a flannel sock to filter the coffee",
+          "full_text": "uses a flannel sock to filter the coffee",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "uses a huge dose of coarse grounds, relatively tepid water, and a very slow pour",
+          "full_text": "uses a huge dose of coarse grounds, relatively tepid water, and a very slow pour",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Rapid Cold Brew Maker",
+      "brand": "Dash",
+      "category": "Kitchen & Dining",
+      "relevance_score": 20,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "The Best Cold-Brew Coffee Maker",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "can prepare cold-brew coffee in 20 minutes or less",
+          "full_text": "can prepare cold-brew coffee in 20 minutes or less",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "coffee had smoothness, low acidity, and low bitterness",
+          "full_text": "coffee had smoothness, low acidity, and low bitterness",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Moccamaster",
+      "brand": "Technivorm",
+      "category": "Kitchen & Dining",
+      "relevance_score": 20,
+      "articles": 3,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "helps make great coffee with less effort",
+          "full_text": "helps make great coffee with less effort",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "glass-carafe version with a hot-plate that's finely tuned to keep coffee warm without scorching it",
+          "full_text": "glass-carafe version with a hot-plate that's finely tuned to keep coffee warm without scorching it",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "coffee it produces tastes incredibly nuanced",
+          "full_text": "coffee it produces tastes incredibly nuanced",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "K-Express Single Serve Coffee Maker",
+      "brand": "Keurig",
+      "category": "Kitchen & Dining",
+      "relevance_score": 20,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "Has a Strong brew button that delivers better-tasting coffee than machines without it",
+          "full_text": "Has a Strong brew button that delivers better-tasting coffee than machines without it",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "Five buttons on the front, including Strong brew button",
+          "full_text": "Five buttons on the front, including Strong brew button",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "Strong button increases brew intensity to counteract typical wateriness of Keurig coffee",
+          "full_text": "Strong button increases brew intensity to counteract typical wateriness of Keurig coffee",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "12-Cup Programmable Coffee Maker CE251",
+      "brand": "Ninja",
+      "category": "Kitchen & Dining",
+      "relevance_score": 17,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "The Best Coffee Makers",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "made the most balanced and the hottest cup of coffee among budget drip models",
+          "full_text": "made the most balanced and the hottest cup of coffee among budget drip models",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "has different settings for a classic or richer taste",
+          "full_text": "has different settings for a classic or richer taste",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Coffee and Espresso Maker",
+      "brand": "AeroPress",
+      "category": "Kitchen & Dining",
+      "relevance_score": 17,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "The AeroPress is a Fast, Portable, No-Frills Tool for Making Terrific Coffee",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "fast, like a Nespresso machine, and easy to use, like a French press, and it makes coffee that tastes almost as great as a lovingly prepared pour-over",
+          "full_text": "fast, like a Nespresso machine, and easy to use, like a French press, and it makes coffee that tastes almost as great as a lovingly prepared pour-over",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "comes in a durable, portable package",
+          "full_text": "comes in a durable, portable package",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "El Mirador",
+      "brand": "Dripkit",
+      "category": "Kitchen & Dining",
+      "relevance_score": 17,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "We Tasted 4 of the Newest (and Most Photogenic) Instant Coffees",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "a triangular cardboard coffee dripper complete with a perfectly sized mini filter and preground beans",
+          "full_text": "a triangular cardboard coffee dripper complete with a perfectly sized mini filter and preground beans",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "not just instant coffee but also a whole disposable pour-over kit",
+          "full_text": "not just instant coffee but also a whole disposable pour-over kit",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Cold Water Coffee Concentrate Brewer",
+      "brand": "Filtron",
+      "category": "Kitchen & Dining",
+      "relevance_score": 17,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "The Best Cold-Brew Coffee Maker",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "consistently produced great-tasting coffee concentrate",
+          "full_text": "consistently produced great-tasting coffee concentrate",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "produced a smooth, mellow brew every time",
+          "full_text": "produced a smooth, mellow brew every time",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Mainstay Blend",
+      "brand": "Swift Cup",
+      "category": "Kitchen & Dining",
+      "relevance_score": 17,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "We Tasted 4 of the Newest (and Most Photogenic) Instant Coffees",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "the worst jolt of instant energy we tried",
+          "full_text": "the worst jolt of instant energy we tried",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "resembled coffee on the surface but lacked any depth",
+          "full_text": "resembled coffee on the surface but lacked any depth",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "The Mix Subscription",
+      "brand": "Yes Plz",
+      "category": "Kitchen & Dining",
+      "relevance_score": 17,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "Our Favorite Coffee Subscriptions",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "offers a fresh new blend every week, so no matter the frequency you choose, you won't get back-to-back repeats",
+          "full_text": "offers a fresh new blend every week, so no matter the frequency you choose, you won't get back-to-back repeats",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "Every coffee we received was delicious and fresh \u2014 the ship date on the envelope was consistently only one or two days after the roast date",
+          "full_text": "Every coffee we received was delicious and fresh \u2014 the ship date on the envelope was consistently only one or two days after the roast date",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Brew 8-Cup",
+      "brand": "OXO",
+      "category": "Kitchen & Dining",
+      "relevance_score": 17,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "The Best Single-Serve Coffee Maker (Isn\u2019t a Keurig)",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "allows you to swap out its carafe and just brew straight into your cup or mug",
+          "full_text": "allows you to swap out its carafe and just brew straight into your cup or mug",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "comes with a distinct, dedicated filter basket for brewing single servings",
+          "full_text": "comes with a distinct, dedicated filter basket for brewing single servings",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "New York Coffee Cup",
+      "brand": "MoMA Design Store",
+      "category": "Kitchen & Dining",
+      "relevance_score": 15,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "I Miss New York. The Gift of Diner Coffee Kitsch Brings Me Back.",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "ceramic stand-in for the iconic, disposable 1963 Anthora takeout coffee cup",
+          "full_text": "ceramic stand-in for the iconic, disposable 1963 Anthora takeout coffee cup",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "fully functional and dishwasher- and microwave-safe",
+          "full_text": "fully functional and dishwasher- and microwave-safe",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Rise",
+      "brand": "MudWtr",
+      "category": "Kitchen & Dining",
+      "relevance_score": 15,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "I Love Coffee, but I Gave It Up for MudWtr. Don\u2019t Make My Mistake.",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "replaces your morning joe with a mix of cacao, spices, tea, and powdered mushrooms",
+          "full_text": "replaces your morning joe with a mix of cacao, spices, tea, and powdered mushrooms",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "contains chaga for energy, reishi for immunity, cordyceps for physical performance, and lion's mane for mental performance",
+          "full_text": "contains chaga for energy, reishi for immunity, cordyceps for physical performance, and lion's mane for mental performance",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Roasters Choice Subscription",
+      "brand": "Linea",
+      "category": "Kitchen & Dining",
+      "relevance_score": 15,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "Our Favorite Coffee Subscriptions",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "balanced, organic, and sourced from biodynamic farms",
+          "full_text": "balanced, organic, and sourced from biodynamic farms",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "Little Wing wasn't only my personal favorite of the lot \u2014 I declared that it was possibly the most elegant and balanced cup of coffee I'd ever had",
+          "full_text": "Little Wing wasn't only my personal favorite of the lot \u2014 I declared that it was possibly the most elegant and balanced cup of coffee I'd ever had",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Machete",
+      "brand": "Dark Matter Coffee",
+      "category": "Kitchen & Dining",
+      "relevance_score": 15,
+      "articles": 2,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "uses a process of aging green coffee beans in liquor barrels",
+          "full_text": "uses a process of aging green coffee beans in liquor barrels",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "blend of richly flavored Central American coffee with barrel-aged beans",
+          "full_text": "blend of richly flavored Central American coffee with barrel-aged beans",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "mixed with richly flavored Central American coffee for a balanced blend with a chocolaty depth",
+          "full_text": "mixed with richly flavored Central American coffee for a balanced blend with a chocolaty depth",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "K-Elite",
+      "brand": "Keurig",
+      "category": "Kitchen & Dining",
+      "relevance_score": 15,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "Iced coffee setting brews concentrated hot coffee over ice",
+          "full_text": "Iced coffee setting brews concentrated hot coffee over ice",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "Brew temperature adjustable from 187 to 192\u00b0F",
+          "full_text": "Brew temperature adjustable from 187 to 192\u00b0F",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Virtuoso Coffee Grinder",
+      "brand": "Baratza",
+      "category": "Kitchen & Dining",
+      "relevance_score": 14,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "A Great Deal on a High-End Coffee Grinder",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "nearly identical grinder to the Encore, but it has a slightly speedier burr set, a timer-switch on the side, and a heavier base that helps the grinder stay in calibration",
+          "full_text": "nearly identical grinder to the Encore, but it has a slightly speedier burr set, a timer-switch on the side, and a heavier base that helps the grinder stay in calibration",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "In a previous version of this guide, the Virtuoso was our top pick, but in more recent testing, we found the grind consistency comparable to that of the Encore",
+          "full_text": "In a previous version of this guide, the Virtuoso was our top pick, but in more recent testing, we found the grind consistency comparable to that of the Encore",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Encore ESP Pro",
+      "brand": "Baratza",
+      "category": "Kitchen & Dining",
+      "relevance_score": 14,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "The Best Coffee Grinder",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "has a stepless grind adjustment",
+          "full_text": "has a stepless grind adjustment",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "has an auto-shutoff function",
+          "full_text": "has an auto-shutoff function",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Brew Conical Burr Coffee Grinder",
+      "brand": "OXO",
+      "category": "Kitchen & Dining",
+      "relevance_score": 14,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "The Best Coffee Grinder",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "slightly faster and a bit quieter than the Baratza machines",
+          "full_text": "slightly faster and a bit quieter than the Baratza machines",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "grinded consistently at medium settings",
+          "full_text": "grinded consistently at medium settings",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Compact Cold Brew Coffee Maker",
+      "brand": "OXO",
+      "category": "Kitchen & Dining",
+      "relevance_score": 14,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "The Best Cold-Brew Coffee Maker",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "brews about 16 ounces of coffee",
+          "full_text": "brews about 16 ounces of coffee",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "flavor of concentrate is stronger yet still well balanced",
+          "full_text": "flavor of concentrate is stronger yet still well balanced",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Coffee Time and Temperature Instant Coffee",
+      "brand": "Tandem",
+      "category": "Kitchen & Dining",
+      "relevance_score": 14,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "We Tasted 4 of the Newest (and Most Photogenic) Instant Coffees",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "our favorite and the one that most closely resembled an interesting coffee brew",
+          "full_text": "our favorite and the one that most closely resembled an interesting coffee brew",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "a bit tart, with vanilla notes up front and an acidic finish",
+          "full_text": "a bit tart, with vanilla notes up front and an acidic finish",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "K-Brew+Chill",
+      "brand": "Keurig",
+      "category": "Kitchen & Dining",
+      "relevance_score": 14,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "Can make hot and pleasantly cool coffee",
+          "full_text": "Can make hot and pleasantly cool coffee",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "6-ounce cold coffee was one of the best cups from a Keurig machine",
+          "full_text": "6-ounce cold coffee was one of the best cups from a Keurig machine",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "Can make only four cold coffees in a row before needing to cool down",
+          "full_text": "Can make only four cold coffees in a row before needing to cool down",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Oracle Jet Espresso Machine",
+      "brand": "Breville",
+      "category": "Kitchen & Dining",
+      "relevance_score": 14,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "easiest, most intuitive, most interactive home espresso machine",
+          "full_text": "easiest, most intuitive, most interactive home espresso machine",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "large screen walks through each step of making espresso",
+          "full_text": "large screen walks through each step of making espresso",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "can make cold espresso",
+          "full_text": "can make cold espresso",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "K\u00f8benstyle Butter Warmer",
+      "brand": "Dansk",
+      "category": "Electronics & Tech",
+      "relevance_score": 13,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "This Adorable Butter Warmer Isn\u2019t Just for Butter. I Use It for Coffee and Miso Soup Too.",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "about as large as an oversized coffee mug",
+          "full_text": "about as large as an oversized coffee mug",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "little enamel pot became an instant standby",
+          "full_text": "little enamel pot became an instant standby",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Mara X",
+      "brand": "Lelit",
+      "category": "Kitchen & Dining",
+      "relevance_score": 13,
+      "articles": 2,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "The Best Home Espresso Machine",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "beautiful machine with the look and feel of a commercial espresso machine",
+          "full_text": "beautiful machine with the look and feel of a commercial espresso machine",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "tamper fits well in your hand",
+          "full_text": "tamper fits well in your hand",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Robot",
+      "brand": "Cafelat",
+      "category": "Kitchen & Dining",
+      "relevance_score": 12,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "Making Espresso at Home Is Kind of a Nightmare\u2014But If You Insist, Here\u2019s How to Do It Well",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "costs only around $300",
+          "full_text": "costs only around $300",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "a manual lever machine",
+          "full_text": "a manual lever machine",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Glass Carafe Model",
+      "brand": "Technivorm Moccamaster",
+      "category": "coffee accessories",
+      "relevance_score": 12,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "All of the Wirecutter-Approved Coffee Essentials That Are on Sale for Cyber Monday",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "glass-carafe version of our Technivorm Moccamaster pick",
+          "full_text": "glass-carafe version of our Technivorm Moccamaster pick",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "hot-plate that's finely tuned to keep coffee warm without scorching it, a rare feat",
+          "full_text": "hot-plate that's finely tuned to keep coffee warm without scorching it, a rare feat",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Smaller Cold Brew Coffee Maker",
+      "brand": "OXO",
+      "category": "coffee accessories",
+      "relevance_score": 12,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "All of the Wirecutter-Approved Coffee Essentials That Are on Sale for Cyber Monday",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "Compact and easily stored",
+          "full_text": "Compact and easily stored",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "Stronger coffee than larger OXO brewer, but still balanced",
+          "full_text": "Stronger coffee than larger OXO brewer, but still balanced",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Original Capsules",
+      "brand": "Nespresso",
+      "category": "Kitchen & Dining",
+      "relevance_score": 12,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "If I Care About the Environment but Am Also Lazy, Should I Get a Nespresso or Keurig?",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "capsules are made of aluminum, which is 100 percent recyclable",
+          "full_text": "capsules are made of aluminum, which is 100 percent recyclable",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "can order up to two recycling bags from the website for free",
+          "full_text": "can order up to two recycling bags from the website for free",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "K-Cup Pods",
+      "brand": "Keurig",
+      "category": "Kitchen & Dining",
+      "relevance_score": 12,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "If I Care About the Environment but Am Also Lazy, Should I Get a Nespresso or Keurig?",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "converted from #7 plastic to recyclable #5 plastic",
+          "full_text": "converted from #7 plastic to recyclable #5 plastic",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "requires peeling away aluminum lid, dumping grounds, and recycling as plastic item",
+          "full_text": "requires peeling away aluminum lid, dumping grounds, and recycling as plastic item",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "KBG",
+      "brand": "Moccamaster",
+      "category": "Kitchen & Dining",
+      "relevance_score": 12,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "What a Wirecutter Staffer (and Former Barista) Uses to Make Coffee",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "brews great coffee",
+          "full_text": "brews great coffee",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "stripped of fancy doodads like settings or timers",
+          "full_text": "stripped of fancy doodads like settings or timers",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Glass Coffeemaker",
+      "brand": "Chemex",
+      "category": "Kitchen & Dining",
+      "relevance_score": 12,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "Ask Wirecutter: How Do I Get My Partner to Stop Serving Me Lukewarm Coffee?",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "glass carafe is made of high-quality borosilicate glass, which doesn't crack under temperature swings",
+          "full_text": "glass carafe is made of high-quality borosilicate glass, which doesn't crack under temperature swings",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "not insulated, so it does start to lose heat before you've even finished brewing the pot",
+          "full_text": "not insulated, so it does start to lose heat before you've even finished brewing the pot",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Rise",
+      "brand": "Ryze",
+      "category": "Kitchen & Dining",
+      "relevance_score": 12,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "I Love Coffee, but I Gave It Up for MudWtr. Don\u2019t Make My Mistake.",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "contains a very small portion of coffee compared to a properly brewed cup",
+          "full_text": "contains a very small portion of coffee compared to a properly brewed cup",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "features a mushroom blend (cordyceps, reishi, king trumpet, shiitake, lion's mane, and turkey tail)",
+          "full_text": "features a mushroom blend (cordyceps, reishi, king trumpet, shiitake, lion's mane, and turkey tail)",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Six Cup Classic Series",
+      "brand": "Chemex",
+      "category": "Kitchen & Dining",
+      "relevance_score": 12,
+      "articles": 2,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "The Best DIY Cold Brew (Technically Isn\u2019t Cold Brew)",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "I've brewed my daily hot coffee in for years",
+          "full_text": "I've brewed my daily hot coffee in for years",
+          "weight": 2
+        },
+        {
+          "type": "article_title",
+          "text": "The Best Single-Serve Coffee Maker (Isn\u2019t a Keurig)",
+          "weight": 5
+        }
+      ]
+    },
+    {
+      "product_name": "Moccamaster KBT Coffee Maker",
+      "brand": "Technivorm",
+      "category": "Kitchen & Dining",
+      "relevance_score": 12,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "simple and stylish drip coffee maker pick",
+          "full_text": "simple and stylish drip coffee maker pick",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "All of our tasters enjoyed its coffee, but not more than the coffee made by our main picks",
+          "full_text": "All of our tasters enjoyed its coffee, but not more than the coffee made by our main picks",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Go",
+      "brand": "Profitec",
+      "category": "Kitchen & Dining",
+      "relevance_score": 11,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "The Best Home Espresso Machine",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "punches far above its weight",
+          "full_text": "punches far above its weight",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "pulls balanced, nuanced shots",
+          "full_text": "pulls balanced, nuanced shots",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Clear Portable Coffee Maker",
+      "brand": "AeroPress",
+      "category": "coffee accessories",
+      "relevance_score": 11,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "All of the Wirecutter-Approved Coffee Essentials That Are on Sale for Cyber Monday",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "Performs exactly the same as the original AeroPress",
+          "full_text": "Performs exactly the same as the original AeroPress",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "Lightweight, compact design",
+          "full_text": "Lightweight, compact design",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Vertuo Machine",
+      "brand": "Nespresso",
+      "category": "coffee accessories",
+      "relevance_score": 11,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "All of the Wirecutter-Approved Coffee Essentials That Are on Sale for Cyber Monday",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "Brews smooth espresso, plus an 8-ounce cup of coffee that's superior to anything we've tried from a Keurig",
+          "full_text": "Brews smooth espresso, plus an 8-ounce cup of coffee that's superior to anything we've tried from a Keurig",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "Short learning curve, with just one button and an automatic lid",
+          "full_text": "Short learning curve, with just one button and an automatic lid",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Brew 9-Cup Coffee Maker",
+      "brand": "OXO",
+      "category": "Kitchen & Dining",
+      "relevance_score": 11,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "Ask Wirecutter: How Do I Get My Partner to Stop Serving Me Lukewarm Coffee?",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "beautiful and easy to use",
+          "full_text": "beautiful and easy to use",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "insulated carafe keeps coffee hot for hours",
+          "full_text": "insulated carafe keeps coffee hot for hours",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Ottomatic",
+      "brand": "Chemex",
+      "category": "Kitchen & Dining",
+      "relevance_score": 11,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "Ask Wirecutter: How Do I Get My Partner to Stop Serving Me Lukewarm Coffee?",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "retails for around $350 (or $50 less if you already own a carafe)",
+          "full_text": "retails for around $350 (or $50 less if you already own a carafe)",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "brews both hot and cold coffee by mimicking pour-over with the greedy-cup method",
+          "full_text": "brews both hot and cold coffee by mimicking pour-over with the greedy-cup method",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Cold Brewer",
+      "brand": "Instant",
+      "category": "Kitchen & Dining",
+      "relevance_score": 11,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "The Best Cold-Brew Coffee Maker",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "took 20 minutes to brew",
+          "full_text": "took 20 minutes to brew",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "result tasted like coffee grounds stirred into cold water",
+          "full_text": "result tasted like coffee grounds stirred into cold water",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "8 Coffee Spoons",
+      "brand": "Alessi",
+      "category": "Kitchen & Dining",
+      "relevance_score": 11,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "The 38 Best Gifts for Coffee Lovers",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "mirror-polished, stainless spoons were created by a different, highly regarded architect, including Japan's Toyo Ito and the Netherlands' Wiel Arets",
+          "full_text": "mirror-polished, stainless spoons were created by a different, highly regarded architect, including Japan's Toyo Ito and the Netherlands' Wiel Arets",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "best for stirring espressos or cappuccinos, rather than dumping a heaving teaspoon of sugar into drip coffee",
+          "full_text": "best for stirring espressos or cappuccinos, rather than dumping a heaving teaspoon of sugar into drip coffee",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Coffee Subscription",
+      "brand": "Craft Coffee",
+      "category": "Kitchen & Dining",
+      "relevance_score": 11,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "Our Favorite Coffee Subscriptions",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "offers a substantial discount if you opt to get four bags of coffee per delivery",
+          "full_text": "offers a substantial discount if you opt to get four bags of coffee per delivery",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "no rotating roast option",
+          "full_text": "no rotating roast option",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Brew Adjustable Temperature Electric Pour-Over Kettle",
+      "brand": "OXO",
+      "category": "Kitchen & Dining",
+      "relevance_score": 11,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "It's a treat to brew beverages with the OXO Brew Adjustable Temperature Pour-Over Kettle, which has temperature controls to make the perfect cup of coffee or tea",
+          "full_text": "It's a treat to brew beverages with the OXO Brew Adjustable Temperature Pour-Over Kettle, which has temperature controls to make the perfect cup of coffee or tea",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Hop Water",
+      "brand": "Hoplark",
+      "category": "Electronics & Tech",
+      "relevance_score": 11,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "Hoplark's core water and tea varieties are available in major grocery stores, but the company also offers a wide range of one-off and seasonal flavors, including wacky-sounding yet delicious stuff like The Root Beer One (containing Palisade hops, all...",
+          "full_text": "Hoplark's core water and tea varieties are available in major grocery stores, but the company also offers a wide range of one-off and seasonal flavors, including wacky-sounding yet delicious stuff like The Root Beer One (containing Palisade hops, allspice, ginger, roasted chicory, and marshmallow root), as well as collaborations with popular craft breweries such as Other Half Brewing in Brooklyn, New York, and Outer Range Brewing Co. in Colorado.",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Oracle Jet Espresso",
+      "brand": "Breville",
+      "category": "Kitchen & Dining",
+      "relevance_score": 10,
+      "articles": 2,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "These Breville Machines Will Bring Out Your Inner Barista",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "will serve you well whether you want to mindlessly make a decent cappuccino every morning or launch into a full-blown espresso hobby",
+          "full_text": "will serve you well whether you want to mindlessly make a decent cappuccino every morning or launch into a full-blown espresso hobby",
+          "weight": 2
+        },
+        {
+          "type": "article_title",
+          "text": "These Breville Machines Will Bring Out Your Inner Barista",
+          "weight": 5
+        }
+      ]
+    },
+    {
+      "product_name": "1.8 Liter Electric Glass Kettle",
+      "brand": "Chefman",
+      "category": "Kitchen & Dining",
+      "relevance_score": 10,
+      "articles": 2,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "Not as accurate as other variable-temperature picks, but gets close enough to make a good cup of tea or coffee",
+          "full_text": "Not as accurate as other variable-temperature picks, but gets close enough to make a good cup of tea or coffee",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "Not as accurate as other variable-temperature picks, but gets close enough to make a good cup of tea or coffee",
+          "full_text": "Not as accurate as other variable-temperature picks, but gets close enough to make a good cup of tea or coffee",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Encore",
+      "brand": "Baratza",
+      "category": "Kitchen & Dining",
+      "relevance_score": 9,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "The Best Coffee Grinder",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "grinds evenly and quickly",
+          "full_text": "grinds evenly and quickly",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "had one of the highest quantities of particles in the target range, allowing for a clearer-tasting cup",
+          "full_text": "had one of the highest quantities of particles in the target range, allowing for a clearer-tasting cup",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Portable Coffee Maker",
+      "brand": "AeroPress",
+      "category": "coffee accessories",
+      "relevance_score": 9,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "All of the Wirecutter-Approved Coffee Essentials That Are on Sale for Cyber Monday",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "Lightweight, compact design produces full-bodied, flavorful coffee in about two minutes",
+          "full_text": "Lightweight, compact design produces full-bodied, flavorful coffee in about two minutes",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "Great for camping, travel, or just a simple cup at home",
+          "full_text": "Great for camping, travel, or just a simple cup at home",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Moccamaster KB",
+      "brand": "Technivorm",
+      "category": "Kitchen & Dining",
+      "relevance_score": 9,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "The Best Coffee Makers",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "hot plate keeps an impressively stable temperature without burning the coffee",
+          "full_text": "hot plate keeps an impressively stable temperature without burning the coffee",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "hot plate shuts off after four hours",
+          "full_text": "hot plate shuts off after four hours",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "mini 2 Compact Coffee Grinder",
+      "brand": "Lagom",
+      "category": "Kitchen & Dining",
+      "relevance_score": 9,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "The Best Coffee Grinder",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "very small, very sleek, and very capable grinder",
+          "full_text": "very small, very sleek, and very capable grinder",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "stepless dial offers near-infinite control over grind size",
+          "full_text": "stepless dial offers near-infinite control over grind size",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Roaster's Choice Subscription",
+      "brand": "Onyx Coffee Lab",
+      "category": "Kitchen & Dining",
+      "relevance_score": 9,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "Our Favorite Coffee Subscriptions",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "Each delivery comes neatly packaged, with a card tucked into the side of the box that provides information about the beans' origin, flavor, processing method, roast level, and more",
+          "full_text": "Each delivery comes neatly packaged, with a card tucked into the side of the box that provides information about the beans' origin, flavor, processing method, roast level, and more",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "roasts coffee that is fresh, flavorful, and extremely high-quality",
+          "full_text": "roasts coffee that is fresh, flavorful, and extremely high-quality",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "15 Touch",
+      "brand": "Espresso Displays",
+      "category": "portable monitors",
+      "relevance_score": 9,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "The $550 Espresso Displays 15 Touch is a 15.6-inch 1080p display wrapped in a slim aluminum casing that looks at home sitting next to a MacBook",
+          "full_text": "The $550 Espresso Displays 15 Touch is a 15.6-inch 1080p display wrapped in a slim aluminum casing that looks at home sitting next to a MacBook",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "the company's espressoFlow software adds touch support when the monitor is connected, even to a Mac",
+          "full_text": "the company's espressoFlow software adds touch support when the monitor is connected, even to a Mac",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "Espresso Displays sells a stylus for taking notes on the touch display, and it offers a note-taking app called Jot on both Windows and Mac",
+          "full_text": "Espresso Displays sells a stylus for taking notes on the touch display, and it offers a note-taking app called Jot on both Windows and Mac",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "French Press with Br\u00fc-Stop",
+      "brand": "Planetary Design",
+      "category": "Kitchen & Dining",
+      "relevance_score": 9,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "Built for camping, this coffee maker has no glass to break",
+          "full_text": "Built for camping, this coffee maker has no glass to break",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "4- or 6-cup carafe will keep the coffee warm till everyone gets up",
+          "full_text": "4- or 6-cup carafe will keep the coffee warm till everyone gets up",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "On Barista Brain 9 Cup Coffee Maker",
+      "brand": "OXO",
+      "category": "Kitchen & Dining",
+      "relevance_score": 9,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "top pick in our guide to the best drip coffee maker",
+          "full_text": "top pick in our guide to the best drip coffee maker",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "stylist and programable, makes a nice cup of coffee",
+          "full_text": "stylist and programable, makes a nice cup of coffee",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Instant Coffee",
+      "brand": "Little Wolf",
+      "category": "Kitchen & Dining",
+      "relevance_score": 9,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "Hear Me Out: Instant Coffee Is, in Fact, Good",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "those packets tasted satisfyingly, delightfully close to fresh-brewed coffee",
+          "full_text": "those packets tasted satisfyingly, delightfully close to fresh-brewed coffee",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "with only six packets to the box, they are not cheap!",
+          "full_text": "with only six packets to the box, they are not cheap!",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Shine Rapid Cold Brew Coffee Machine",
+      "brand": "Tribest",
+      "category": "Kitchen & Dining",
+      "relevance_score": 9,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "The Best Cold-Brew Coffee Maker",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "made murky, watery coffee",
+          "full_text": "made murky, watery coffee",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "similar results to Instant Cold Brewer",
+          "full_text": "similar results to Instant Cold Brewer",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "K-Classic",
+      "brand": "Keurig",
+      "category": "Kitchen & Dining",
+      "relevance_score": 9,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "Doesn't have strong brew function",
+          "full_text": "Doesn't have strong brew function",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "Coffee was unpleasant",
+          "full_text": "Coffee was unpleasant",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "The Compendious Coffee Chart",
+      "brand": "Pop Chart",
+      "category": "Kitchen & Dining",
+      "relevance_score": 9,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "The 38 Best Gifts for Coffee Lovers",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "24-by-18-inch chart illustrates all of the ways people brew and serve coffee",
+          "full_text": "24-by-18-inch chart illustrates all of the ways people brew and serve coffee",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "trace it backwards to figure out how to make favorite drinks, since it outlines the ratios, ingredients, and equipment",
+          "full_text": "trace it backwards to figure out how to make favorite drinks, since it outlines the ratios, ingredients, and equipment",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Chestnut C5 Pro",
+      "brand": "Timemore",
+      "category": "Kitchen & Dining",
+      "relevance_score": 8,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "The Best Coffee Grinder",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "portable and stows easily",
+          "full_text": "portable and stows easily",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "uses a custom-designed steel conical burr",
+          "full_text": "uses a custom-designed steel conical burr",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Burr Grinder (Generic)",
+      "brand": "",
+      "category": "Kitchen & Dining",
+      "relevance_score": 8,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "Dear Wirecutter: Should I Upgrade My Grinder or Coffee Maker First?",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "the most important piece of coffee gear you'll own",
+          "full_text": "the most important piece of coffee gear you'll own",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "sub-$100 electric burr grinders don't perform noticeably better than $20 blade grinders",
+          "full_text": "sub-$100 electric burr grinders don't perform noticeably better than $20 blade grinders",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Discovery Box",
+      "brand": "Voil\u00e0",
+      "category": "Kitchen & Dining",
+      "relevance_score": 8,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "We Tasted 4 of the Newest (and Most Photogenic) Instant Coffees",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "managed to fit five packets of instant coffee from five different small roasters",
+          "full_text": "managed to fit five packets of instant coffee from five different small roasters",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "packaging was almost too compact",
+          "full_text": "packaging was almost too compact",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Presta Colombian Blend",
+      "brand": "Voil\u00e0",
+      "category": "Kitchen & Dining",
+      "relevance_score": 8,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "We Tasted 4 of the Newest (and Most Photogenic) Instant Coffees",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "okay but tasted like diner coffee",
+          "full_text": "okay but tasted like diner coffee",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "watery and basic",
+          "full_text": "watery and basic",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "1000 Faces Brazilian Blend",
+      "brand": "Voil\u00e0",
+      "category": "Kitchen & Dining",
+      "relevance_score": 8,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "We Tasted 4 of the Newest (and Most Photogenic) Instant Coffees",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "okay but tasted like diner coffee",
+          "full_text": "okay but tasted like diner coffee",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "watery and basic",
+          "full_text": "watery and basic",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Mini Stainless Steel Coffee Grinder",
+      "brand": "Porlex",
+      "category": "Kitchen & Dining",
+      "relevance_score": 8,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "Our Favorite Things for Making and Drinking Coffee on the Go",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "has the ceramic adjustable burrs we look for in any great coffee grinder",
+          "full_text": "has the ceramic adjustable burrs we look for in any great coffee grinder",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "compact 5 inches tall",
+          "full_text": "compact 5 inches tall",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Mini Grinder",
+      "brand": "Porlex",
+      "category": "Kitchen & Dining",
+      "relevance_score": 8,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "What a Wirecutter Staffer (and Former Barista) Uses to Make Coffee",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "compact",
+          "full_text": "compact",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "holds exactly enough coffee beans for a single cup",
+          "full_text": "holds exactly enough coffee beans for a single cup",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Cold Brew Maker",
+      "brand": "Vinci",
+      "category": "Kitchen & Dining",
+      "relevance_score": 8,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "The Best Cold-Brew Coffee Maker",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "rapid cold brew wasn't cloudy, but was weak",
+          "full_text": "rapid cold brew wasn't cloudy, but was weak",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "had an unpleasant musty note",
+          "full_text": "had an unpleasant musty note",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Roaster's Choice Subscription",
+      "brand": "Black & White Coffee Roasters",
+      "category": "Kitchen & Dining",
+      "relevance_score": 8,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "Our Favorite Coffee Subscriptions",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "sends you a bag of one of Black & White's specialty roasts each time",
+          "full_text": "sends you a bag of one of Black & White's specialty roasts each time",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "probably the ideal choice for more adventurous coffee connoisseurs",
+          "full_text": "probably the ideal choice for more adventurous coffee connoisseurs",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Dezcal Coffee and Espresso Descaler and Cleaner",
+      "brand": "Urnex",
+      "category": "Kitchen & Dining",
+      "relevance_score": 8,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "5 Cheap(ish) Things to Upgrade Your Coffee Experience",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "can be used on coffee and espresso makers as well as kettles",
+          "full_text": "can be used on coffee and espresso makers as well as kettles",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "K-Slim",
+      "brand": "Keurig",
+      "category": "Kitchen & Dining",
+      "relevance_score": 8,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "Coffee was indistinguishable from K-Classic's non-multistream coffee",
+          "full_text": "Coffee was indistinguishable from K-Classic's non-multistream coffee",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "K-Supreme Smart",
+      "brand": "Keurig",
+      "category": "Kitchen & Dining",
+      "relevance_score": 8,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "Brewing temperature claims up to 206\u00b0F",
+          "full_text": "Brewing temperature claims up to 206\u00b0F",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Coffee Machines",
+      "brand": "Keurig",
+      "category": "Kitchen & Dining",
+      "relevance_score": 8,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "At its best, Keurig coffee is \"like diner coffee\"",
+          "full_text": "At its best, Keurig coffee is \"like diner coffee\"",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "12 oz Insulated Coffee Mug",
+      "brand": "Hydro Flask",
+      "category": "Kitchen & Dining",
+      "relevance_score": 5,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "Our Favorite Things for Making and Drinking Coffee on the Go",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "fully double-wall-insulated",
+          "full_text": "fully double-wall-insulated",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "comes with a press-in lid to keep your liquid gold where it's supposed to be",
+          "full_text": "comes with a press-in lid to keep your liquid gold where it's supposed to be",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Bistro",
+      "brand": "Bodum",
+      "category": "Kitchen & Dining",
+      "relevance_score": 5,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "The Best Coffee Grinder",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "attractive little machine",
+          "full_text": "attractive little machine",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "small footprint",
+          "full_text": "small footprint",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Ode Gen 2 Brew Grinder",
+      "brand": "Fellow",
+      "category": "Kitchen & Dining",
+      "relevance_score": 5,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "The Best Coffee Grinder",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "low profile",
+          "full_text": "low profile",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "super-fast, flat burr",
+          "full_text": "super-fast, flat burr",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "3.1",
+      "brand": "Robobrew",
+      "category": "homebrewing",
+      "relevance_score": 5,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "Brewing Award-Winning Beer at Home Is Easier Than You Think",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "9\u00bc-gallon coffee urn with a pair of independently controlled, ULWD (ultra low watt density) resistive heating coils in its base",
+          "full_text": "9\u00bc-gallon coffee urn with a pair of independently controlled, ULWD (ultra low watt density) resistive heating coils in its base",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "runs on 110-volt power, so you can plug it into any outlet",
+          "full_text": "runs on 110-volt power, so you can plug it into any outlet",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Thinker's Instant",
+      "brand": "Know Brainer",
+      "category": "Travel & Outdoors",
+      "relevance_score": 5,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "Premeasured and preblended single-serving instant coffee with concentrated coffee, shelf-stable medium-chain triglyceride (MCT) oil from coconuts, and grass-fed ghee",
+          "full_text": "Premeasured and preblended single-serving instant coffee with concentrated coffee, shelf-stable medium-chain triglyceride (MCT) oil from coconuts, and grass-fed ghee",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Travel Mug",
+      "brand": "Zojirushi",
+      "category": "Kitchen & Dining",
+      "relevance_score": 5,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "lingering coffee scent tied to residual oils clinging to the silicone",
+          "full_text": "lingering coffee scent tied to residual oils clinging to the silicone",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Chemex",
+      "brand": "Chemex",
+      "category": "Kitchen & Dining",
+      "relevance_score": 5,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "brews a bright and clean-tasting cup of joe",
+          "full_text": "brews a bright and clean-tasting cup of joe",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Stainless Steel Mug",
+      "brand": "Zojirushi",
+      "category": "Kitchen & Dining",
+      "relevance_score": 5,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "still our favorite travel mug, and it still keeps our coffee hot",
+          "full_text": "still our favorite travel mug, and it still keeps our coffee hot",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Portable Espresso Maker",
+      "brand": "Nanopresso",
+      "category": "Kitchen & Dining",
+      "relevance_score": 5,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "It\u2019s Coffee Week at Wirecutter",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "portable, manual espresso maker",
+          "full_text": "portable, manual espresso maker",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Easy Measure Coffee Maker",
+      "brand": "Mr. Coffee",
+      "category": "Kitchen & Dining",
+      "relevance_score": 5,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "makes a perfectly good cup of coffee",
+          "full_text": "makes a perfectly good cup of coffee",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Electric Kettle",
+      "brand": "AmazonBasics",
+      "category": "Kitchen & Dining",
+      "relevance_score": 5,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "I ordered an AeroPress and this electric hot water kettle from Amazon, studied some YouTube videos for AeroPress tricks, and made my own coffee every morning",
+          "full_text": "I ordered an AeroPress and this electric hot water kettle from Amazon, studied some YouTube videos for AeroPress tricks, and made my own coffee every morning",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "SM-KHE Travel Mug",
+      "brand": "Zojirushi",
+      "category": "Kitchen & Dining",
+      "relevance_score": 5,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "offers a well-insulated electro-polished stainless steel interior that keeps coffee blisteringly hot for hours or keeps icy drinks cold all day long",
+          "full_text": "offers a well-insulated electro-polished stainless steel interior that keeps coffee blisteringly hot for hours or keeps icy drinks cold all day long",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Chambord French Press (34oz)",
+      "brand": "Bodum",
+      "category": "Kitchen & Dining",
+      "relevance_score": 5,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "makes a balanced cup of almost grit-free coffee, retaining the tasting notes of the beans",
+          "full_text": "makes a balanced cup of almost grit-free coffee, retaining the tasting notes of the beans",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Bambino Plus Espresso Machine",
+      "brand": "Breville",
+      "category": "Kitchen & Dining",
+      "relevance_score": 5,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "makes a damn good cup of espresso",
+          "full_text": "makes a damn good cup of espresso",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "PerfecTemp Cordless Electric Kettle",
+      "brand": "Cuisinart",
+      "category": "Kitchen & Dining",
+      "relevance_score": 5,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "handle has six temperature-control buttons\u2014clearly marked with the degrees Fahrenheit and the type of beverage best brewed at that temperature\u2014plus two big buttons for 'start' and 'keep warm'",
+          "full_text": "handle has six temperature-control buttons\u2014clearly marked with the degrees Fahrenheit and the type of beverage best brewed at that temperature\u2014plus two big buttons for 'start' and 'keep warm'",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Coffee Makers",
+      "brand": null,
+      "category": "Kitchen & Dining",
+      "relevance_score": 5,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "The most commonly repaired items include lamps, vacuum cleaners, coffee makers, and clocks",
+          "full_text": "The most commonly repaired items include lamps, vacuum cleaners, coffee makers, and clocks",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Woodneck",
+      "brand": "Hario",
+      "category": "Kitchen & Dining",
+      "relevance_score": 5,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "I Used to Own a Coffee Shop. This Is My Go-to Pour-Over Dripper.",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "a funky coffee maker",
+          "full_text": "a funky coffee maker",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Cuppa Joe coffee-shop kit",
+      "brand": "Mayberry Street Miniatures",
+      "category": "Kitchen & Dining",
+      "relevance_score": 5,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "everything I needed to build a miniature coffee-shop scene",
+          "full_text": "everything I needed to build a miniature coffee-shop scene",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Pour-Over Coffee Setup",
+      "brand": null,
+      "category": "Kitchen & Dining",
+      "relevance_score": 5,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "cleverly designed pour-over coffee setup",
+          "full_text": "cleverly designed pour-over coffee setup",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "NYC Takeout Coffee Cup",
+      "brand": "Unspecified",
+      "category": "Kitchen & Dining",
+      "relevance_score": 5,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "ceramic version of the classic New York City takeout coffee cup",
+          "full_text": "ceramic version of the classic New York City takeout coffee cup",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Instant Coffee",
+      "brand": "Nescaf\u00e9",
+      "category": "Kitchen & Dining",
+      "relevance_score": 5,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "Hear Me Out: Instant Coffee Is, in Fact, Good",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "very good drip coffee",
+          "full_text": "very good drip coffee",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Drip Coffee Maker",
+      "brand": "Unspecified",
+      "category": "Kitchen & Dining",
+      "relevance_score": 5,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "just makes great coffee",
+          "full_text": "just makes great coffee",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Coffee",
+      "brand": "Unspecified Arkansas Roaster",
+      "category": "Kitchen & Dining",
+      "relevance_score": 5,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "consistently produces some of the most nuanced and dynamic coffees we've had",
+          "full_text": "consistently produces some of the most nuanced and dynamic coffees we've had",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Ultrasoft Comfort Flannel Comforter Cover",
+      "brand": "L.L.Bean",
+      "category": "Home & Garden",
+      "relevance_score": 5,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "I don't know what kind of witchcraft they're brewing in Freeport, Maine, but I have never found a better flannel than that of L.L.Bean",
+          "full_text": "I don't know what kind of witchcraft they're brewing in Freeport, Maine, but I have never found a better flannel than that of L.L.Bean",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "K-Mini",
+      "brand": "Keurig",
+      "category": "Kitchen & Dining",
+      "relevance_score": 5,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "Water poured directly matches desired coffee amount",
+          "full_text": "Water poured directly matches desired coffee amount",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "K-Select",
+      "brand": "Keurig",
+      "category": "Kitchen & Dining",
+      "relevance_score": 5,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "Offers Strong brew button",
+          "full_text": "Offers Strong brew button",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Exceptional Expressions of Espresso Chart",
+      "brand": "Pop Chart",
+      "category": "Kitchen & Dining",
+      "relevance_score": 5,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "The 38 Best Gifts for Coffee Lovers",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "18-by-24-inch chart showcases 23 different espresso styles, including the macchiato and affogato",
+          "full_text": "18-by-24-inch chart showcases 23 different espresso styles, including the macchiato and affogato",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Cold Brew Coffee Maker",
+      "brand": "OXO Good Grips",
+      "category": "Kitchen & Dining",
+      "relevance_score": 5,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "concentrate I get out of this thing is easily as good as the cold brew that's $5 a cup at the caf\u00e9 down the street",
+          "full_text": "concentrate I get out of this thing is easily as good as the cold brew that's $5 a cup at the caf\u00e9 down the street",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Instant Coffee",
+      "brand": "Verve Coffee Roasters",
+      "category": "Kitchen & Dining",
+      "relevance_score": 5,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "mild, malty coffee",
+          "full_text": "mild, malty coffee",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Moka",
+      "brand": "Alessi",
+      "category": "Kitchen & Dining",
+      "relevance_score": 5,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "brews were a little more acidic and slightly less rich, but they were otherwise almost indistinguishable from the Bialetti's",
+          "full_text": "brews were a little more acidic and slightly less rich, but they were otherwise almost indistinguishable from the Bialetti's",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Milano Red",
+      "brand": "Grosche",
+      "category": "Kitchen & Dining",
+      "relevance_score": 5,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "brews were the worst \u2014 watery and flavorless",
+          "full_text": "brews were the worst \u2014 watery and flavorless",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Espresso Martini",
+      "brand": "Tip Top",
+      "category": "Kitchen & Dining",
+      "relevance_score": 5,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "uses Counter Culture coffee",
+          "full_text": "uses Counter Culture coffee",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Advent Calendar",
+      "brand": "Adagio Teas",
+      "category": "Electronics & Tech",
+      "relevance_score": 5,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "Includes clear brewing directions with temperature and time",
+          "full_text": "Includes clear brewing directions with temperature and time",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Coffee Advent Calendar 2025",
+      "brand": "Onyx Coffee Lab",
+      "category": "Kitchen & Dining",
+      "relevance_score": 5,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "Each pouch enough to make two or three pour-overs or a medium pot of coffee",
+          "full_text": "Each pouch enough to make two or three pour-overs or a medium pot of coffee",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Wave 185",
+      "brand": "Kalita",
+      "category": "Kitchen & Dining",
+      "relevance_score": 5,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "The Best Single-Serve Coffee Maker (Isn\u2019t a Keurig)",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "best-tasting pour-over coffee",
+          "full_text": "best-tasting pour-over coffee",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "KBGV Select",
+      "brand": "Technivorm Moccamaster",
+      "category": "Electronics & Tech",
+      "relevance_score": 5,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "Delivers pour-over-quality coffee in a sleek package that looks better than a drip coffee maker should",
+          "full_text": "Delivers pour-over-quality coffee in a sleek package that looks better than a drip coffee maker should",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Corvo EKG Electric Kettle",
+      "brand": "Fellow",
+      "category": "Kitchen & Dining",
+      "relevance_score": 5,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "Good for single servings of pour-over coffee",
+          "full_text": "Good for single servings of pour-over coffee",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Digital Gooseneck Kettle",
+      "brand": "Cuisinart",
+      "category": "Kitchen & Dining",
+      "relevance_score": 5,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "precise, angled spout is perfect for making pour-over coffee",
+          "full_text": "precise, angled spout is perfect for making pour-over coffee",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Chai",
+      "brand": "Big Heart Tea Co.",
+      "category": "Kitchen & Dining",
+      "relevance_score": 5,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "caffeine-free",
+          "full_text": "caffeine-free",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Coffee Maker",
+      "brand": "Unspecified",
+      "category": "Kitchen & Dining",
+      "relevance_score": 5,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "coffee is a very oily substance that will leave an oily residue on the filter basket",
+          "full_text": "coffee is a very oily substance that will leave an oily residue on the filter basket",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Electric Glass Kettle",
+      "brand": "Unspecified",
+      "category": "kitchen appliances and tools",
+      "relevance_score": 5,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "gets temperatures close enough that you should still be able to make a good cup of tea or coffee",
+          "full_text": "gets temperatures close enough that you should still be able to make a good cup of tea or coffee",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Brew Bucket",
+      "brand": "SS Brewtech",
+      "category": "Electronics & Tech",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "Brewing Award-Winning Beer at Home Is Easier Than You Think",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "available in 7-gallon and 3\u00bd-gallon sizes",
+          "full_text": "available in 7-gallon and 3\u00bd-gallon sizes",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "easy to clean, completely impervious to oxygen transfer",
+          "full_text": "easy to clean, completely impervious to oxygen transfer",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Infuser",
+      "brand": "Breville",
+      "category": "Kitchen & Dining",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "How to Make Espresso at Home: A Starter Guide",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "comes with a portafilter and tamper already",
+          "full_text": "comes with a portafilter and tamper already",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "semiautomatic machine with preset times for single and double shots",
+          "full_text": "semiautomatic machine with preset times for single and double shots",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Zutto Coffee Maker EC-DAC50",
+      "brand": "Zojirushi",
+      "category": "Kitchen & Dining",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "The Best Single-Serve Coffee Maker (Isn\u2019t a Keurig)",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "petite",
+          "full_text": "petite",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "23-ounce capacity",
+          "full_text": "23-ounce capacity",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Ethiopian Dalecho Instant Coffee",
+      "brand": "Tandem",
+      "category": "Kitchen & Dining",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "We Tasted 4 of the Newest (and Most Photogenic) Instant Coffees",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "good",
+          "full_text": "good",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "flavor had somewhat more depth and more dimensionality",
+          "full_text": "flavor had somewhat more depth and more dimensionality",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Stainless Mug",
+      "brand": "Zojirushi",
+      "category": "Kitchen & Dining",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "Ask Wirecutter: How Do I Get My Partner to Stop Serving Me Lukewarm Coffee?",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "kept drinks hot for hours in our testing",
+          "full_text": "kept drinks hot for hours in our testing",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "comes in 12-, 16-, and 20-ounce versions",
+          "full_text": "comes in 12-, 16-, and 20-ounce versions",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "LB-3000 Compact Digital Scale",
+      "brand": "American Weigh Scales",
+      "category": "Kitchen & Dining",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "5 Cheap(ish) Things to Upgrade Your Coffee Experience",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "the most accurate 0.1-gram scale Wirecutter tested",
+          "full_text": "the most accurate 0.1-gram scale Wirecutter tested",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "takes up little counter space",
+          "full_text": "takes up little counter space",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Dinera Mug - 10 oz",
+      "brand": "IKEA",
+      "category": "Kitchen & Dining",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "5 Cheap(ish) Things to Upgrade Your Coffee Experience",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "cheapest recommendation",
+          "full_text": "cheapest recommendation",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "modern take on the diner mug",
+          "full_text": "modern take on the diner mug",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Monolith Max",
+      "brand": "KafaTek",
+      "category": "Kitchen & Dining",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "Making Espresso at Home Is Kind of a Nightmare\u2014But If You Insist, Here\u2019s How to Do It Well",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "98 mm burr machine",
+          "full_text": "98 mm burr machine",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "had to put myself on a waitlist to get",
+          "full_text": "had to put myself on a waitlist to get",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Zero",
+      "brand": "Niche",
+      "category": "Kitchen & Dining",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "Making Espresso at Home Is Kind of a Nightmare\u2014But If You Insist, Here\u2019s How to Do It Well",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "crowd-funded model",
+          "full_text": "crowd-funded model",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "performs like grinders that cost more",
+          "full_text": "performs like grinders that cost more",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Wave Dripper",
+      "brand": "Kalita",
+      "category": "Kitchen & Dining",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "What a Wirecutter Staffer (and Former Barista) Uses to Make Coffee",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "small, unbreakable pour-over cone",
+          "full_text": "small, unbreakable pour-over cone",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "comes in small, stainless steel version that's packable and sturdy",
+          "full_text": "comes in small, stainless steel version that's packable and sturdy",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Collapsible Travel Kettle",
+      "brand": "Gourmia",
+      "category": "Kitchen & Dining",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "What a Wirecutter Staffer (and Former Barista) Uses to Make Coffee",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "electric kettle that can hold up to 1\u00bd quarts",
+          "full_text": "electric kettle that can hold up to 1\u00bd quarts",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "makes a great gift",
+          "full_text": "makes a great gift",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Mignon Libra",
+      "brand": "Eureka",
+      "category": "Kitchen & Dining",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "Even Mediocre Home Baristas Can Make Good Espresso With This Unintimidating Machine",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "can deposit grounds right into the portafilter without my needing to weigh them beforehand",
+          "full_text": "can deposit grounds right into the portafilter without my needing to weigh them beforehand",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "expensive \u2014 even the refurbished one I found on sale cost more than the Gaggia machine",
+          "full_text": "expensive \u2014 even the refurbished one I found on sale cost more than the Gaggia machine",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Still Life Cards",
+      "brand": "UWP Luxe",
+      "category": "Kitchen & Dining",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "The 38 Best Gifts for Coffee Lovers",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "includes eight cards, in pop-up or die-cut form, featuring still-life artworks by four different artists",
+          "full_text": "includes eight cards, in pop-up or die-cut form, featuring still-life artworks by four different artists",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "5.75-by-4-inch cards",
+          "full_text": "5.75-by-4-inch cards",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Single Origin Cane Sugar Sampler",
+      "brand": "Burlap & Barrel",
+      "category": "Kitchen & Dining",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "The 38 Best Gifts for Coffee Lovers",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "trio includes different sugars: jaggery (an earthy, stone-ground brown sugar from India), golden crystal (a honey-like turbinado sugar from Barbados), and panela (a buttery cane sugar produced in Colombia)",
+          "full_text": "trio includes different sugars: jaggery (an earthy, stone-ground brown sugar from India), golden crystal (a honey-like turbinado sugar from Barbados), and panela (a buttery cane sugar produced in Colombia)",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "option to go nuts with five sugars, adding wood-fired maple sugar and powdered coconut sugar to the three-pack",
+          "full_text": "option to go nuts with five sugars, adding wood-fired maple sugar and powdered coconut sugar to the three-pack",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Helio Pressure Shower",
+      "brand": "Nemo",
+      "category": "Travel & Outdoors",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "rolls down to a compact size, roughly the same as a coffee canister",
+          "full_text": "rolls down to a compact size, roughly the same as a coffee canister",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "C2 Ultra",
+      "brand": "Hisense",
+      "category": "Electronics & Tech",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "throw ratio falls in between standard- and short-throw designations, so you get a larger image when you set it in the front of a room (like on a coffee table)",
+          "full_text": "throw ratio falls in between standard- and short-throw designations, so you get a larger image when you set it in the front of a room (like on a coffee table)",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Air 3S",
+      "brand": "DJI",
+      "category": "Electronics & Tech",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "measures 8 by 3.5 by 3.25 inches when folded \u2014 about the size of a large coffee thermos \u2014 and weighs 1.6 pounds",
+          "full_text": "measures 8 by 3.5 by 3.25 inches when folded \u2014 about the size of a large coffee thermos \u2014 and weighs 1.6 pounds",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Chromebook Plus 516 (CB516-1H-31UE)",
+      "brand": "Acer",
+      "category": "Electronics & Tech",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "The 16-inch display makes this Acer model heavier and bulkier, so it's much less portable than our other Chromebook picks \u2014 it's inconvenient to take to work, class, or even a coffee shop.",
+          "full_text": "The 16-inch display makes this Acer model heavier and bulkier, so it's much less portable than our other Chromebook picks \u2014 it's inconvenient to take to work, class, or even a coffee shop.",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "On 9-Cup Coffee Maker",
+      "brand": "OXO",
+      "category": "Electronics & Tech",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "manufacturing defect that affected a select number of OXO On 9-Cup Coffee Makers",
+          "full_text": "manufacturing defect that affected a select number of OXO On 9-Cup Coffee Makers",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Lobster Clip-On Highchair",
+      "brand": "Phil&teds",
+      "category": "Home & Garden",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "must-pack in our baggage\u2014but even more so a staple here at home, forever housed in the bottom of our stroller, on hand for an impromptu dinner out or a pop in to our neighborhood coffee shop",
+          "full_text": "must-pack in our baggage\u2014but even more so a staple here at home, forever housed in the bottom of our stroller, on hand for an impromptu dinner out or a pop in to our neighborhood coffee shop",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "VH200",
+      "brand": "Vornado",
+      "category": "Electronics & Tech",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "slim, lightweight design, about the size of a coffee maker",
+          "full_text": "slim, lightweight design, about the size of a coffee maker",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Little Green Portable Carpet Cleaner 1400B",
+      "brand": "Bissell",
+      "category": "Home & Garden",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "struggled with blue Gatorade, red wine, and coffee (but still significantly lightened those stains)",
+          "full_text": "struggled with blue Gatorade, red wine, and coffee (but still significantly lightened those stains)",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Oatmilk",
+      "brand": "Oatly",
+      "category": "Electronics & Tech",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "didn't overpower when stirred into coffee",
+          "full_text": "didn't overpower when stirred into coffee",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Barista Edition Oatmilk",
+      "brand": "Oatly",
+      "category": "Electronics & Tech",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "pleasantly oaty but not so strong-tasting that it overwhelmed the nuances of the coffee",
+          "full_text": "pleasantly oaty but not so strong-tasting that it overwhelmed the nuances of the coffee",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Milked Oats Barista Edition",
+      "brand": "Elmhurst",
+      "category": "Electronics & Tech",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "didn't separate in coffee",
+          "full_text": "didn't separate in coffee",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Oatmilk",
+      "brand": "Planet Oat",
+      "category": "Electronics & Tech",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "so thin and lightly flavored that it watered down coffee",
+          "full_text": "so thin and lightly flavored that it watered down coffee",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Milked Oats",
+      "brand": "Elmhurst",
+      "category": "Electronics & Tech",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "gave my coffee an off flavor",
+          "full_text": "gave my coffee an off flavor",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Oat Yeah Oatmilk",
+      "brand": "Silk",
+      "category": "Electronics & Tech",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "didn't separate when stirred into coffee",
+          "full_text": "didn't separate when stirred into coffee",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Oat Barista Blend",
+      "brand": "Califia Farms",
+      "category": "Electronics & Tech",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "separated in coffee",
+          "full_text": "separated in coffee",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Oatmilk",
+      "brand": "Califia Farms",
+      "category": "Electronics & Tech",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "separated so much in coffee that it looked like curdled milk",
+          "full_text": "separated so much in coffee that it looked like curdled milk",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Organic Oat Plant-Based Beverage",
+      "brand": "Pacific Foods",
+      "category": "Home & Garden",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "appeared separated, even before stirred into coffee",
+          "full_text": "appeared separated, even before stirred into coffee",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "whitening strips",
+      "brand": "Crest",
+      "category": "Electronics & Tech",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "How to Remove Coffee Stains on Clothes, Furniture, and Teeth",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "can whiten and also be very effective at removing coffee stains",
+          "full_text": "can whiten and also be very effective at removing coffee stains",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Rubber Mask",
+      "brand": "Dr. Jart",
+      "category": "Health & Fitness",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "the only one reviewer could sip coffee while wearing",
+          "full_text": "the only one reviewer could sip coffee while wearing",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Machine",
+      "brand": "Nespresso",
+      "category": "Electronics & Tech",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "having a Nespresso machine lets me make my own at home",
+          "full_text": "having a Nespresso machine lets me make my own at home",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Kitchen Bar Mops",
+      "brand": "Utopia Towels",
+      "category": "Electronics & Tech",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "inexpensive, lower-quality cotton cloths that you can use for messes that stain (like coffee or sriracha sauce)",
+          "full_text": "inexpensive, lower-quality cotton cloths that you can use for messes that stain (like coffee or sriracha sauce)",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Wide Mouth",
+      "brand": "Hydro Flask",
+      "category": "Travel & Outdoors",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "\"any 7-Eleven soda fountain or Iced Cocoa Cloud Macchiato\u2013slinging barista can refill this bottle easily\"",
+          "full_text": "\"any 7-Eleven soda fountain or Iced Cocoa Cloud Macchiato\u2013slinging barista can refill this bottle easily\"",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Beyond",
+      "brand": "D&D",
+      "category": "Electronics & Tech",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "can create your own unofficial D&D content, called 'homebrew'",
+          "full_text": "can create your own unofficial D&D content, called 'homebrew'",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Coffeemaker",
+      "brand": "WeMo",
+      "category": "Electronics & Tech",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "start a brew when Amazon Echo alarm goes off",
+          "full_text": "start a brew when Amazon Echo alarm goes off",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Middle Way Tin",
+      "brand": "Cremate London",
+      "category": "Electronics & Tech",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "notes of cinnamon complement sipping coffee with chicory, enjoying a bold jazz album, responding to emails, and taking those obligatory spins through social media before settling down to work",
+          "full_text": "notes of cinnamon complement sipping coffee with chicory, enjoying a bold jazz album, responding to emails, and taking those obligatory spins through social media before settling down to work",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Homecoat",
+      "brand": "Offhours",
+      "category": "Electronics & Tech",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "5-pound heft of the Offhours Homecoat to be comfortable and comforting: It wasn't dense enough to weigh me down as I meandered around my kitchen to make coffee, and it wasn't so light that I ever forgot that I was wearing it",
+          "full_text": "5-pound heft of the Offhours Homecoat to be comfortable and comforting: It wasn't dense enough to weigh me down as I meandered around my kitchen to make coffee, and it wasn't so light that I ever forgot that I was wearing it",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Teku",
+      "brand": "Rastal",
+      "category": "Electronics & Tech",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "does more to enhance the nuanced flavors of your brew than a standard pint glass",
+          "full_text": "does more to enhance the nuanced flavors of your brew than a standard pint glass",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Classic Legendary Bottle",
+      "brand": "Stanley",
+      "category": "Baby & Kid",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "large enough to hold an entire week's worth of coffee\u201410 cups",
+          "full_text": "large enough to hold an entire week's worth of coffee\u201410 cups",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Clocks",
+      "brand": null,
+      "category": "Electronics & Tech",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "The most commonly repaired items include lamps, vacuum cleaners, coffee makers, and clocks",
+          "full_text": "The most commonly repaired items include lamps, vacuum cleaners, coffee makers, and clocks",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "car garbage can",
+      "brand": "Unspecified",
+      "category": "Electronics & Tech",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "It's also leakproof\u2014critical for those almost-but-not-quite empty coffee cups",
+          "full_text": "It's also leakproof\u2014critical for those almost-but-not-quite empty coffee cups",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Colster",
+      "brand": "Yeti",
+      "category": "Electronics & Tech",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "helps your brews stay colder for longer",
+          "full_text": "helps your brews stay colder for longer",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "WashG1 Wet Cleaner",
+      "brand": "Dyson",
+      "category": "Home & Garden",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "skillfully wiping up spilled coffee, spattered ketchup, and dumped Cheerios",
+          "full_text": "skillfully wiping up spilled coffee, spattered ketchup, and dumped Cheerios",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Touchless Vacuum Automatic Dustpan",
+      "brand": "EyeVac",
+      "category": "Home & Garden",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "startled our dog, who wanted to get a closer sniff at the pieces of granola and coffee grounds inside the canister",
+          "full_text": "startled our dog, who wanted to get a closer sniff at the pieces of granola and coffee grounds inside the canister",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Butter Warmer",
+      "brand": "Unspecified",
+      "category": "Electronics & Tech",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "used to warm up lukewarm coffee and tea, day-old fondue, and to melt butter for brownies",
+          "full_text": "used to warm up lukewarm coffee and tea, day-old fondue, and to melt butter for brownies",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Nature Study Guides",
+      "brand": "Unspecified",
+      "category": "Electronics & Tech",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "would be great on the coffee table of any summer retreat",
+          "full_text": "would be great on the coffee table of any summer retreat",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Smart Pill Dispenser",
+      "brand": "Hero",
+      "category": "Electronics & Tech",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "About the size of a coffee maker",
+          "full_text": "About the size of a coffee maker",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Beer Can Glasses",
+      "brand": "Unspecified",
+      "category": "Electronics & Tech",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "something about drinking out of one might make you feel like you're grabbing dinner at your local brewery",
+          "full_text": "something about drinking out of one might make you feel like you're grabbing dinner at your local brewery",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Porcelain Tumblers",
+      "brand": "Unspecified",
+      "category": "Electronics & Tech",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "would do well as a coffee cup by morning",
+          "full_text": "would do well as a coffee cup by morning",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Shave Ice Attachment",
+      "brand": "KitchenAid",
+      "category": "Electronics & Tech",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "can also make an instant granita with frozen juice or coffee",
+          "full_text": "can also make an instant granita with frozen juice or coffee",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Top-Pick Cooler",
+      "brand": "Wirecutter",
+      "category": "Travel & Outdoors",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "kept their eggs, bacon, and brews crisp and cool",
+          "full_text": "kept their eggs, bacon, and brews crisp and cool",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Small Splatterware Tray",
+      "brand": "Crow Canyon",
+      "category": "Electronics & Tech",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "delightfully vintage-inspired pattern peeks out around the food, and it cheers up even the most unremarkable dining- or coffee-table setup",
+          "full_text": "delightfully vintage-inspired pattern peeks out around the food, and it cheers up even the most unremarkable dining- or coffee-table setup",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Personalized Times Front Page Book",
+      "brand": "Unspecified",
+      "category": "Gifts & Pets",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "personalized coffee-table book features the front page of The Times for every birthday in a person's life. Hand-bound and encased in leatherette, it's a smart and sweet way to honor a lifetime of birthdays",
+          "full_text": "personalized coffee-table book features the front page of The Times for every birthday in a person's life. Hand-bound and encased in leatherette, it's a smart and sweet way to honor a lifetime of birthdays",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "SpotLite Portable Carpet Spot & Pet Stain Cleaner Vac",
+      "brand": "Kenmore",
+      "category": "Home & Garden",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "beat Bissell model by a whisker on coffee and red-wine stains",
+          "full_text": "beat Bissell model by a whisker on coffee and red-wine stains",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Ultra Oxi Powder",
+      "brand": "Tide",
+      "category": "Home & Garden",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "easily eradicated tannin stains (wine, tea, coffee), dirt, grass, and other highly pigmented natural stains",
+          "full_text": "easily eradicated tannin stains (wine, tea, coffee), dirt, grass, and other highly pigmented natural stains",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Aspire Go 15 (AG15-32P-30YE)",
+      "brand": "Acer",
+      "category": "Electronics & Tech",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "The Aspire Go 15 is bulky and heavy at 3.74 pounds \u2014 it's better used around the house than carted around to coffee shops.",
+          "full_text": "The Aspire Go 15 is bulky and heavy at 3.74 pounds \u2014 it's better used around the house than carted around to coffee shops.",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Wisdom Ball",
+      "brand": null,
+      "category": "Gifts & Pets",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "decorated with the Hebrew chai, meaning 'life'",
+          "full_text": "decorated with the Hebrew chai, meaning 'life'",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Reform Mezuzah",
+      "brand": "Jonathan Adler",
+      "category": "Gifts & Pets",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "features the Hebrew letter shin",
+          "full_text": "features the Hebrew letter shin",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Original Recipe Blue Tin Cookies",
+      "brand": "Shortbread House of Edinburgh",
+      "category": "Gifts & Pets",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "Lovely accompaniment to coffee, tea, or a rainy afternoon",
+          "full_text": "Lovely accompaniment to coffee, tea, or a rainy afternoon",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Original Ap\u00e9ritif",
+      "brand": "Ghia",
+      "category": "Electronics & Tech",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "0% alcohol, vegan, caffeine-free, gluten-free, no added sugars",
+          "full_text": "0% alcohol, vegan, caffeine-free, gluten-free, no added sugars",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "White Russian",
+      "brand": "Cutwater",
+      "category": "Electronics & Tech",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "light, pleasant, and chocolatey coffee flavor",
+          "full_text": "light, pleasant, and chocolatey coffee flavor",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Sahara Shade Hoodie",
+      "brand": "REI Co-op",
+      "category": "Style & Beauty",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "good all-around pullover, suitable for hiking, having iced coffee on the deck, or walking the dog",
+          "full_text": "good all-around pullover, suitable for hiking, having iced coffee on the deck, or walking the dog",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Cold Brew and Coconut Cream",
+      "brand": "Jeni's",
+      "category": "Electronics & Tech",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "swirled mix of vegan coconut-cream ice cream and cold-brew sorbet",
+          "full_text": "swirled mix of vegan coconut-cream ice cream and cold-brew sorbet",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Qrevo MaxV",
+      "brand": "Roborock",
+      "category": "Home & Garden",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "managed to erase the dried coffee stains entirely",
+          "full_text": "managed to erase the dried coffee stains entirely",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Freo X Ultra",
+      "brand": "Narwal",
+      "category": "Home & Garden",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "managed to erase the dried coffee stains entirely",
+          "full_text": "managed to erase the dried coffee stains entirely",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "M12 Pro+",
+      "brand": "Yeedi",
+      "category": "Home & Garden",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "managed to erase the dried coffee stains entirely",
+          "full_text": "managed to erase the dried coffee stains entirely",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Brightening Serum Facial Treatment Sheet Masks",
+      "brand": "SK-II",
+      "category": "Home & Garden",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "claims that scientists noticed the hands of Japanese sake brewers looked much younger than their age",
+          "full_text": "claims that scientists noticed the hands of Japanese sake brewers looked much younger than their age",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Cereal Bowls",
+      "brand": "Heath",
+      "category": "Electronics & Tech",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "includes plates in three sizes, cereal bowls, and coffee cups",
+          "full_text": "includes plates in three sizes, cereal bowls, and coffee cups",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Eden Lacquer Jewelry Box",
+      "brand": "Jonathan Adler",
+      "category": "jewelry storage",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "Depending on where you place it\u2014atop your bedroom dresser, on a desk, or on the coffee table in your den\u2014your guests might wonder if it contains cigars or candies (or maybe just a TV remote)",
+          "full_text": "Depending on where you place it\u2014atop your bedroom dresser, on a desk, or on the coffee table in your den\u2014your guests might wonder if it contains cigars or candies (or maybe just a TV remote)",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Gluten-Free Ultimate Fudge Brownie Mix",
+      "brand": "King Arthur Baking Company",
+      "category": "baking mixes",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "intensity of high-quality cocoa, with notes of coffee and brown butter",
+          "full_text": "intensity of high-quality cocoa, with notes of coffee and brown butter",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "0.9-cubic-foot, 900-watt model",
+      "brand": "Kenmore",
+      "category": "microwaves",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "performed better than the Galanz Retro, but merely as expected for a microwave at its price \u2014 that is, it's totally fine if you use it only for coffee or popcorn",
+          "full_text": "performed better than the Galanz Retro, but merely as expected for a microwave at its price \u2014 that is, it's totally fine if you use it only for coffee or popcorn",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Swivel Universal TV Stand",
+      "brand": "Perelsmith",
+      "category": "TV mounts and stands",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "Editor Signe Brewster also likes",
+          "full_text": "Editor Signe Brewster also likes",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "17 Pro",
+      "brand": "Espresso Displays",
+      "category": "portable monitors",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "has no physical buttons, so you need to use the espressoFlow software to change any settings, and we found the color settings in the app too limited for us to quickly fine-tune the display",
+          "full_text": "has no physical buttons, so you need to use the espressoFlow software to change any settings, and we found the color settings in the app too limited for us to quickly fine-tune the display",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Carry-on",
+      "brand": "Aer",
+      "category": "hard-sided luggage",
+      "relevance_score": 3,
+      "articles": 1,
+      "is_editorial": true,
+      "editorial_only": true,
+      "matched_signals": [
+        {
+          "type": "insight_content",
+          "text": "The Aer bag has a reliable, easy-to-use wheel-locking system (which is activated with the flick of a switch near the bag's extending handle). So our testers could turn around and order a coffee without wondering whether their luggage would venture of...",
+          "full_text": "The Aer bag has a reliable, easy-to-use wheel-locking system (which is activated with the flick of a switch near the bag's extending handle). So our testers could turn around and order a coffee without wondering whether their luggage would venture off on an entirely separate journey.",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "SpotClean Pro",
+      "brand": "Bissell",
+      "category": "Electronics & Tech",
+      "relevance_score": 2,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "How to Remove Coffee Stains on Clothes, Furniture, and Teeth",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "portable carpet and upholstery cleaner",
+          "full_text": "portable carpet and upholstery cleaner",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "can be a game changer",
+          "full_text": "can be a game changer",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Spray Stain Remover",
+      "brand": "Zout",
+      "category": "Home & Garden",
+      "relevance_score": 2,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "How to Remove Coffee Stains on Clothes, Furniture, and Teeth",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "very effective",
+          "full_text": "very effective",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "contains protease (an enzyme that breaks down protein stains from cream and milk) and amylase (an enzyme that breaks down the starch molecules from sugar)",
+          "full_text": "contains protease (an enzyme that breaks down protein stains from cream and milk) and amylase (an enzyme that breaks down the starch molecules from sugar)",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "FerMonster",
+      "brand": "MoreBeer",
+      "category": "Electronics & Tech",
+      "relevance_score": 2,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "Brewing Award-Winning Beer at Home Is Easier Than You Think",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "wide mouth makes it easier to clean",
+          "full_text": "wide mouth makes it easier to clean",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "prefer the ported versions with a ball-lock spigot at the bottom",
+          "full_text": "prefer the ported versions with a ball-lock spigot at the bottom",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Big Mouth Bubbler",
+      "brand": "Northern Brewer",
+      "category": "Electronics & Tech",
+      "relevance_score": 2,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "Brewing Award-Winning Beer at Home Is Easier Than You Think",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "wide mouth makes it easier to clean",
+          "full_text": "wide mouth makes it easier to clean",
+          "weight": 2
+        },
+        {
+          "type": "insight_content",
+          "text": "prefer the ported versions with a ball-lock spigot at the bottom",
+          "full_text": "prefer the ported versions with a ball-lock spigot at the bottom",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Encore Coffee Grinder",
+      "brand": "Baratza",
+      "category": "Kitchen & Dining",
+      "relevance_score": 2,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "A Great Deal on a High-End Coffee Grinder",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "main pick",
+          "full_text": "main pick",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Filtron",
+      "brand": "Filtron",
+      "category": "Kitchen & Dining",
+      "relevance_score": 2,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "Iced Coffee at Home: Cold-Brew Coffee Makers vs. DIY",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "off-the-shelf kit",
+          "full_text": "off-the-shelf kit",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Z27",
+      "brand": "HP",
+      "category": "Kitchen & Dining",
+      "relevance_score": 2,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "It\u2019s Coffee Week at Wirecutter",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "favorite 4K monitor",
+          "full_text": "favorite 4K monitor",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "ThinkVision P27u-10",
+      "brand": "Lenovo",
+      "category": "Kitchen & Dining",
+      "relevance_score": 2,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "It\u2019s Coffee Week at Wirecutter",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "runner-up 4K monitor",
+          "full_text": "runner-up 4K monitor",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "UltraSharp U2718Q",
+      "brand": "Dell",
+      "category": "Kitchen & Dining",
+      "relevance_score": 2,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "It\u2019s Coffee Week at Wirecutter",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "budget pick 4K monitor",
+          "full_text": "budget pick 4K monitor",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "U3219Q",
+      "brand": "Dell",
+      "category": "Kitchen & Dining",
+      "relevance_score": 2,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "It\u2019s Coffee Week at Wirecutter",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "upgrade pick 4K monitor",
+          "full_text": "upgrade pick 4K monitor",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Bran-Based Hot Drink",
+      "brand": "Postum",
+      "category": "Kitchen & Dining",
+      "relevance_score": 2,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "No, Coffee Doesn\u2019t Stunt Kids\u2019 Growth",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "non-caffeinated, bran-based hot drink developed in 1895 by C.W. Post",
+          "full_text": "non-caffeinated, bran-based hot drink developed in 1895 by C.W. Post",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Coffee Club",
+      "brand": "Atlas",
+      "category": "Kitchen & Dining",
+      "relevance_score": 2,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "The Best Coffee I\u2019ve Ever Tasted Comes out of a Dirty Sock",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "artisan roaster",
+          "full_text": "artisan roaster",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Gold Instant Coffee",
+      "brand": "Nescaf\u00e9",
+      "category": "Kitchen & Dining",
+      "relevance_score": 2,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "We Tasted 4 of the Newest (and Most Photogenic) Instant Coffees",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "comes in at only 15\u00a2 per cup",
+          "full_text": "comes in at only 15\u00a2 per cup",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Vertuo Capsules",
+      "brand": "Nespresso",
+      "category": "Kitchen & Dining",
+      "relevance_score": 2,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "If I Care About the Environment but Am Also Lazy, Should I Get a Nespresso or Keurig?",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "each bag can hold up to 100 Vertuo capsules",
+          "full_text": "each bag can hold up to 100 Vertuo capsules",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Brilliance Pantry Storage Containers",
+      "brand": "Rubbermaid",
+      "category": "Kitchen & Dining",
+      "relevance_score": 2,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "5 Cheap(ish) Things to Upgrade Your Coffee Experience",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "durable and tightly sealed",
+          "full_text": "durable and tightly sealed",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Pronto Digital Multifunction Kitchen and Food Scale",
+      "brand": "Ozeri",
+      "category": "Kitchen & Dining",
+      "relevance_score": 2,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "5 Cheap(ish) Things to Upgrade Your Coffee Experience",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "budget pick in our guide to kitchen scales",
+          "full_text": "budget pick in our guide to kitchen scales",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Cafe Classic Mug",
+      "brand": "Highwave",
+      "category": "Kitchen & Dining",
+      "relevance_score": 2,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "5 Cheap(ish) Things to Upgrade Your Coffee Experience",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "classic diner-style mug",
+          "full_text": "classic diner-style mug",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "P3",
+      "brand": "Espro",
+      "category": "Kitchen & Dining",
+      "relevance_score": 2,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "The Best Single-Serve Coffee Maker (Isn\u2019t a Keurig)",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "bucket-shaped, fine-mesh double filter does a superior job of keeping that sediment out of your cup",
+          "full_text": "bucket-shaped, fine-mesh double filter does a superior job of keeping that sediment out of your cup",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Stovetop Steamer",
+      "brand": "Bellman",
+      "category": "Kitchen & Dining",
+      "relevance_score": 2,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "Making Espresso at Home Is Kind of a Nightmare\u2014But If You Insist, Here\u2019s How to Do It Well",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "$100 milk frother",
+          "full_text": "$100 milk frother",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Mignon",
+      "brand": "Eureka",
+      "category": "Kitchen & Dining",
+      "relevance_score": 2,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "Making Espresso at Home Is Kind of a Nightmare\u2014But If You Insist, Here\u2019s How to Do It Well",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "with 55 mm burrs",
+          "full_text": "with 55 mm burrs",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "m7d",
+      "brand": "Macap",
+      "category": "Kitchen & Dining",
+      "relevance_score": 2,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "Making Espresso at Home Is Kind of a Nightmare\u2014But If You Insist, Here\u2019s How to Do It Well",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "with 68 mm burrs",
+          "full_text": "with 68 mm burrs",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Atom",
+      "brand": "Eureka",
+      "category": "Kitchen & Dining",
+      "relevance_score": 2,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "Making Espresso at Home Is Kind of a Nightmare\u2014But If You Insist, Here\u2019s How to Do It Well",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "75 mm flat burr grinder",
+          "full_text": "75 mm flat burr grinder",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Bamboo Coffee Filter Holder",
+      "brand": "Unibene",
+      "category": "Kitchen & Dining",
+      "relevance_score": 2,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "What a Wirecutter Staffer (and Former Barista) Uses to Make Coffee",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "neatly organizes filters for AeroPress, Chemex, Hario V60, and Moccamaster",
+          "full_text": "neatly organizes filters for AeroPress, Chemex, Hario V60, and Moccamaster",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Color Rawhides",
+      "brand": "Chemex",
+      "category": "Kitchen & Dining",
+      "relevance_score": 2,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "What a Wirecutter Staffer (and Former Barista) Uses to Make Coffee",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "can personalize by swapping out the natural leather tie for one of seven different colors",
+          "full_text": "can personalize by swapping out the natural leather tie for one of seven different colors",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Solar-Powered Rainbow Maker",
+      "brand": "Kikkerland",
+      "category": "Kitchen & Dining",
+      "relevance_score": 2,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "What a Wirecutter Staffer (and Former Barista) Uses to Make Coffee",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "solar battery makes crystal rotate and refract sunlight",
+          "full_text": "solar battery makes crystal rotate and refract sunlight",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "CPK-17 PerfecTemp Cordless Electric Kettle",
+      "brand": "Cuisinart",
+      "category": "Kitchen & Dining",
+      "relevance_score": 2,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "Ask Wirecutter: How Do I Get My Partner to Stop Serving Me Lukewarm Coffee?",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "holds water at temperature for 30 minutes",
+          "full_text": "holds water at temperature for 30 minutes",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "GK-1 Digital Gooseneck Kettle",
+      "brand": "Cuisinart",
+      "category": "Kitchen & Dining",
+      "relevance_score": 2,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "Ask Wirecutter: How Do I Get My Partner to Stop Serving Me Lukewarm Coffee?",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "holds water at temperature for 30 minutes",
+          "full_text": "holds water at temperature for 30 minutes",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Smart Coffee Warmer",
+      "brand": "Bestinnkits",
+      "category": "Kitchen & Dining",
+      "relevance_score": 2,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "Ask Wirecutter: How Do I Get My Partner to Stop Serving Me Lukewarm Coffee?",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "keeps mug and contents in the 130 \u00b0F to 140 \u00b0F range",
+          "full_text": "keeps mug and contents in the 130 \u00b0F to 140 \u00b0F range",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "V60",
+      "brand": "Hario",
+      "category": "Kitchen & Dining",
+      "relevance_score": 2,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "I Used to Own a Coffee Shop. This Is My Go-to Pour-Over Dripper.",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "has a conical bottom, straight paper filters, and a single large hole at its base",
+          "full_text": "has a conical bottom, straight paper filters, and a single large hole at its base",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Chemex",
+      "brand": null,
+      "category": "Kitchen & Dining",
+      "relevance_score": 2,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "I Used to Own a Coffee Shop. This Is My Go-to Pour-Over Dripper.",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "beautiful but delicate glass carafe",
+          "full_text": "beautiful but delicate glass carafe",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "grinder",
+      "brand": "OXO",
+      "category": "Kitchen & Dining",
+      "relevance_score": 2,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "Even Mediocre Home Baristas Can Make Good Espresso With This Unintimidating Machine",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "Wirecutter budget pick",
+          "full_text": "Wirecutter budget pick",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Colombia Blend",
+      "brand": "Swift Cup",
+      "category": "Kitchen & Dining",
+      "relevance_score": 2,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "We Tasted 4 of the Newest (and Most Photogenic) Instant Coffees",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "unappealing",
+          "full_text": "unappealing",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Premium Coffee Maker",
+      "brand": "AeroPress",
+      "category": "Kitchen & Dining",
+      "relevance_score": 2,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "The 38 Best Gifts for Coffee Lovers",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "swaps plastic for stainless steel, anodized aluminum, and double-wall borosilicate glass",
+          "full_text": "swaps plastic for stainless steel, anodized aluminum, and double-wall borosilicate glass",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Express",
+      "brand": "Moka",
+      "category": "Kitchen & Dining",
+      "relevance_score": 2,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "The Best Single-Serve Coffee Maker (Isn\u2019t a Keurig)",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "in the MoMA",
+          "full_text": "in the MoMA",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Creamer",
+      "brand": "MudWtr",
+      "category": "Kitchen & Dining",
+      "relevance_score": 2,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "I Love Coffee, but I Gave It Up for MudWtr. Don\u2019t Make My Mistake.",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "made of coconut milk and MCT oil",
+          "full_text": "made of coconut milk and MCT oil",
+          "weight": 2
+        }
+      ]
+    },
+    {
+      "product_name": "Sweetener",
+      "brand": "MudWtr",
+      "category": "Kitchen & Dining",
+      "relevance_score": 2,
+      "articles": 1,
+      "is_editorial": false,
+      "editorial_only": false,
+      "matched_signals": [
+        {
+          "type": "article_title",
+          "text": "I Love Coffee, but I Gave It Up for MudWtr. Don\u2019t Make My Mistake.",
+          "weight": 5
+        },
+        {
+          "type": "insight_content",
+          "text": "two parts coconut sugar to one part l\u00facuma",
+          "full_text": "two parts coconut sugar to one part l\u00facuma",
+          "weight": 2
+        }
+      ]
+    }
+  ]
+}
