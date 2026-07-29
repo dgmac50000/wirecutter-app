@@ -57,6 +57,8 @@ struct CommerceListView: View {
     @State private var visibleFeedProductIDs: Set<Int> = []
     @State private var feedRevealComplete = false
     @State private var didStartContentEntrance = false
+    @State private var saveSheetItem: CommerceItem?
+    @State private var savedItemIds: Set<Int> = []
     /// True while feed + gift-guide heroes + first images are loading.
     @State private var isPreparingHome = true
     /// Multi-profile Upcoming card → choose who you're shopping for.
@@ -71,7 +73,7 @@ struct CommerceListView: View {
     private let homeChromeBorderColor = Color(hex: 0xEEEEEE)
 
     private let feedFilters = FeedPriceFilter.allCases
-    private let feedFilterLazySpacing: CGFloat = 16
+    private let feedFilterLazySpacing: CGFloat = 24
     private let feedFilterPillSpacing: CGFloat = 8
     /// Fade after the Buy-from-NYT separator; pills begin at the end of this zone.
     private let buyFromNYTFadeWidth: CGFloat = 12
@@ -199,8 +201,9 @@ struct CommerceListView: View {
                                 .opacity(feedRevealComplete ? 1 : 0)
                             } else {
                                 ForEach(Array(shuffledProducts.enumerated()), id: \.element.id) { index, item in
+
                                     if index == 8 {
-                                        SeriesCardView(
+                                        SpecialtyCarouselView(
                                             series: .headphones,
                                             onProductTap: { quickViewItem = $0 }
                                         )
@@ -209,7 +212,10 @@ struct CommerceListView: View {
                                     ProductCardView(
                                         item: item,
                                         onTap: { quickViewItem = item },
-                                        onDeepDive: { quickViewItem = item }
+                                        onDeepDive: { quickViewItem = item },
+                                        isSaved: savedItemIds.contains(item.id),
+                                        onBookmarkTap: { saveSheetItem = item },
+                                        showSuggestion: index % 5 == 4
                                     )
                                     .padding(.horizontal, 20)
                                     .transition(.opacity.combined(with: .move(edge: .bottom)))
@@ -295,6 +301,20 @@ struct CommerceListView: View {
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
                         onSelectPerson(profile)
                     }
+                }
+            )
+            .presentationDetents([.medium])
+            .presentationDragIndicator(.visible)
+        }
+        .sheet(item: $saveSheetItem) { item in
+            SaveToListSheet(
+                item: item,
+                people: people,
+                onSave: { _ in
+                    withAnimation(.easeInOut(duration: 0.25)) {
+                        savedItemIds.insert(item.id)
+                    }
+                    saveSheetItem = nil
                 }
             )
             .presentationDetents([.medium])
@@ -1334,6 +1354,7 @@ struct ProductCardView: View {
     var onDeepDive: (() -> Void)? = nil
     var isSaved: Bool = false
     var onBookmarkTap: (() -> Void)? = nil
+    var showSuggestion: Bool = false
 
     var isSpecialty: Bool {
         if let sources = item.sources {
@@ -1427,12 +1448,32 @@ struct ProductCardView: View {
         VStack(spacing: 0) {
             imageArea
             infoSection
+            if showSuggestion {
+                suggestionFooter
+            }
         }
         .background(Color.white)
         .clipShape(RoundedRectangle(cornerRadius: 8))
         .shadow(color: .black.opacity(0.12), radius: 6, x: 0, y: 2)
         .contentShape(Rectangle())
         .onTapGesture { onTap() }
+    }
+
+    // MARK: - Suggestion Footer
+
+    private var suggestionFooter: some View {
+        HStack(spacing: 8) {
+            Image("NYTAIIcon")
+                .resizable()
+                .frame(width: 21, height: 20)
+            Text("Add to my \"\(item.categoryName ?? "Home")\" list")
+                .font(.nytFranklin(.medium, size: 16))
+                .foregroundStyle(Color(hex: 0x191919))
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.horizontal, 15)
+        .padding(.vertical, 10)
+        .background(Color(hex: 0xF0F1FF))
     }
 
     private static let specialtyImageOverrides: [Int: String] = [
@@ -1452,27 +1493,31 @@ struct ProductCardView: View {
             LinearGradient(
                 stops: [
                     .init(color: .clear, location: 0.0),
-                    .init(color: .clear, location: 0.39),
-                    .init(color: .black.opacity(0.5), location: 1.0),
+                    .init(color: .black.opacity(0.4), location: 0.86),
                 ],
                 startPoint: .top,
                 endPoint: .bottom
             )
         }
-        .overlay(alignment: .bottomLeading) {
+        .overlay(alignment: .topTrailing) {
+            actionButtons
+                .padding(.top, 16)
+                .padding(.trailing, 16)
+        }
+        .overlay(alignment: .bottom) {
             VStack(alignment: .leading, spacing: 20) {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(item.displayMerchant?.uppercased() ?? item.productTitle.uppercased())
-                        .font(.nytFranklin(.bold, size: 11))
+                    Text(item.displayMerchant?.uppercased() ?? "")
+                        .font(.custom("NYTFranklin-ExtraBold", fixedSize: 11))
                         .tracking(1.1)
                         .foregroundStyle(.white)
 
                     Text(item.productTitle)
-                        .font(.nytFranklin(.bold, size: 31))
+                        .font(.custom("NYTFranklin-ExtraBold", fixedSize: 31))
                         .tracking(-0.5)
-                        .lineSpacing(34 - 31)
+                        .lineSpacing(3)
                         .foregroundStyle(.white)
-                        .lineLimit(3)
+                        .lineLimit(4)
 
                     if let firstBullet = bulletPoints.first {
                         Text(firstBullet)
@@ -1486,7 +1531,7 @@ struct ProductCardView: View {
                     onDeepDive?()
                 } label: {
                     Text("See the Research")
-                        .font(.nytFranklin(.bold, size: 14))
+                        .font(.nytFranklin(.bold, size: 16))
                         .foregroundStyle(.black)
                         .frame(maxWidth: .infinity)
                         .frame(height: 39)
@@ -1495,12 +1540,9 @@ struct ProductCardView: View {
                 }
                 .buttonStyle(.plain)
             }
-            .padding(16)
-        }
-        .overlay(alignment: .topTrailing) {
-            actionButtons
-                .padding(.top, 16)
-                .padding(.trailing, 16)
+            .padding(.horizontal, 16)
+            .padding(.bottom, 16)
+            .padding(.top, 8)
         }
         .clipShape(RoundedRectangle(cornerRadius: 8))
         .shadow(color: .black.opacity(0.12), radius: 6, x: 0, y: 2)
@@ -1548,7 +1590,8 @@ struct ProductCardView: View {
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            .padding(12)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 12)
                     case .failure:
                         Image(systemName: "photo")
                             .font(.largeTitle)
@@ -1572,7 +1615,7 @@ struct ProductCardView: View {
                 .padding(.trailing, 15)
         }
         .frame(maxWidth: .infinity)
-        .frame(height: 280)
+        .frame(height: 312)
         .clipShape(
             UnevenRoundedRectangle(
                 topLeadingRadius: 8,
@@ -1581,17 +1624,9 @@ struct ProductCardView: View {
                 topTrailingRadius: 8
             )
         )
-        .overlay(alignment: .bottom) {
-            HStack(spacing: 4) {
-                Circle().fill(Color.black).frame(width: 6, height: 6)
-                Circle().fill(Color(hex: 0xCCCCCC)).frame(width: 4, height: 4)
-                Circle().fill(Color(hex: 0xCCCCCC)).frame(width: 4, height: 4)
-            }
-            .padding(.bottom, 12)
-        }
     }
 
-    // MARK: - Action Buttons (bell + bookmark)
+    // MARK: - Action Buttons
 
     private var actionButtons: some View {
         VStack(spacing: 8) {
@@ -1635,11 +1670,12 @@ struct ProductCardView: View {
     // MARK: - Info Section (default card only)
 
     private var infoSection: some View {
-        VStack(alignment: .leading, spacing: 20) {
-            VStack(alignment: .leading, spacing: 12) {
+        VStack(spacing: 8) {
+            VStack(alignment: .leading, spacing: 4) {
                 Text(item.displayMerchant ?? item.productTitle)
                     .font(.nytFranklin(.medium, size: 12))
                     .foregroundStyle(Color(hex: 0x666666))
+                    .lineSpacing(6)
 
                 Text(item.productTitle)
                     .font(.nytFranklin(.bold, size: 20))
@@ -1654,10 +1690,13 @@ struct ProductCardView: View {
                             Text("• \(bullet)")
                                 .font(.nytFranklin(.medium, size: 14))
                                 .foregroundStyle(.black)
+                                .lineSpacing(6)
                         }
                     }
+                    .padding(.top, 4)
                 }
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
 
             VStack(spacing: 8) {
                 ForEach(Array(buyButtons.enumerated()), id: \.offset) { _, button in
@@ -1667,8 +1706,7 @@ struct ProductCardView: View {
                         Text(button.text)
                             .font(.nytFranklin(.bold, size: 14))
                             .foregroundStyle(.white)
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 39)
+                            .frame(width: 235, height: 39)
                             .background(Color.black)
                             .clipShape(RoundedRectangle(cornerRadius: 4))
                     }
@@ -1682,133 +1720,103 @@ struct ProductCardView: View {
     }
 }
 
-// MARK: - Series Card (editorial carousel)
+// MARK: - Specialty Carousel (Series)
 
-struct SeriesCardView: View {
+struct SpecialtyCarouselView: View {
     let series: SeriesData
     let onProductTap: (CommerceItem) -> Void
 
-    private var cardWidth: CGFloat {
-        UIScreen.main.bounds.width - 60
-    }
-
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 16) {
-                seriesIntroCard
+            HStack(alignment: .top, spacing: 16) {
+                editorialIntroCard
 
-                ForEach(series.products) { product in
-                    seriesProductCard(product)
-                        .frame(width: cardWidth)
+                ForEach(series.products) { item in
+                    SpecialtyProductCard(
+                        item: item,
+                        localAsset: series.localImageOverrides[item.productId] ?? "",
+                        backgroundColor: Color(hex: series.productBackgrounds[item.productId] ?? 0xEEEEEE),
+                        onTap: { onProductTap(item) }
+                    )
+                    .frame(width: 303)
                 }
             }
-            .scrollTargetLayout()
             .padding(.horizontal, 20)
+            .scrollTargetLayout()
         }
         .scrollTargetBehavior(.viewAligned)
     }
 
-    @ViewBuilder
-    private func seriesProductCard(_ product: CommerceItem) -> some View {
-        if let assetName = series.localImageOverrides[product.productId] {
-            let bgColor: Color = {
-                if let hex = series.productBackgrounds[product.productId] {
-                    return Color(hex: hex)
-                }
-                return Color(hex: 0xF6F6F6)
-            }()
-            SeriesLocalImageProductCard(
-                item: product,
-                localAsset: assetName,
-                backgroundColor: bgColor,
-                onTap: { onProductTap(product) }
-            )
-        } else {
-            ProductCardView(
-                item: product,
-                onTap: { onProductTap(product) },
-                maxBuyButtons: 3
-            )
-        }
-    }
-
-    @ViewBuilder
-    private var heroImage: some View {
-        if let asset = series.heroImageAsset {
-            Image(asset)
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-        } else {
-            AsyncImage(url: series.heroImageURL) { phase in
-                switch phase {
-                case .success(let image):
-                    image
+    private var editorialIntroCard: some View {
+        ZStack(alignment: .bottom) {
+            Group {
+                if let asset = series.heroImageAsset {
+                    Image(asset)
                         .resizable()
                         .aspectRatio(contentMode: .fill)
-                case .failure:
-                    Color(hex: 0x222222)
-                case .empty:
-                    Color(hex: 0x222222)
-                        .overlay(ProgressView().tint(.white))
-                @unknown default:
+                } else if let url = series.heroImageURL {
+                    AsyncImage(url: url) { phase in
+                        switch phase {
+                        case .success(let image):
+                            image.resizable().aspectRatio(contentMode: .fill)
+                        default:
+                            Color(hex: 0x222222)
+                        }
+                    }
+                } else {
                     Color(hex: 0x222222)
                 }
             }
-        }
-    }
-
-    private var seriesIntroCard: some View {
-        heroImage
-            .frame(width: cardWidth, height: 640)
+            .frame(width: 303, height: 510)
             .clipped()
-            .overlay {
-                LinearGradient(
-                    colors: [.clear, .clear, .black.opacity(0.5)],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-            }
-            .overlay(alignment: .bottomLeading) {
-                HStack(alignment: .bottom) {
-                    Text(series.title)
-                        .font(.nytFranklin(.bold, size: 31))
-                        .tracking(-0.5)
-                        .lineSpacing(34 - 31)
-                        .foregroundStyle(.white)
-                        .lineLimit(4)
 
-                    Spacer(minLength: 8)
+            LinearGradient(
+                stops: [
+                    .init(color: .clear, location: 148.0 / 510.0),
+                    .init(color: .black.opacity(0.4), location: 1.0),
+                ],
+                startPoint: .top,
+                endPoint: .bottom
+            )
 
-                    Circle()
-                        .fill(.white)
-                        .frame(width: 24, height: 24)
-                        .overlay(
-                            Image(systemName: "chevron.right")
-                                .font(.system(size: 10, weight: .bold))
-                                .foregroundStyle(.black)
-                        )
-                }
-                .padding(16)
+            HStack(alignment: .bottom) {
+                Text(series.title)
+                    .font(.custom("NYTFranklin-ExtraBold", fixedSize: 31))
+                    .tracking(-0.5)
+                    .lineSpacing(3)
+                    .foregroundStyle(.white)
+                    .lineLimit(4)
+
+                Spacer(minLength: 8)
+
+                Circle()
+                    .fill(.white)
+                    .frame(width: 24, height: 24)
+                    .overlay(
+                        Image(systemName: "chevron.right")
+                            .font(.system(size: 10, weight: .bold))
+                            .foregroundStyle(.black)
+                    )
             }
-            .clipShape(RoundedRectangle(cornerRadius: 8))
-            .shadow(color: .black.opacity(0.12), radius: 6, x: 0, y: 2)
+            .padding(16)
+        }
+        .frame(width: 303, height: 510)
+        .clipShape(RoundedRectangle(cornerRadius: 8))
+        .shadow(color: .black.opacity(0.12), radius: 6, x: 0, y: 2)
     }
 }
 
-// MARK: - Series product card with local asset image (full-bleed colored card)
-
-private struct SeriesLocalImageProductCard: View {
+private struct SpecialtyProductCard: View {
     let item: CommerceItem
     let localAsset: String
-    var backgroundColor: Color = Color(hex: 0xF6F6F6)
+    let backgroundColor: Color
     let onTap: () -> Void
 
     private var bulletPoints: [String] {
         guard let desc = item.productDescription, !desc.isEmpty else { return [] }
-        let lines = desc.components(separatedBy: .newlines)
+        return desc.components(separatedBy: .newlines)
             .map { $0.trimmingCharacters(in: .whitespaces) }
             .filter { !$0.isEmpty }
-        return Array(lines.prefix(3))
     }
 
     private var buyButtons: [(text: String, url: URL?)] {
@@ -1820,7 +1828,18 @@ private struct SeriesLocalImageProductCard: View {
                 return (text: text, url: source.dealAffiliateUrl ?? source.affiliateUrl)
             }
         }
-        return [(text: "View Details", url: nil)]
+        let text: String
+        switch (item.displayPrice, item.displayMerchant) {
+        case let (price?, merchant?):
+            text = "\(price) from \(merchant)"
+        case let (price?, nil):
+            text = price
+        case let (nil, merchant?):
+            text = "From \(merchant)"
+        default:
+            text = "View Details"
+        }
+        return [(text: text, url: item.shopUrl)]
     }
 
     var body: some View {
@@ -1828,39 +1847,46 @@ private struct SeriesLocalImageProductCard: View {
             ZStack(alignment: .topTrailing) {
                 Image(localAsset)
                     .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .padding(24)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 340)
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 303, height: 288)
+                    .clipped()
 
                 VStack(spacing: 8) {
-                    Image(systemName: "bell.fill")
-                        .font(.system(size: 12, weight: .medium))
-                        .foregroundStyle(.primary)
-                        .frame(width: 32, height: 32)
-                        .background(.ultraThinMaterial, in: Circle())
+                    Circle()
+                        .fill(.white)
+                        .frame(width: 24, height: 24)
+                        .overlay(
+                            Image(systemName: "bell.fill")
+                                .font(.system(size: 12, weight: .medium))
+                                .foregroundStyle(.black)
+                        )
 
-                    Image(systemName: "bookmark")
-                        .font(.system(size: 12, weight: .medium))
-                        .foregroundStyle(.primary)
-                        .frame(width: 32, height: 32)
-                        .background(.ultraThinMaterial, in: Circle())
+                    Circle()
+                        .fill(.white)
+                        .frame(width: 24, height: 24)
+                        .overlay(
+                            Image(systemName: "bookmark")
+                                .font(.system(size: 12, weight: .medium))
+                                .foregroundStyle(.black)
+                        )
                 }
-                .padding(.top, 16)
-                .padding(.trailing, 16)
+                .padding(.top, 8)
+                .padding(.trailing, 8)
             }
+            .frame(width: 303, height: 288)
+            .clipped()
 
-            VStack(alignment: .leading, spacing: 12) {
-                Text(item.displayMerchant ?? item.productTitle)
+            VStack(alignment: .leading, spacing: 8) {
+                Text(item.displayMerchant ?? "")
                     .font(.nytFranklin(.medium, size: 12))
                     .foregroundStyle(Color(hex: 0x363636))
+                    .lineSpacing(6)
 
                 Text(item.productTitle)
                     .font(.nytFranklin(.bold, size: 20))
                     .foregroundStyle(.black)
                     .lineSpacing(6)
                     .lineLimit(3)
-                    .multilineTextAlignment(.leading)
 
                 if !bulletPoints.isEmpty {
                     VStack(alignment: .leading, spacing: 4) {
@@ -1868,32 +1894,35 @@ private struct SeriesLocalImageProductCard: View {
                             Text("• \(bullet)")
                                 .font(.nytFranklin(.medium, size: 14))
                                 .foregroundStyle(.black)
+                                .lineSpacing(6)
                         }
-                    }
-                }
-
-                Spacer()
-
-                VStack(spacing: 8) {
-                    ForEach(Array(buyButtons.enumerated()), id: \.offset) { _, button in
-                        Button {
-                            onTap()
-                        } label: {
-                            Text(button.text)
-                                .font(.nytFranklin(.bold, size: 14))
-                                .foregroundStyle(.white)
-                                .frame(maxWidth: .infinity)
-                                .frame(height: 39)
-                                .background(Color.black)
-                                .clipShape(RoundedRectangle(cornerRadius: 4))
-                        }
-                        .buttonStyle(.plain)
                     }
                 }
             }
-            .padding(16)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.horizontal, 16)
+            .padding(.top, 8)
+
+            VStack(spacing: 8) {
+                ForEach(Array(buyButtons.enumerated()), id: \.offset) { _, button in
+                    Button {
+                        onTap()
+                    } label: {
+                        Text(button.text)
+                            .font(.nytFranklin(.bold, size: 16))
+                            .foregroundStyle(.white)
+                            .frame(width: 271, height: 39)
+                            .background(Color.black)
+                            .clipShape(RoundedRectangle(cornerRadius: 4))
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+            .padding(.horizontal, 16)
+            .padding(.top, 8)
+            .padding(.bottom, 16)
         }
-        .frame(height: 640)
+        .frame(width: 303)
         .background(backgroundColor)
         .clipShape(RoundedRectangle(cornerRadius: 8))
         .shadow(color: .black.opacity(0.12), radius: 6, x: 0, y: 2)
@@ -2083,6 +2112,98 @@ struct AskSheetView: View {
 }
 
 
+
+// MARK: - Save to List Sheet
+
+struct SaveToListSheet: View {
+    let item: CommerceItem
+    let people: [PersonProfile]
+    var onSave: (String) -> Void
+
+    @Environment(\.dismiss) private var dismiss
+
+    private var listOptions: [(icon: String, label: String)] {
+        var options: [(String, String)] = [
+            ("house", "Home"),
+            ("fork.knife", "Kitchen"),
+            ("suitcase", "Travel"),
+            ("gift", "Gift Ideas"),
+            ("heart", "Favorites"),
+        ]
+        for person in people {
+            options.append(("person.circle", "\(person.name)'s List"))
+        }
+        return options
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Text("Save to…")
+                .font(.nytFranklin(size: 20, weight: .bold))
+                .foregroundStyle(Color(.label))
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal, 20)
+                .padding(.top, 8)
+                .padding(.bottom, 4)
+
+            Text(item.productTitle)
+                .font(.nytFranklin(.medium, size: 14))
+                .foregroundStyle(Color(hex: 0x666666))
+                .lineLimit(1)
+                .padding(.horizontal, 20)
+                .padding(.bottom, 16)
+
+            ScrollView {
+                VStack(spacing: 0) {
+                    ForEach(Array(listOptions.enumerated()), id: \.offset) { index, option in
+                        Button {
+                            onSave(option.label)
+                        } label: {
+                            HStack(spacing: 14) {
+                                Image(systemName: option.icon)
+                                    .font(.system(size: 16, weight: .medium))
+                                    .foregroundStyle(Color(.label))
+                                    .frame(width: 28, height: 28)
+
+                                Text(option.label)
+                                    .font(.nytFranklin(size: 16, weight: .medium))
+                                    .foregroundStyle(Color(.label))
+
+                                Spacer(minLength: 0)
+
+                                Image(systemName: "plus")
+                                    .font(.system(size: 13, weight: .medium))
+                                    .foregroundStyle(Color(hex: 0x999999))
+                            }
+                            .padding(.horizontal, 20)
+                            .padding(.vertical, 14)
+                            .contentShape(Rectangle())
+                        }
+                        .buttonStyle(.plain)
+
+                        if index < listOptions.count - 1 {
+                            Divider()
+                                .padding(.leading, 62)
+                        }
+                    }
+                }
+            }
+
+            Button {
+                dismiss()
+            } label: {
+                Text("Cancel")
+                    .font(.nytFranklin(.medium, size: 16))
+                    .foregroundStyle(Color(hex: 0x666666))
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 14)
+            }
+            .buttonStyle(.plain)
+        }
+        .padding(.top, 12)
+        .background(Color(.systemBackground))
+    }
+}
 
 // MARK: - Home chrome measurement
 

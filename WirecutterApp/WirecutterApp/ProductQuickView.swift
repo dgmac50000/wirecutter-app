@@ -21,7 +21,7 @@ struct ProductQuickView: View {
     var body: some View {
         VStack(spacing: 0) {
             header
-                .padding(.top, 12)
+                .padding(.top, 24)
 
             if selectedDetent == .medium {
                 mediumContent
@@ -36,7 +36,7 @@ struct ProductQuickView: View {
                 applePayConfirmationOverlay
             }
         }
-        .presentationDetents([.medium, .large], selection: $selectedDetent)
+        .presentationDetents([.medium, .fraction(1.0)], selection: $selectedDetent)
         .presentationDragIndicator(.visible)
         .animation(.easeInOut(duration: 0.25), value: selectedDetent)
     }
@@ -44,7 +44,7 @@ struct ProductQuickView: View {
     // MARK: - Medium Content (summary state)
 
     private var mediumContent: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: 12) {
             if let imageUrl = item.displayImageUrl {
                 AsyncImage(url: imageUrl) { phase in
                     switch phase {
@@ -53,19 +53,19 @@ struct ProductQuickView: View {
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .frame(maxWidth: .infinity)
-                            .frame(height: 160)
-                            .clipped()
+                            .frame(maxHeight: 180)
                     default:
                         RoundedRectangle(cornerRadius: 8)
                             .fill(Color(hex: 0xF5F5F5))
                             .frame(maxWidth: .infinity)
-                            .frame(height: 160)
+                            .frame(height: 120)
                     }
                 }
+                .padding(.horizontal, 20)
             }
 
             if !bulletSummary.isEmpty {
-                VStack(alignment: .leading, spacing: 10) {
+                VStack(alignment: .leading, spacing: 8) {
                     ForEach(bulletSummary, id: \.self) { bullet in
                         HStack(alignment: .top, spacing: 8) {
                             Circle()
@@ -79,11 +79,28 @@ struct ProductQuickView: View {
                         }
                     }
                 }
+                .padding(.horizontal, 20)
             }
 
-            buyButtons
+            VStack(spacing: 8) {
+                ForEach(Array(mediumBuyButtons.enumerated()), id: \.offset) { _, btn in
+                    Button {
+                        if let url = btn.url { onShop(url) }
+                    } label: {
+                        Text(btn.text)
+                            .font(.nytFranklin(.bold, size: 16))
+                            .foregroundStyle(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 12)
+                            .background(Color.black)
+                            .clipShape(RoundedRectangle(cornerRadius: 4))
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+            .padding(.horizontal, 20)
 
-            Spacer()
+            Spacer(minLength: 0)
 
             HStack {
                 Spacer()
@@ -97,10 +114,23 @@ struct ProductQuickView: View {
                 }
                 Spacer()
             }
-            .padding(.bottom, 16)
+            .padding(.bottom, 12)
         }
-        .padding(.horizontal, 20)
-        .padding(.top, 12)
+        .padding(.top, 4)
+    }
+
+    private var mediumBuyButtons: [(text: String, url: URL?)] {
+        if let sources = item.sources, !sources.isEmpty {
+            return Array(sources.prefix(2)).map { source in
+                let price = source.dealPriceFormatted ?? source.priceFormatted ?? ""
+                let merchant = source.merchantName
+                return (text: "\(price) from \(merchant)", url: source.dealAffiliateUrl ?? source.affiliateUrl)
+            }
+        }
+        if let price = item.priceFormatted, let merchant = item.merchantName {
+            return [(text: "\(price) from \(merchant)", url: item.affiliateUrl)]
+        }
+        return []
     }
 
     // MARK: - Large Content (article state)
